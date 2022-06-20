@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
+import { MoralisProvider } from "react-moralis";
 import { store } from './app/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -13,7 +14,10 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <MoralisProvider serverUrl="https://pesjzntsnwbt.usemoralis.com:2053/server
+" appId="uEZNUxgKWMJRU2Fr2WtcajR3VBCyg4300eOtfrlY">
+       <App />
+      </MoralisProvider> 
     </Provider>
   </React.StrictMode>
 );
