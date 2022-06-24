@@ -1,5 +1,6 @@
-import Btn from './Btn.js';  
-import Connect from './BtnConnect.js';
+import Btn from '../Btn/Btn';  
+import BtnConnect from '../Btn/BtnConnect';
+import React, { Component }  from 'react';
 
 const navigation = [
   { name: 'New Game', href:'', img:'', classes:' ml-4 ' ,current: false },
@@ -8,9 +9,9 @@ const navigation = [
 ]
 const connect = { names: ['Connect', 'Logout'], img:'', classes:' absolute right-0 ml-4 ' ,current: true }
 
-export default function Header() {
+export default function Menu() {
   return (
-    <div className="Header-Child bg-red-200">
+    <div className="Menu-Child bg-red-200 ">
       { 
         navigation.map((btn)=>{ 
           return(
@@ -18,7 +19,7 @@ export default function Header() {
           );
         })
       }
-      <Connect names={connect.names} img={connect.img} classes={connect.classes}/>
+      <BtnConnect names={connect.names} img={connect.img} classes={connect.classes}/>
     </div>
   );
 }

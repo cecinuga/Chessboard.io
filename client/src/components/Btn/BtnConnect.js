@@ -1,6 +1,8 @@
 import { useMoralis } from "react-moralis";
-import React, { useEffect } from 'react';
-import store from '../app/store';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { store } from '../../app/store';
+import { userSlice, login } from '../../features/userSlice.js';
 
 export default function BtnConnect({ id, names, href, img, classes, current }) {
     const { authenticate, isAuthenticated, isAuthenticating, user, account, logout } = useMoralis();
@@ -15,12 +17,12 @@ export default function BtnConnect({ id, names, href, img, classes, current }) {
 
     const toggleLogin = async () => {
       if (!isAuthenticated) {
-        await authenticate({signingMessage: "Log in using Moralis" })
-          .then(function (user) {
-            console.log("logged in user:", user);
-            console.log(user.get("ethAddress"));
+        await authenticate({signingMessage: "Benvenuto in chessboard.io" })
+          .then(function (_user) {
 
-
+            console.log("logged in _user:", _user);
+            console.log(_user.get("ethAddress"));
+            console.log(store.getState());
           })
           .catch(function (error) {
             console.log(error);

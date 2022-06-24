@@ -1,18 +1,32 @@
-import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Header from './components/Header.js';
 
-function App() {
-  return (
-    <div className="App">
-      <div className="h-3 w-full bg-red-800 text-white-600 font-sm"></div>
-      <Header />
-      <div className="Body">
-        
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import Menu from './components/Menu/Menu';
+import Btn from './components/Btn/Btn';
+import ConnectBtn from './components/Btn/BtnConnect';
+import Chessboard from './components/Chessboard/Chessboard';
+import FastMenu from './components/Menu/FastMenu';
+import Banner from './components/Menu/Banner';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render(){
+    return (
+      <div className="App">    
+        <Banner />  
+        <Menu/>
+        <FastMenu />
+        <Chessboard />
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
