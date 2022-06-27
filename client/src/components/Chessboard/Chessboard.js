@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Box from './Box';
+import Col from './Col';
 
 export default class Chessboard extends React.Component{
     constructor(props){
@@ -7,28 +8,15 @@ export default class Chessboard extends React.Component{
     }
     
     render(){
-        let chessboard = [[]];
-        for ( let i = 0; i < 8; i++ ) {
-            chessboard[ i ] = [];
-            for ( let j = 0; j < 8; j++ ) {
-                if(j%2!=0) chessboard[ i ][ j ] = {color:false};
-                else chessboard[ i ][ j ] = {color:true}
-            }
-        }
-        console.log(chessboard);
-
+        let row = [];
+        for ( let i = 0; i < 8; i++ ) { row.push(i);}
 
         return(
-            <div className="Chessboard w-2/3 h-6 inline-block bg-red-600 mt-4">
-
+            <div className="Chessboard py-2 w-2/3 inline-block text-center bg-amber-400 rounded">
             {
-            chessboard.map( 
-               (row)=>{
-                   row.map(
-                       (box)=>{
-                        return <Box color={box.color}/>
-                    })
-
+                row.map((col)=>{
+                    console.log(col);
+                    return(<Col key={col} x={col}/>);
                 })
             }
             </div>

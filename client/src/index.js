@@ -10,12 +10,12 @@ import './tailwind.output.css';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
-
+const appId="i2bV9L8XizhzjzXqVZCb73KXwbIVdWDa2ZxW88DT";
+const serverUrl="https://acyksz1klalo.usemoralis.com:2053/server";
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <MoralisProvider serverUrl="https://pesjzntsnwbt.usemoralis.com:2053/server
-" appId="uEZNUxgKWMJRU2Fr2WtcajR3VBCyg4300eOtfrlY">
+      <MoralisProvider serverUrl={serverUrl} appId={appId}>
        <App />
       </MoralisProvider> 
     </Provider>

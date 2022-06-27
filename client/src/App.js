@@ -22,8 +22,10 @@ class App extends React.Component {
       <div className="App">    
         <Banner />  
         <Menu/>
-        <FastMenu />
-        <Chessboard />
+        <div className="Body my-2">
+          <FastMenu />
+          <Chessboard />
+        </div>
       </div>
     );
   }
