@@ -19,7 +19,7 @@ export default function BtnConnect({ id, names, href, img, classes, current }) {
       if (!isAuthenticated) {
         await authenticate({signingMessage: "Benvenuto in chessboard.io" })
           .then(function (_user) {
-
+            //DISPATCH EVENT 
             console.log("logged in _user:", _user);
             console.log(_user.get("ethAddress"));
             console.log(store.getState());

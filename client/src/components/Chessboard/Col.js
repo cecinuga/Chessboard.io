@@ -25,7 +25,6 @@ export default class Col extends React.Component{
                 if(y==0||y==1) team=false
                 if(y==6||y==7) team=true
                 
-
                 p.map((coo)=>{ if(coo==String(this.props.x)+String(y)){piece='p'} })
                 t.map((coo)=>{ if(coo==String(this.props.x)+String(y)){piece='t'} })
                 c.map((coo)=>{ if(coo==String(this.props.x)+String(y)){piece='c'} })
@@ -35,7 +34,6 @@ export default class Col extends React.Component{
 
                 if(this.props.x%2==0&&y%2!=0) return(<Box key={String(this.props.x)+String(y) } coo={String(this.props.x)+String(y) } p={piece} team={team} color={true}/>);
                 else if(this.props.x%2==0&&y%2==0) return(<Box key={String(this.props.x)+String(y) } coo={String(this.props.x)+String(y) } p={piece} team={team} color={false}/>);
-                //INSERIRE DISCRIMINANTE PER IL TEAM
                 if(this.props.x%2!=0&&y%2!=0) return(<Box key={String(this.props.x)+String(y) } coo={String(this.props.x)+String(y) } p={piece} team={team} color={false}/>);
                 else if(this.props.x%2!=0&&y%2==0) return(<Box key={String(this.props.x)+String(y) } coo={String(this.props.x)+String(y) } p={piece} team={team} color={true}/>);
             })}

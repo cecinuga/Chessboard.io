@@ -511,6 +511,9 @@ video {
 .inline-block {
   display: inline-block;
 }
+.hidden {
+  display: none;
+}
 .h-12 {
   height: 3rem;
 }
