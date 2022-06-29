@@ -23,6 +23,7 @@ export default class Box extends React.Component{
                 <input 
                     type="checkbox"
                     id={"Box-"+String(this.props.coo)} 
+                    value={this.props.p}
                     className="w-12 h-12"
                     onChange={()=>{
                         console.log('----------------')
