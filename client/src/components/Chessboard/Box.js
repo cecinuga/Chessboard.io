@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BoxBtn from './BoxBtn';
-import { Step } from '../../features/moveSlice'
+//import { Step } from '../../features/moveSlice'
 
 export default class Box extends React.Component{
     constructor(props){
@@ -20,10 +20,11 @@ export default class Box extends React.Component{
                             'Box bg-amber-800  text-center text-white':
                             'Box bg-amber-800 text-center text-black'
                     }> 
-                <button 
+                <input 
+                    type="checkbox"
                     id={"Box-"+String(this.props.coo)} 
                     className="w-12 h-12"
-                    onClick={()=>{
+                    onChange={()=>{
                         console.log('----------------')
                         console.log('piece: '+this.props.p) 
                         console.log('coordinates: '+this.props.coo)
@@ -31,8 +32,7 @@ export default class Box extends React.Component{
                         console.log('----------------')
                         //DISPATCH EVENT
                     }}
-                    >{this.props.p}
-                </button>
+                /> {this.props.p}
             </div>
         );
     }

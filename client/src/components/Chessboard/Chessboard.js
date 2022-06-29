@@ -15,7 +15,6 @@ export default class Chessboard extends React.Component{
             <div className="Chessboard py-2 w-2/3 inline-block text-center bg-amber-400 rounded">
             {
                 row.map((col)=>{
-                    console.log(col);
                     return(<Col key={col} x={col}/>);
                 })
             }

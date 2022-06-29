@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
     lastMove:{
@@ -10,7 +10,7 @@ const initialState = {
 }
 
 export const MoveReducer = createSlice({
-    name:'lastMove',
+    name:'chess',
     initialState,
     reducers: {
         Step: (state, action)=>{ 

@@ -20,8 +20,6 @@ export default class Col extends React.Component{
             {col.map((y)=>{
                 let team;
                 let piece;
-                console.log('id: ',this.props.x);
-                console.log('y: ', y);
                 if(y==0||y==1) team=false
                 if(y==6||y==7) team=true
                 
