@@ -8,7 +8,6 @@ export default class Box extends React.Component{
     }
     
     render(){
-        console.log(store.getState());
         return(
             <div 
                 id={this.props.id}
@@ -27,11 +26,6 @@ export default class Box extends React.Component{
                     value={this.props.p}
                     className="w-12 h-12"
                     onChange={()=>{
-                        console.log('----------------')
-                        console.log('piece: '+this.props.p) 
-                        console.log('coordinates: '+this.props.coo)
-                        console.log('id: '+'Box-'+this.props.coo)
-                        console.log('----------------')
                         //DISPATCH EVENT
                         store.dispatch(lastMove({coo:this.props.coo,piece:this.props.p}));
                         console.log(store.getState());
