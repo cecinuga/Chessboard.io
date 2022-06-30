@@ -1,5 +1,5 @@
-import Btn from '../Btn/Btn';  
-import BtnConnect from '../Btn/BtnConnect';
+import Btn from '../../components/Btn/Btn';  
+import BtnConnect from './BtnConnect';
 import React, { Component }  from 'react';
 
 const navigation = [

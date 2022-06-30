@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { store } from '../../app/store';
-import { lastMove } from '../../app/features/gameSlice';
+import { lastMove } from './gameSlice';
 
 export default class Box extends React.Component{
     constructor(props){

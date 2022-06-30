@@ -1,9 +1,9 @@
 import { configureStore, getDefaultMiddleware, createAction } from '@reduxjs/toolkit';
-import { userReducer } from './features/userSlice';
-import { gameReducer } from './features/gameSlice';
+import { userReducer } from '../features/Menu/userSlice';
+import { gameReducer } from '../features/Chessboard/gameSlice';
 
-import { userLogin, userLogout } from './features/userSlice';
-import { move } from './features/gameSlice';
+import { userLogin, userLogout } from '../features/Menu/userSlice';
+import { move } from '../features/Chessboard/gameSlice';
 
 function loggerMiddleware(store){
   return function(next){
@@ -13,7 +13,7 @@ function loggerMiddleware(store){
     }
   }
 }
-/*function apiMiddleware({dispatch}){
+function apiMiddleware({dispatch}){
   return function(next){
     return function(action){
       switch(action.type){
@@ -23,8 +23,8 @@ function loggerMiddleware(store){
       return next(action);
     }
   }
-}*/
-const middleware = [/*apiMiddleware,*/ loggerMiddleware];
+}
+const middleware = [apiMiddleware, loggerMiddleware];
 
 export const store = configureStore({
   reducer: { 
