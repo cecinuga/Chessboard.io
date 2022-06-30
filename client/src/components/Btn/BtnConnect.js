@@ -2,6 +2,7 @@ import { useMoralis } from "react-moralis";
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { store } from '../../app/store';
+import { userLogin, userLogout } from '../../app/features/userSlice';
 
 export default function BtnConnect({ id, names, href, img, classes, current }) {
     const { authenticate, isAuthenticated, isAuthenticating, user, account, logout } = useMoralis();
@@ -18,7 +19,7 @@ export default function BtnConnect({ id, names, href, img, classes, current }) {
       if (!isAuthenticated) {
         await authenticate({signingMessage: "Benvenuto in chessboard.io" })
           .then(function (_user) {
-            //DISPATCH EVENT 
+            store.dispatch(userLogin({id:_user.id, address:_user.get("ethAddress") }))
             console.log("logged in _user:", _user);
             console.log(_user.get("ethAddress"));
             console.log(store.getState());

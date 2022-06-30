@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import BoxBtn from './BoxBtn';
-//import { Step } from '../../features/moveSlice'
+import { store } from '../../app/store';
+import { lastMove } from '../../app/features/gameSlice';
 
 export default class Box extends React.Component{
     constructor(props){
@@ -8,6 +8,7 @@ export default class Box extends React.Component{
     }
     
     render(){
+        console.log(store.getState());
         return(
             <div 
                 id={this.props.id}
@@ -32,6 +33,8 @@ export default class Box extends React.Component{
                         console.log('id: '+'Box-'+this.props.coo)
                         console.log('----------------')
                         //DISPATCH EVENT
+                        store.dispatch(lastMove({coo:this.props.coo,piece:this.props.p}));
+                        console.log(store.getState());
                     }}
                 /> {this.props.p}
             </div>
