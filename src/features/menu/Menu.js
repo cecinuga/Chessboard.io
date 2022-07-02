@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Login, Logout, selectUser } from './menuSlice';
+import { menuSelector } from './menuSlice';
+import Btn from './Btn';
+import BtnConnect from './BtnConnect';
 
 export function Menu() {
-    const user = useSelector(selectUser);
+    const navigation = [
+    { name: 'New Game', href:'', img:'', classes:' ml-4 ' ,current: false },
+    { name: 'Join', href:'', img:'', classes:' ml-4 ' ,current: false },
+    { name: 'Tournament', href:'', img:'', classes:' ml-4 ' ,current: false },
+    ]
+    const connect = { names: ['Connect', 'Logout'], img:'', classes:' absolute right-0 ml-4 ' ,current: true }
+      
+    const user = useSelector(menuSelector);
     const dispatch = useDispatch();
-
 
     return(
         <div className="Menu-Child bg-red-200">
