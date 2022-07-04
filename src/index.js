@@ -6,18 +6,18 @@ import { store } from './app/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
+import './tailwind.output.css';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
-const appId="i2bV9L8XizhzjzXqVZCb73KXwbIVdWDa2ZxW88DT";
-const serverUrl="https://acyksz1klalo.usemoralis.com:2053/server";
-
+const appId="DCChTAiOFY3h9djTsMKGLppRjDoqsPYbAjJQQtfb";
+const serverUrl="https://0z076nfdvktd.usemoralis.com:2053/server";
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <MoralisProvider serverUrl={serverUrl} appId={appId}>
-        <App />
-      </MoralisProvider>
+       <App />
+      </MoralisProvider> 
     </Provider>
   </React.StrictMode>
 );
