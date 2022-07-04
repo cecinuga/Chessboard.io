@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { fetchLogin, fetchLogout } from './menuAPI';
 
 const initialState = { 
@@ -6,7 +6,6 @@ const initialState = {
     address:'',
     status:''
 }
-export const useMenu = (state)=>state.memu;
 export const menuSlice = createSlice({
     name:'menu',
     initialState,
@@ -17,3 +16,4 @@ export const menuSlice = createSlice({
 
     }
 });
+export const menuReducer = menuSlice.reducer;

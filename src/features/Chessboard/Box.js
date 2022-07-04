@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { store } from '../../app/store';
-import { lastMove } from './gameSlice';
 
 export default class Box extends React.Component{
     constructor(props){
@@ -27,7 +26,6 @@ export default class Box extends React.Component{
                     className="w-12 h-12"
                     onChange={()=>{
                         //DISPATCH EVENT
-                        store.dispatch(lastMove({coo:this.props.coo,piece:this.props.p}));
                         console.log(store.getState());
                     }}
                 /> {this.props.p}
