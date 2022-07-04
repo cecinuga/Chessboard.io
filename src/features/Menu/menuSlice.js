@@ -1,13 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { logHandler } from './menuAPI';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { login, logout } from './menuAPI';
 
 const initialState = { 
     user:{
         id:'',
-        address:'',
+        ads:'',
     },
-    status:''
+    status:'',
+    error:'',
 }
+export const logHandler = createAsyncThunk("menu/logHandler", (isAuthenticated)=>{ 
+    if(!isAuthenticated){
+        return login();
+    } else {
+        return logout();
+    }
+});
+export const useMenu = state=>state.memu;
 export const menuSlice = createSlice({
     name:'menu',
     initialState,
@@ -18,8 +27,9 @@ export const menuSlice = createSlice({
         [logHandler.pending]:state=>{
             state.status='pending';
         },
-        [logHandler.rejected]:state=>{
+        [logHandler.rejected]:(state, action)=>{
             state.status='rejected';
+            state.error=action.error.message
         },
         [logHandler.fulfilled]:(state, action)=>{
             state.status='fulfilled';
