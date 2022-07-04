@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchLogin, fetchLogout } from './menuAPI';
+import { logHandler } from './menuAPI';
 
 const initialState = { 
-    id:'',
-    address:'',
+    user:{
+        id:'',
+        address:'',
+    },
     status:''
 }
 export const menuSlice = createSlice({
@@ -13,7 +15,16 @@ export const menuSlice = createSlice({
 
     },
     extraReducers:{
-
+        [logHandler.pending]:state=>{
+            state.status='pending';
+        },
+        [logHandler.rejected]:state=>{
+            state.status='rejected';
+        },
+        [logHandler.fulfilled]:(state, action)=>{
+            state.status='fulfilled';
+            state.user = action.payload
+        }
     }
 });
 export const menuReducer = menuSlice.reducer;
