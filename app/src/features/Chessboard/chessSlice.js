@@ -9,12 +9,13 @@ export const chessSlice = createSlice({
     initialState,
     reducers:{
         Move:(state, action)=>{ 
-            if(state.lastMove.firstStep==''&&state.lastMove.secondStep=='') { 
+            if((state.lastMove.firstStep==''&&state.lastMove.secondStep=='')||(state.lastMove.firstStep!=''&&state.lastMove.secondStep!='')) { 
                 state.lastMove.firstStep = action.payload.step;
                 state.lastMove.piece = action.payload.piece;
+                state.lastMove.secondStep = '';
             } else if(state.lastMove.firstStep!=''&&state.lastMove.secondStep=='') {
                 state.lastMove.secondStep = action.payload.step;
-            }
+            } 
         }
     },
     extraReducers:{

@@ -6,13 +6,6 @@ export default class Box extends React.Component{
     constructor(props){
         super(props);
     }
-    componentDidMount(){
-        const state = store.getState();
-        console.log(state);
-        /*if(state.chess.lastMove.secondStep!=''){
-            console.log(store.getState());
-        }*/
-    }
     
     render(){
         return(
@@ -34,6 +27,11 @@ export default class Box extends React.Component{
                     className="w-12 h-12"
                     onChange={()=>{
                         store.dispatch(Move({ step:this.props.coo, piece:this.props.p, }));
+                        console.log(store.getState().chess.lastMove)
+                        if(store.getState().chess.lastMove.secondStep!=''&&store.getState().chess.lastMove.firstStep!=''&&store.getState().chess.lastMove.piece!=''){
+                            //CHIAMA LO SMART CONTRACT
+                        }
+                   
                     }}
                 /> {this.props.p}
             </div>
