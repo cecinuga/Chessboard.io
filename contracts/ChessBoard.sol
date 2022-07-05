@@ -2,7 +2,6 @@
 pragma solidity ^0.8.13;
 import './MoveController.sol';
 import './MoveHandler.sol';
-import 'hardhat/console.sol';
 /*
     Creare le eccezioni per:        
         [!]Randomicità tra colori, 
@@ -41,11 +40,17 @@ contract ChessBoard {
     modifier Movecontrol(uint[2] memory oldpos, uint[2] memory newpos){ require(Movecontroller.MoveControl(oldpos, newpos, teams[msg.sender], Rules[Chessboard[oldpos[0]][oldpos[1]].pedina].maxsteps),''); _; }
 
     function isNotEvilBox(uint[2] memory newpos, bool team) public view returns(bool res) { { bool resEvilBox; uint[2] memory evilbox; (resEvilBox, evilbox)=Movehandler.isEvilBox(newpos, team); if(!resEvilBox){ res=true; } else{ res=false; }}}//LOGICAMENTE COLLAUDATO
-    function setKing(uint[2] memory pos) internal { kingpos[teams[msg.sender]] = pos; }
+    modifier isSetTower(uint[2] memory oldpos, uint[2] memory newpos){
+        if(Chessboard[oldpos[0]][oldpos[1]].pedina==2&&oldpos[1]==0) TowersFirstmove[teams[msg.sender]][false]=false;
+        else if(Chessboard[oldpos[0]][oldpos[1]].pedina==2&&oldpos[1]==7) TowersFirstmove[teams[msg.sender]][true]=false;
+        _;
+    }
+    
     modifier isSetKing(uint[2] memory oldpos, uint[2] memory newpos) { 
         if(  Chessboard[oldpos[0]][oldpos[1]].pedina==5  ){ 
             require(isNotEvilBox(newpos, teams[msg.sender]),'');
-            setKing(newpos);
+            kingpos[teams[msg.sender]] = oldpos;
+            KingsFirstmove[teams[msg.sender]]=false;
         }_;
     }  
     
@@ -75,40 +80,26 @@ contract ChessBoard {
         Movecontrol(oldpos, newpos) 
         PedestrianToQueen(oldpos, newpos)
         isSetKing(oldpos, newpos)
+        isSetTower(oldpos, newpos)
         isSetCheck(oldpos)
         returns(bool res){
             bool isArrocco = false;
             
-            if(oldpos[0]==0&&oldpos[1]==4&&Chessboard[0][4].pedina==5&&!KingsFirstmove[false]  ){
-                if( newpos[0]==oldpos[0]&&newpos[1]==oldpos[1]+2&&Chessboard[0][7].pedina==2&&!TowersFirstmove[false][true] ){
-                    Chessboard[oldpos[0]][oldpos[1]] = Box(0, false);
-                    Chessboard[oldpos[0]][oldpos[1]+2] = Box(5, false);
-                    Chessboard[oldpos[0]][oldpos[1]+1] = Box(2, false);
+            if(Chessboard[oldpos[0]][oldpos[1]].pedina==5&&KingsFirstmove[teams[msg.sender]]&&Chessboard[newpos[0]][newpos[1]].pedina==2&&Chessboard[newpos[0]][newpos[1]].color==teams[msg.sender]  ){
+                if( newpos[0]==oldpos[0]&&newpos[1]==oldpos[1]+2&&TowersFirstmove[teams[msg.sender]][true] ){
+                    Chessboard[oldpos[0]][oldpos[1]] = Box(0, teams[msg.sender]);
+                    Chessboard[oldpos[0]][oldpos[1]+2] = Box(5, teams[msg.sender]);
+                    Chessboard[oldpos[0]][oldpos[1]+1] = Box(2, teams[msg.sender]);
                     isArrocco=true;
                 }
-                else if( newpos[0]==oldpos[0]&&newpos[1]==oldpos[1]-2&&Chessboard[0][0].pedina==2&&!TowersFirstmove[false][false] ){
-                    Chessboard[oldpos[0]][oldpos[1]] = Box(0, false);
-                    Chessboard[oldpos[0]][oldpos[1]-2] = Box(5, false);
-                    Chessboard[oldpos[0]][oldpos[1]-1] = Box(2, false);
+                else if( newpos[0]==oldpos[0]&&newpos[1]==oldpos[1]-2&&TowersFirstmove[teams[msg.sender]][false] ){
+                    Chessboard[oldpos[0]][oldpos[1]] = Box(0, teams[msg.sender]);
+                    Chessboard[oldpos[0]][oldpos[1]-2] = Box(5, teams[msg.sender]);
+                    Chessboard[oldpos[0]][oldpos[1]-1] = Box(2, teams[msg.sender]);
                     isArrocco=true;
                 }
                 
             }
-            else if(oldpos[0]==7&&oldpos[1]==3&&Chessboard[7][3].pedina==5&&!KingsFirstmove[true]){
-                if( newpos[0]==oldpos[0]&&newpos[1]==oldpos[1]+2&&Chessboard[7][7].pedina==2&&!TowersFirstmove[true][true] ){
-                    Chessboard[oldpos[0]][oldpos[1]] = Box(0, true);
-                    Chessboard[oldpos[0]][oldpos[1]+2] = Box(5, true);
-                    Chessboard[oldpos[0]][oldpos[1]+1] = Box(2, true);
-                    isArrocco=true;
-
-                }
-                else if( newpos[0]==oldpos[0]&&newpos[1]==oldpos[1]-2&&Chessboard[7][0].pedina==2&&!TowersFirstmove[true][false] ){
-                    Chessboard[oldpos[0]][oldpos[1]] = Box(0, true);
-                    Chessboard[oldpos[0]][oldpos[1]-2] = Box(5, true);
-                    Chessboard[oldpos[0]][oldpos[1]-1] = Box(2, true);                    
-                    isArrocco=true;
-                }
-            }   
             bool ischeck;bool nopos;
             (ischeck, nopos) = Movehandler.isCheckMate(teams[msg.sender]);
             if(ischeck&&nopos){ 
@@ -124,15 +115,6 @@ contract ChessBoard {
                 if(msg.sender==players[true]) { payable(players[false]).transfer(prizes[players[false]]); }
                 else if(msg.sender==players[false]) {  payable(players[true]).transfer(prizes[players[true]]); }
                 selfdestruct(payable(players[true]));
-            }
-
-            if(  Chessboard[oldpos[0]][oldpos[1]].pedina==5  ){ KingsFirstmove[teams[msg.sender]]=true; }
-            if(Chessboard[oldpos[0]][oldpos[1]].pedina==2){
-                if( (oldpos[0]==0&&oldpos[1]==0)&&teams[msg.sender] ){ TowersFirstmove[teams[msg.sender]][true] = true; }
-                else if( (oldpos[0]==0&&oldpos[1]==7)&&teams[msg.sender] ){ TowersFirstmove[teams[msg.sender]][false] = true; }
-
-                if( (oldpos[0]==7&&oldpos[1]==0)&&!teams[msg.sender] ){ TowersFirstmove[teams[msg.sender]][true] = true; }
-                else if( (oldpos[0]==7&&oldpos[1]==7)&&!teams[msg.sender] ){ TowersFirstmove[teams[msg.sender]][false] = true; }
             }
             res = true;
         }
@@ -154,12 +136,12 @@ contract ChessBoard {
         check[teams[players[true]]] = false;
         check[teams[players[false]]] = false;
 
-        KingsFirstmove[teams[players[true]]] = false;
-        KingsFirstmove[teams[players[false]]] = false;
-        TowersFirstmove[teams[players[true]]][false] = false;
-        TowersFirstmove[teams[players[true]]][true] = false;
-        TowersFirstmove[teams[players[false]]][false] = false;
-        TowersFirstmove[teams[players[false]]][true] = false;
+        KingsFirstmove[teams[players[true]]] = true;
+        KingsFirstmove[teams[players[false]]] = true;
+        TowersFirstmove[teams[players[true]]][false] = true;
+        TowersFirstmove[teams[players[true]]][true] = true;
+        TowersFirstmove[teams[players[false]]][false] = true;
+        TowersFirstmove[teams[players[false]]][true] = true;
 
         Rules[0] = _Rules([false, false, false], 0);//NULL
         Rules[1] = _Rules([true, false, false], 1);//PEDONE
@@ -169,7 +151,7 @@ contract ChessBoard {
         Rules[5] = _Rules([true, true, true], 1);//RE
         Rules[6] = _Rules([true, true, true], 8);//REGINA
 
-        Chessboard[0][0] = Box(2, false);
+        /*Chessboard[0][0] = Box(2, false);
         Chessboard[0][1] = Box(3, false);
         Chessboard[0][2] = Box(4, false);
         Chessboard[0][3] = Box(6, false);
@@ -233,14 +215,10 @@ contract ChessBoard {
         Chessboard[0][2] = Box(0, false);
         Chessboard[0][3] = Box(0, false);
         Chessboard[0][5] = Box(0, false);
-        Chessboard[0][6] = Box(0, false);
+        Chessboard[0][6] = Box(0, false);*/
         //TESTING MOCHA TOGLIERE DAL CAZZO
     }
     receive() external payable onlyPlayers{
         prizes[msg.sender] = msg.value;
-        totalPrize+=msg.value;
-        if(prizes[players[true]]>0 && prizes[players[false]]>0){
-            //START GAME
-        }
     }
 } 

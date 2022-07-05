@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: Unlicensed
 pragma solidity ^0.8.13;
 import './ChessBoard.sol';
-import 'hardhat/console.sol';
 /*
     Creare le eccezioni per:  
         [!]EnPassant,
