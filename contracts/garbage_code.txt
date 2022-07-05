@@ -1,0 +1,52 @@
+(res, pos) = Movecontrol.isObstacled(newpos, [0, newpos[1]]);///-x
+if(!res&&Movecontrol.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontrol.abs(int(pos[0])-int(newpos[0])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
+    return true;
+}//-x
+
+(res, pos) = Movecontrol.isObstacled(newpos, [7, newpos[1]]);//+x
+if(!res&&Movecontrol.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontrol.abs(int(pos[0])-int(newpos[0])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
+    return true;
+}//+x
+
+(res, pos) = Movecontrol.isObstacled(newpos, [newpos[0], 0]);//-y
+if(!res&&Movecontrol.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontrol.abs(int(pos[1])-int(newpos[1])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
+    return true;
+}//-y     
+
+(res, pos) = Movecontrol.isObstacled(newpos, [newpos[0], 7]);//+y
+if(!res&&Movecontrol.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontrol.abs(int(pos[1])-int(newpos[1])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
+    return true;
+}//+y        
+
+//GESTIRE LA DIREZIONE DELLA PEDINA E IL MAXSTEPS PER LE DIAGONALI
+(res, pos) = Movecontrol.isObstacled(newpos, [(newpos[0]+newpos[1])-(newpos[0]+newpos[1])-7, (newpos[0]+newpos[1])-7]);//ok
+if(!res&&Movecontrol.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontrol.abs(int(pos[1])-int(newpos[1])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
+    return true;
+}//+x-y
+
+(res, pos) = Movecontrol.isObstacled(newpos, [newpos[0]-uint(Movecontrol.min(int(newpos[0]), int(newpos[1]))),newpos[1]-uint(Movecontrol.min(int(newpos[0]), int(newpos[1])))]);//ok
+if(!res&&Movecontrol.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontrol.abs(int(pos[1])-int(newpos[1])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
+    return true;
+}//-x-y               
+
+(res, pos) = Movecontrol.isObstacled(newpos, [(newpos[0]+newpos[1])-7,(newpos[0]+newpos[1])-(newpos[0]+newpos[1])-7]);//ok
+if(!res&&Movecontrol.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontrol.abs(int(pos[1])-int(newpos[1])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
+    return true;
+}//-x+y              
+
+(res, pos) = Movecontrol.isObstacled(newpos, [(newpos[0]+(7-uint(Movecontrol.max(int(newpos[0]), int(newpos[1]))))),(newpos[1]+(7-uint(Movecontrol.max(int(newpos[0]), int(newpos[1])))))]);//ok
+if(!res&&Movecontrol.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontrol.abs(int(pos[1])-int(newpos[1])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
+    return true;
+}//+x+y          
+return false;
+
+
+
+
+
+
+
+
+
+
+

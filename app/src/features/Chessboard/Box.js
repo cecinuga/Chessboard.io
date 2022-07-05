@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { store } from '../../app/store';
 import { Move } from './chessSlice';
+import { useMoralisWeb3Api } from "react-moralis";
 
 export default class Box extends React.Component{
     constructor(props){
