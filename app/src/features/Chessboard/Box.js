@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { store } from '../../app/store';
 import { Move } from './chessSlice';
 import { useMoralisWeb3Api } from "react-moralis";
+import ChessBoard from '../artifacts/ChessBoard.json'; 
 
 export default class Box extends React.Component{
     constructor(props){
@@ -30,7 +31,6 @@ export default class Box extends React.Component{
                         store.dispatch(Move({ step:this.props.coo, piece:this.props.p, }));
                         console.log(store.getState().chess.lastMove)
                         if(store.getState().chess.lastMove.secondStep!=''&&store.getState().chess.lastMove.firstStep!=''&&store.getState().chess.lastMove.piece!=''){
-                            //CHIAMA LO SMART CONTRACT
                         }
                    
                     }}
