@@ -4,6 +4,9 @@ const initialState = {
     lastMove:{ firstStep:'', piece:'', secondStep:'' }
 }
 export const useMenu = state=>state.memu;
+
+
+
 export const chessSlice = createSlice({
     name:'chess',
     initialState,
@@ -19,6 +22,7 @@ export const chessSlice = createSlice({
         }
     },
     extraReducers:{
+
     }
 });
 export const { Move } = chessSlice.actions;
