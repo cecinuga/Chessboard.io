@@ -27,14 +27,12 @@ export default class Box extends React.Component{
                     id={"Box-"+String(this.props.coo)} 
                     value={this.props.p}
                     className="w-12 h-12"
-                    onChange={()=>{
-                        store.dispatch(Move({ step:this.props.coo, piece:this.props.p, }));
-                        console.log(store.getState().chess.lastMove)
-                        if(store.getState().chess.lastMove.secondStep!=''&&store.getState().chess.lastMove.firstStep!=''&&store.getState().chess.lastMove.piece!=''){
-                        //call contract function
-                        }
-                        console.log(ChessBoard)
-                   
+                    onChange={()=>{//PASSARE DESTRUTTURANDO LA FUNZIONE RUN CONTRACT MORALIS PER CHESSSLICE.JS
+                        store.dispatch(Move({ step:this.props.coo, piece:this.props.p, }))
+                            .then(
+                                ()=>console.log(store.getState().chess.lastMove)
+                            );
+                        
                     }}
                 /> {this.props.p}
             </div>
