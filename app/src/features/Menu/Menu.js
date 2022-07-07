@@ -1,6 +1,6 @@
 import Btn from '../../components/Btn/Btn';  
-import BtnConnect from './BtnConnect';
-import BtnMatchM from './BtnMatchM';
+import BtnConnect from './Btn/BtnConnect';
+import BtnMatchM from './Btn/BtnMatchM';
 import React, { Component }  from 'react';
 
 const navigation = [

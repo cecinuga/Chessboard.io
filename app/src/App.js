@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Menu from './features/Menu/Menu';
 import Btn from './components/Btn/Btn';
-import ConnectBtn from './features/Menu/BtnConnect';
 import Chessboard from './features/Chessboard/Chessboard';
 import FastMenu from './features/Menu/FastMenu';
 import Banner from './features/Menu/Banner';
