@@ -1,11 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { store } from '../../app/store';
+import ChessBoard from '../../artifacts/ChessBoard';
 
 export const useMenu = state=>state.memu;
 export const Move = createAsyncThunk(
     "chess/move",
     async ( data ) => { 
+        if((store.getState().chess.lastMove.firstStep!=''&&store.getState().chess.lastMove.secondStep!='')){
         // RUN CONTRACT MORALIS FUNCTION
+        
+        }
         return data;
     }
 ) 

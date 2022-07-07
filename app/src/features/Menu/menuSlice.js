@@ -4,8 +4,9 @@ const initialState = {
     user:{
         id:'',
         ads:'',
+        status:'',
     },
-    status:''
+    matchmaking:{ status:'', },
 }
 export const useMenu = state=>state.menu;
 
@@ -22,7 +23,13 @@ export const logHandler = createAsyncThunk(
         }
     }
 )
-
+export const newGame = createAsyncThunk(
+    "menu/newGame",
+    async ( data )=>{
+        //GESTIRE IL MATCHMAKING!!!
+        return data;
+    }
+)
 export const menuSlice = createSlice({
     name:'menu',
     initialState,
@@ -30,15 +37,25 @@ export const menuSlice = createSlice({
     },
     extraReducers:{
         [logHandler.pending]:state=>{ 
-            state.status='pending'
+            state.user.status='pending'
         },
         [logHandler.rejected]:state=>{ 
-            state.status='rejected'
+            state.user.status='rejected'
         },
         [logHandler.fulfilled]:(state,action)=>{ 
-            state.status='fulfilled'
+            state.user.status='fulfilled'
             state.user = action.payload
+        },
+        [newGame.pending]:state=>{ 
+            state.matchmaking.status='pending'
+        },
+        [newGame.rejected]:state=>{ 
+            state.matchmaking.status='rejected'
+        },
+        [newGame.fulfilled]:(state,action)=>{ 
+            state.matchmaking.status='fulfilled'
         }
+
     }
 });
 export const menuReducer = menuSlice.reducer;

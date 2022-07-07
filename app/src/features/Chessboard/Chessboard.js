@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { store } from '../../app/store';
+import { Move } from './chessSlice';
 import Box from './Box';
 import Col from './Col';
 
