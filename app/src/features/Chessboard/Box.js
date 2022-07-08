@@ -32,7 +32,6 @@ export default class Box extends React.Component{
                             .then(
                                 ()=>console.log(store.getState().chess.lastMove)
                             );
-                        
                     }}
                 /> {this.props.p}
             </div>

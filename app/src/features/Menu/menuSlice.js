@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { Wroom } from './WRoom';
 
 const initialState = { 
     user:{
@@ -6,7 +7,7 @@ const initialState = {
         ads:'',
         status:'',
     },
-    matchmaking:{ status:'', },
+    matchmaking:{ status:'', enemy:''},
 }
 export const useMenu = state=>state.menu;
 
@@ -27,7 +28,17 @@ export const newGame = createAsyncThunk(
     "menu/newGame",
     async ( data )=>{
         //GESTIRE IL MATCHMAKING!!!
-        return data;
+        await data.fetch()
+            .then( 
+                (users)=>{
+                    if(users.length > 0) {
+                        //scelgo lo sfidante
+                        //deploy the smart contract
+                    } else {
+                        //mi metto in coda
+                    }
+                }
+            )
     }
 )
 export const menuSlice = createSlice({
