@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Wroom } from './WRoom';
-import { ethers } from '../../App';
+import { ethers, provider } from '../../App';
 import ChessBoard from '../../artifacts/ChessBoard'
 import {store} from '../../app/store'
 
@@ -38,6 +38,7 @@ export const newGame = createAsyncThunk(
                         //scelgo lo sfidante
                         const WRenemy = users[0];
                         //deploy the smart contract
+                        console.log(await provider.getBalance("0xcf70e93b75BC5D94652445282DeC2DdaB223Aac1"))
                     } else {
                         //mi metto in coda
                         //aspetto di essere scelto
