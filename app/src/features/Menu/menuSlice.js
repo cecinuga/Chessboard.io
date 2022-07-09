@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Wroom } from './WRoom';
+import { ethers } from '../../App';
+import ChessBoard from '../../artifacts/ChessBoard'
+import {store} from '../../app/store'
 
 const initialState = { 
     user:{
@@ -7,7 +10,7 @@ const initialState = {
         ads:'',
         status:'',
     },
-    matchmaking:{ status:'', enemy:''},
+    matchmaking:{ status:'',error:'', enemy:''},
 }
 export const useMenu = state=>state.menu;
 
@@ -30,12 +33,16 @@ export const newGame = createAsyncThunk(
         //GESTIRE IL MATCHMAKING!!!
         await data.fetch()
             .then( 
-                (users)=>{
+                async (users)=>{
                     if(users.length > 0) {
                         //scelgo lo sfidante
+                        const WRenemy = users[0];
                         //deploy the smart contract
                     } else {
                         //mi metto in coda
+                        //aspetto di essere scelto
+                        //quindi uso le Polygon Api per puntare alla partita deployata con il mio indirizzo
+                        //quando vengo scelto, mi tolgo dalla coda
                     }
                 }
             )
@@ -60,8 +67,9 @@ export const menuSlice = createSlice({
         [newGame.pending]:state=>{ 
             state.matchmaking.status='pending'
         },
-        [newGame.rejected]:state=>{ 
+        [newGame.rejected]:(state, action)=>{ 
             state.matchmaking.status='rejected'
+            state.matchmaking.error=action.error.message;
         },
         [newGame.fulfilled]:(state,action)=>{ 
             state.matchmaking.status='fulfilled'

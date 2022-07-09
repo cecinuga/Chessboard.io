@@ -14,6 +14,10 @@ export default function FastMenu() {
       console.log('matchmaking completato...');    
       setDisplay('hidden');  
     }
+    if(store.getState().menu.matchmaking.status=='rejected'){
+      console.log('matchmaking annullato...');    
+      setDisplay('hidden');  
+    }
   });
 
   return (
