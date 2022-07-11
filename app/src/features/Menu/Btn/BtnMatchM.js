@@ -1,6 +1,6 @@
 import React from 'react';
-import { useMoralisQuery } from "react-moralis";
-import { newGame } from '../menuSlice';
+import { useMoralisQuery, useNewMoralisObject } from "react-moralis";
+import { newGame } from '../menuAPI';
 import { store } from '../../../app/store';
 import { useMoralis } from "react-moralis";
 

@@ -2,7 +2,7 @@ import { useMoralis } from "react-moralis";
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { store } from '../../../app/store';
-import { logHandler } from '../menuSlice';
+import { logHandler } from '../menuAPI';
 
 export default function BtnConnect({ id, names, href, img, classes, current }) {
     const { isAuthenticated, authenticate, logout } = useMoralis();

@@ -6,15 +6,15 @@ import MatchMaking from './LoadingPanel/MatchMaking';
 export default function FastMenu() {
   const [display, setDisplay] = useState('hidden');
   store.subscribe( ()=>{
-    if(store.getState().menu.matchmaking.status=='pending'){
+    if(store.getState().menu.matchmaking.message.status=='pending'){
       console.log('matchmaking avviato...');
       setDisplay('block');
     }
-    if(store.getState().menu.matchmaking.status=='fulfilled'){
+    if(store.getState().menu.matchmaking.message.status=='fulfilled'){
       console.log('matchmaking completato...');    
       setDisplay('hidden');  
     }
-    if(store.getState().menu.matchmaking.status=='rejected'){
+    if(store.getState().menu.matchmaking.message.status=='rejected'){
       console.log('matchmaking annullato...');    
       setDisplay('hidden');  
     }

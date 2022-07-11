@@ -1,54 +1,22 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Wroom } from './WRoom';
-import { ethers, provider } from '../../App';
-import ChessBoard from '../../artifacts/ChessBoard'
 import {store} from '../../app/store'
+import { logHandler, newGame } from './menuAPI'
 
+export const useMenu = state=>state.menu;
 const initialState = { 
     user:{
         id:'',
         ads:'',
-        status:'',
+        message:{status:'',error:''},
     },
-    matchmaking:{ status:'',error:'', enemy:''},
+    matchmaking:{ 
+        enemy:'',
+        chessboard:'',
+        message:{status:'',error:''},
+    },
+    status:'',
 }
-export const useMenu = state=>state.menu;
-
-export const logHandler = createAsyncThunk(
-    "menu/logHandler",
-    async ( data )=>{
-        const { isAuthenticated, authenticate, logout } = data;
-        if(!isAuthenticated) {
-            return await authenticate({signingMessage:'Benvenuto in chesssboard.io'})
-                .then(user=>{return {id:user.id, ads:user.get('ethAddress')}});
-        } 
-        else {
-            return await logout();
-        }
-    }
-)
-export const newGame = createAsyncThunk(
-    "menu/newGame",
-    async ( data )=>{
-        //GESTIRE IL MATCHMAKING!!!
-        await data.fetch()
-            .then( 
-                async (users)=>{
-                    if(users.length > 0) {
-                        //scelgo lo sfidante
-                        const WRenemy = users[0];
-                        //deploy the smart contract
-                        console.log(await provider.getBalance("0xcf70e93b75BC5D94652445282DeC2DdaB223Aac1"))
-                    } else {
-                        //mi metto in coda
-                        //aspetto di essere scelto
-                        //quindi uso le Polygon Api per puntare alla partita deployata con il mio indirizzo
-                        //quando vengo scelto, mi tolgo dalla coda
-                    }
-                }
-            )
-    }
-)
 export const menuSlice = createSlice({
     name:'menu',
     initialState,
@@ -56,24 +24,28 @@ export const menuSlice = createSlice({
     },
     extraReducers:{
         [logHandler.pending]:state=>{ 
-            state.user.status='pending'
+            state.user.message.status='pending'
         },
         [logHandler.rejected]:state=>{ 
-            state.user.status='rejected'
+            state.user.message.status='rejected'
+            state.status='logerror'
         },
         [logHandler.fulfilled]:(state,action)=>{ 
-            state.user.status='fulfilled'
             state.user = action.payload
         },
         [newGame.pending]:state=>{ 
-            state.matchmaking.status='pending'
+            state.matchmaking.message.status='pending'
         },
         [newGame.rejected]:(state, action)=>{ 
-            state.matchmaking.status='rejected'
-            state.matchmaking.error=action.error.message;
+            state.matchmaking.message.status='rejected'
+            state.matchmaking.message.error=action.error.message
+            console.log(state.matchmaking.message.error)
+            state.status='matcherror'
         },
         [newGame.fulfilled]:(state,action)=>{ 
-            state.matchmaking.status='fulfilled'
+            state.matchmaking.message.status='fulfilled'
+            state.matchmaking.chessboard=action.payload.chessboard;
+            state.matchmaking.enemy=action.payload.enemy;
         }
 
     }
