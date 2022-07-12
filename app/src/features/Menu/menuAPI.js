@@ -22,11 +22,11 @@ export const newGame = createAsyncThunk(
     "menu/newGame",
     async ( data )=>{
         //GESTIRE IL MATCHMAKING!!!
-        return await data.fetch()
+        console.log('Invio richiesta al server')
+        return await data.fetchWUser()
             .then( 
                 async (users)=>{
                     if(users.length < 0) {//CAMBIARE IF
-                        //scelgo lo sfidante
                         //FAI SCEGLIERE ALL'UTENTE
                         const WRenemy = users[0];
 
@@ -36,36 +36,35 @@ export const newGame = createAsyncThunk(
 
                         const Chessboard = new ethers.ContractFactory(ChessBoard.abi, ChessBoard.bytecode, signer);
                         const chessboard = await Chessboard.deploy(signer.getAddress(), WRenemy.get('address'))
+                        
+                        const Games = Moralis.Object.extend("Games");
+                        const new_chessboard = new Games();
+
+                        new_chessboard.save({
+                            chessboard:chessboard.address, 
+                            player1:await signer.getAddress(),
+                            player2:WRenemy.get('address')
+                        }).then(
+                            (chess)=>{console.log(chess)}, 
+                            (error)=>{console.log(error)}
+                        )
 
                         console.log(chessboard)
                         return { chessboard:chessboard.address, enemy:WRenemy.get('address') }
                     } else if(users.length!=0) {//CAMBIARE IF
                         //mi metto in coda 
+                        console.log('ci siamoooo?')
                         const User = Moralis.Object.extend("WRoom");
                         const waiting_user = new User();
-                        waiting_user.save({
+
+                        const user = await waiting_user.save({
                             status:'ok', 
                             address: await signer.getAddress()
-                            })
-                            .then(
-                                async (user)=>{
-                                    const block = await provider.getBlockNumber()
-                                    const { transactions } = await provider.getBlockWithTransactions(block)
-                                    transactions.map((tx)=>{ 
-                                        if(tx.creates!=undefined) {
-                                            //controllo se 
-                                            //l'indirizzo del contratto è una ChessBoard
-                                            console.log(tx.creates)
-                                            const cont = new ethers.Contract(tx.creates, ChessBoard.abi, signer)
-                                                .then(()=>{})
-                                                .catch((err)=>console.log(err))
-                                        }
-                                    })
-                                },
-                                (error)=>{console.log(error)})
+                        });
+                        const fetchGame = new Moralis.Query("Games");
+                        const game = await fetchGame.equalTo("player2",user.get("address"))
+                        console.log(game)
                         //punto alla partita
-                        
-                        
                         //quando vengo scelto, mi tolgo dalla coda
                         return { chessboard:'', enemy:'' }
 

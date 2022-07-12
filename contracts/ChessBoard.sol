@@ -61,7 +61,7 @@ contract ChessBoard {
         _;
     }
 
-    function getPlayer(bool team) public view /*onlyPlayers*/ returns(address _player) { _player = players[team]; }
+    function getPlayer(bool team) public view returns(address _player) { _player = players[team]; }
     function getTeam(address _player) public view /*onlyPlayers*/ returns(bool team){ team=teams[_player]; }
     function getRules(uint pedina) public view /*onlySpot*/ returns(_Rules memory rule){ rule = Rules[pedina]; }
     function getBox(uint i, uint j) public view returns(Box memory box){ box = Chessboard[i][j]; }
