@@ -3,20 +3,26 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { MoralisProvider } from "react-moralis";
 import { store } from './app/store';
+import  Pstore  from './app/persistent_store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import './tailwind.output.css';
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
+const persistore = persistStore(Pstore)
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <MoralisProvider serverUrl={process.env.REACT_APP_SERVER_URL} appId={process.env.REACT_APP_ID}>
-       <App />
-      </MoralisProvider> 
+      <PersistGate store={persistore}>
+        <MoralisProvider serverUrl={process.env.REACT_APP_SERVER_URL} appId={process.env.REACT_APP_ID}>
+        <App />
+        </MoralisProvider> 
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );

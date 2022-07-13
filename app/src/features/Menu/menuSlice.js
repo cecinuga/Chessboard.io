@@ -13,7 +13,7 @@ const initialState = {
     matchmaking:{ 
         enemy:'',
         chessboard:'',
-        message:{status:'',error:''},
+        message:{status:'foundaplayer',error:''},
     },
     status:'',
 }
@@ -21,6 +21,13 @@ export const menuSlice = createSlice({
     name:'menu',
     initialState,
     reducers:{
+        gameFound:(state,action)=>{
+            console.log('mi hanno dispatchato...')
+            console.log(action.payload)
+            state.matchmaking.chessboard=action.payload.chessboard;
+            state.matchmaking.enemy=action.payload.player1;
+            state.matchmaking.message.status='letsplaytg';
+        }
     },
     extraReducers:{
         [logHandler.pending]:state=>{ 
@@ -43,11 +50,17 @@ export const menuSlice = createSlice({
             state.status='matcherror'
         },
         [newGame.fulfilled]:(state,action)=>{ 
-            state.matchmaking.message.status='fulfilled'
+            if(action.payload.chessboard!=''&&action.payload.enemy!=''){
+                state.matchmaking.message.status='letsplay'
+            }
+            else if(action.payload.chessboard==''&&action.payload.enemy=='') {
+                state.matchmaking.message.status='waiting'
+            }
             state.matchmaking.chessboard=action.payload.chessboard;
             state.matchmaking.enemy=action.payload.enemy;
         }
 
     }
 });
+export const { gameFound } = menuSlice.actions;
 export const menuReducer = menuSlice.reducer;

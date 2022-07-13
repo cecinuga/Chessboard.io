@@ -18,21 +18,25 @@ export const logHandler = createAsyncThunk(
         }
     }
 )
+
 export const newGame = createAsyncThunk(
     "menu/newGame",
     async ( data )=>{
         //GESTIRE IL MATCHMAKING!!!
         console.log('Invio richiesta al server')
-        return await data.fetchWUser()
+        const fetchWUser = new Moralis.Query("WRoom")
+        const fetchWUserQuery = await fetchWUser.equalTo("status","ok")
+        return await fetchWUserQuery.find()
             .then( 
                 async (users)=>{
+                    //INSERIRE CRITERIO PER SCELTA SFIDANTE
                     if(users.length < 0) {//CAMBIARE IF
-                        //FAI SCEGLIERE ALL'UTENTE
                         const WRenemy = users[0];
 
                         //deploy the smart contract 
                         console.log('Player 1: ',await signer.getAddress())
                         console.log('Player 2: ',WRenemy.get('address'))
+                        console.log('deployo la partita....')
 
                         const Chessboard = new ethers.ContractFactory(ChessBoard.abi, ChessBoard.bytecode, signer);
                         const chessboard = await Chessboard.deploy(signer.getAddress(), WRenemy.get('address'))
@@ -48,26 +52,19 @@ export const newGame = createAsyncThunk(
                             (chess)=>{console.log(chess)}, 
                             (error)=>{console.log(error)}
                         )
-
                         console.log(chessboard)
                         return { chessboard:chessboard.address, enemy:WRenemy.get('address') }
                     } else if(users.length!=0) {//CAMBIARE IF
                         //mi metto in coda 
-                        console.log('ci siamoooo?')
+                        console.log('mi metto in fila...')
                         const User = Moralis.Object.extend("WRoom");
                         const waiting_user = new User();
 
                         const user = await waiting_user.save({
                             status:'ok', 
                             address: await signer.getAddress()
-                        });
-                        const fetchGame = new Moralis.Query("Games");
-                        const game = await fetchGame.equalTo("player2",user.get("address"))
-                        console.log(game)
-                        //punto alla partita
-                        //quando vengo scelto, mi tolgo dalla coda
+                        });                                
                         return { chessboard:'', enemy:'' }
-
                     }
                 }
             )
