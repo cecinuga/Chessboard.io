@@ -5,11 +5,17 @@ import MatchMaking from './LoadingPanel/MatchMaking';
 import Moralis from 'moralis';
 import ChessBoard from '../../artifacts/ChessBoard'
 import { gameFound } from './menuSlice'
-import cloudGames from '../../cloud/cloudGames'
+import { useMoralisCloudFunction } from "react-moralis";
+
 
 export default function FastMenu() {
+  const updateGame = useMoralisCloudFunction(
+    'updateGames',
+    {player1:store.getState().menu.user.ads}
+  )
   const [displayMMPanel, setDisplayMMPanel] = useState('hidden');
-  const foundMyGame = () => {
+  const foundMyGame = (updateGame) => {
+    console.log(updateGame)
     const time = setTimeout(async ()=>{
       console.log('sto aspettando eh...')
       let chessboard_address='';
@@ -26,21 +32,24 @@ export default function FastMenu() {
         return games.map(async (game)=>{ 
             if(game.get('player2')==await signer.getAddress()){
                 //CAMBIA LO STATUS DA UNFOUNDED A FOUNDED NEL DB
-                const chessboardUpdate = [
-                  { filter: { player2: await signer.getAddress(), chessboard: store.getState().menu.matchmaking.chessboard }, update: { status:'found' } }
-                ];
+                //INSERIRE CLOUD CODE
+                await updateGame.fetch({
+                  onSuccess:(data)=>{
+                    console.log(data)
+                    store.dispatch(gameFound({player1:game.get('player1'), chessboard:game.get('chessboard')}))
+                    setDisplayMMPanel('hidden')
+                  }
+                })                
                 
-                store.dispatch(gameFound({player1:game.get('player1'), chessboard:game.get('chessboard')}))
-                setDisplayMMPanel('hidden')
               }
         })
-      } else { foundMyGame() }
+      } else { foundMyGame(updateGame) }
     },2000);
     return time
   }
   const foundMyEnemy = () => {
     const time = setTimeout(async ()=>{
-      console.log('sto aspettando eh...')
+      console.log('sto aspettando che il mio nemico prenda parte   eh...')
       let chessboard_address='';
       let enemy_address='';
       
@@ -50,7 +59,7 @@ export default function FastMenu() {
       const games = await fetchGame.find();
   
       console.log(games);
-    
+      
       if(games.length>0){
         return games.map(async (game)=>{ 
             if(game.get('player1')==await signer.getAddress()){
@@ -58,13 +67,13 @@ export default function FastMenu() {
                 setDisplayMMPanel('hidden')
               }
         })
-      } else { foundMyGame() }
+      } else { foundMyEnemy() }
     },2000);
     return time
   }
   useEffect(() =>{
     if(store.getState().menu.matchmaking.message.status=='waiting'){
-      const mygame = foundMyGame();
+      const mygame = foundMyGame(updateGame);
       
     }
     if(store.getState().menu.matchmaking.message.status=='letsplay'){
