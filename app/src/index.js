@@ -18,11 +18,9 @@ const persistore = persistStore(Pstore)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate store={persistore}>
         <MoralisProvider serverUrl={process.env.REACT_APP_SERVER_URL} appId={process.env.REACT_APP_ID}>
         <App />
         </MoralisProvider> 
-      </PersistGate>
     </Provider>
   </React.StrictMode>
 );

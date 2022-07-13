@@ -5,6 +5,7 @@ import MatchMaking from './LoadingPanel/MatchMaking';
 import Moralis from 'moralis';
 import ChessBoard from '../../artifacts/ChessBoard'
 import { gameFound } from './menuSlice'
+import cloudGames from '../../cloud/cloudGames'
 
 export default function FastMenu() {
   const [displayMMPanel, setDisplayMMPanel] = useState('hidden');
@@ -18,12 +19,41 @@ export default function FastMenu() {
       fetchGame.equalTo('player2', await signer.getAddress());
       fetchGame.equalTo('status', 'unfounded')
       const games = await fetchGame.find();
-  
+      
       console.log(games);
     
       if(games.length>0){
         return games.map(async (game)=>{ 
             if(game.get('player2')==await signer.getAddress()){
+                //CAMBIA LO STATUS DA UNFOUNDED A FOUNDED NEL DB
+                const chessboardUpdate = [
+                  { filter: { player2: await signer.getAddress(), chessboard: store.getState().menu.matchmaking.chessboard }, update: { status:'found' } }
+                ];
+                
+                store.dispatch(gameFound({player1:game.get('player1'), chessboard:game.get('chessboard')}))
+                setDisplayMMPanel('hidden')
+              }
+        })
+      } else { foundMyGame() }
+    },2000);
+    return time
+  }
+  const foundMyEnemy = () => {
+    const time = setTimeout(async ()=>{
+      console.log('sto aspettando eh...')
+      let chessboard_address='';
+      let enemy_address='';
+      
+      const fetchGame = new Moralis.Query("Games");
+      fetchGame.equalTo('player1', await signer.getAddress());
+      fetchGame.equalTo('status', 'founded')
+      const games = await fetchGame.find();
+  
+      console.log(games);
+    
+      if(games.length>0){
+        return games.map(async (game)=>{ 
+            if(game.get('player1')==await signer.getAddress()){
                 store.dispatch(gameFound({player1:game.get('player1'), chessboard:game.get('chessboard')}))
                 setDisplayMMPanel('hidden')
               }
@@ -35,6 +65,10 @@ export default function FastMenu() {
   useEffect(() =>{
     if(store.getState().menu.matchmaking.message.status=='waiting'){
       const mygame = foundMyGame();
+      
+    }
+    if(store.getState().menu.matchmaking.message.status=='letsplay'){
+      const mygame = foundMyEnemy();
     }
   })
 
@@ -45,11 +79,11 @@ export default function FastMenu() {
     }
     else if(store.getState().menu.matchmaking.message.status=='letsplay'){
       console.log('matchmaking completato aspetto laltro si connetta...');
-      setDisplayMMPanel('hidden');  
+      setDisplayMMPanel(' ');  
     }
     else if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
       console.log("ci siamo entrambi");
-      setDisplayMMPanel('block');  
+      setDisplayMMPanel('hidden');  
     }
     else if(store.getState().menu.matchmaking.message.status=='waiting'){
       console.log('matchmaking completato sono in lista...');
