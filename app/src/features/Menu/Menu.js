@@ -2,6 +2,7 @@ import Btn from '../../components/Btn/Btn';
 import BtnConnect from './Btn/BtnConnect';
 import BtnMatchM from './Btn/BtnMatchM';
 import React, { Component }  from 'react';
+import { store } from '../../app/store'
 
 const navigation = [
   { name: 'Join', href:'', img:'', classes:' ml-4 ' ,current: false },
@@ -11,6 +12,7 @@ const matchmaking = { name:'New Game', href:'', img:'', classes:' ml-4 ', curren
 const connect = { names: ['Connect', 'Logout'], img:'', classes:' absolute right-0 ml-4 ' ,current: true }
 
 export default function Menu() {
+  console.log(store.getState().menu.user)
   return (
     <div className="Menu-Child bg-red-200 ">
       <BtnMatchM name={matchmaking.name} classes={matchmaking.classes} />

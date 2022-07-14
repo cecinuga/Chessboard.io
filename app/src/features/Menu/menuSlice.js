@@ -25,7 +25,7 @@ export const menuSlice = createSlice({
             console.log('mi hanno dispatchato...')
             console.log(action.payload)
             state.matchmaking.chessboard=action.payload.chessboard;
-            state.matchmaking.enemy=action.payload.player1;
+            state.matchmaking.enemy=action.payload.player;
             state.matchmaking.message.status='letsplaytg';
         }
     },

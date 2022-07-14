@@ -5,17 +5,9 @@ import MatchMaking from './LoadingPanel/MatchMaking';
 import Moralis from 'moralis';
 import ChessBoard from '../../artifacts/ChessBoard'
 import { gameFound } from './menuSlice'
-import { useMoralisCloudFunction } from "react-moralis";
-
 
 export default function FastMenu() {
-  const updateGame = useMoralisCloudFunction(
-    'updateGames',
-    {player1:store.getState().menu.user.ads}
-  )
-  const [displayMMPanel, setDisplayMMPanel] = useState('hidden');
-  const foundMyGame = (updateGame) => {
-    console.log(updateGame)
+  const foundMyGame = () => {
     const time = setTimeout(async ()=>{
       console.log('sto aspettando eh...')
       let chessboard_address='';
@@ -26,24 +18,23 @@ export default function FastMenu() {
       fetchGame.equalTo('status', 'unfounded')
       const games = await fetchGame.find();
       
-      console.log(games);
-    
+      console.log(games);    
       if(games.length>0){
         return games.map(async (game)=>{ 
+            console.log(game)
             if(game.get('player2')==await signer.getAddress()){
-                //CAMBIA LO STATUS DA UNFOUNDED A FOUNDED NEL DB
-                //INSERIRE CLOUD CODE
-                await updateGame.fetch({
-                  onSuccess:(data)=>{
-                    console.log(data)
-                    store.dispatch(gameFound({player1:game.get('player1'), chessboard:game.get('chessboard')}))
-                    setDisplayMMPanel('hidden')
-                  }
-                })                
-                
+              //game.set("status","founded")  
+              Moralis.Cloud.run(
+                  'updateGames',
+                  { player2:await signer.getAddress() }
+                )
+                .then((res)=>{
+                  console.log(res)
+                  store.dispatch(gameFound({player:game.get('player1'), chessboard:game.get('chessboard')}))
+                })
               }
         })
-      } else { foundMyGame(updateGame) }
+      } else { foundMyGame() }
     },2000);
     return time
   }
@@ -63,8 +54,7 @@ export default function FastMenu() {
       if(games.length>0){
         return games.map(async (game)=>{ 
             if(game.get('player1')==await signer.getAddress()){
-                store.dispatch(gameFound({player1:game.get('player1'), chessboard:game.get('chessboard')}))
-                setDisplayMMPanel('hidden')
+                store.dispatch(gameFound({player:game.get('player2'), chessboard:game.get('chessboard')}))
               }
         })
       } else { foundMyEnemy() }
@@ -73,7 +63,7 @@ export default function FastMenu() {
   }
   useEffect(() =>{
     if(store.getState().menu.matchmaking.message.status=='waiting'){
-      const mygame = foundMyGame(updateGame);
+      const mygame = foundMyGame();
       
     }
     if(store.getState().menu.matchmaking.message.status=='letsplay'){
@@ -81,21 +71,24 @@ export default function FastMenu() {
     }
   })
 
+  const [displayMMPanel, setDisplayMMPanel] = useState('hidden');
   store.subscribe( async ()=>{
     if(store.getState().menu.matchmaking.message.status=='pending'){
       console.log('matchmaking avviato...');
       setDisplayMMPanel('block');
     }
-    else if(store.getState().menu.matchmaking.message.status=='letsplay'){
-      console.log('matchmaking completato aspetto laltro si connetta...');
-      setDisplayMMPanel(' ');  
-    }
     else if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
       console.log("ci siamo entrambi");
       setDisplayMMPanel('hidden');  
     }
+    else if(store.getState().menu.matchmaking.message.status=='letsplay'){
+      console.log('matchmaking completato aspetto laltro si connetta...');
+      const founded = foundMyEnemy();
+      setDisplayMMPanel(' ');  
+    }
     else if(store.getState().menu.matchmaking.message.status=='waiting'){
       console.log('matchmaking completato sono in lista...');
+      const founded = foundMyGame();
       setDisplayMMPanel(' ');  
     }
     else if(store.getState().menu.matchmaking.message.status=='rejected'){

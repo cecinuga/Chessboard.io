@@ -11,10 +11,13 @@ export const logHandler = createAsyncThunk(
         const { isAuthenticated, authenticate, logout } = data;
         if(!isAuthenticated) {
             return await authenticate({signingMessage:'Benvenuto in chesssboard.io'})
-                .then(user=>{return {id:user.id, ads:user.get('ethAddress'), message:{}}});
+                .then(user=>{
+                    return {id:user.id, ads:user.get('ethAddress'), message:{}}
+                });
         } 
         else {
-            return await logout();
+            return await logout()
+                .then(()=>{return {id:'', ads:'', message:{status:'', error:''}}});
         }
     }
 )
@@ -30,7 +33,7 @@ export const newGame = createAsyncThunk(
             .then( 
                 async (users)=>{
                     //INSERIRE CRITERIO PER SCELTA SFIDANTE
-                    if(users.length < 0) {//CAMBIARE IF
+                    if(users.length > 0) {//CAMBIARE IF
                         const WRenemy = users[0];
 
                         //deploy the smart contract 
@@ -54,7 +57,7 @@ export const newGame = createAsyncThunk(
                         )
                         console.log(chessboard)
                         return { chessboard:chessboard.address, enemy:WRenemy.get('address') }
-                    } else if(users.length!=0) {//CAMBIARE IF
+                    } else if(users.length==0) {//CAMBIARE IF
                         //mi metto in coda 
                         console.log('mi metto in fila...')
                         const User = Moralis.Object.extend("WRoom");
@@ -63,7 +66,8 @@ export const newGame = createAsyncThunk(
                         const user = await waiting_user.save({
                             status:'ok', 
                             address: await signer.getAddress()
-                        });                                
+                        });   
+                                       
                         return { chessboard:'', enemy:'' }
                     }
                 }

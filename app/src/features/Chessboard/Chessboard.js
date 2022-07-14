@@ -10,10 +10,6 @@ export default function Chessboard() {
         for ( let i = 0; i < 8; i++ ) { row.push(i); }
         const [ content, setContent ] = useState('hidden');
 
-        useEffect(()=>{
-
-        })
-
         store.subscribe(()=>{
             if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
                 console.log("bene, ora c'è da giocare.")
