@@ -13,7 +13,7 @@ const initialState = {
     matchmaking:{ 
         enemy:'',
         chessboard:'',
-        message:{status:'foundaplayer',error:''},
+        message:{status:'letsgo!',error:''},
     },
     status:'',
 }
@@ -27,6 +27,9 @@ export const menuSlice = createSlice({
             state.matchmaking.chessboard=action.payload.chessboard;
             state.matchmaking.enemy=action.payload.player;
             state.matchmaking.message.status='letsplaytg';
+        },
+        showMMConfig:(state)=>{
+            state.matchmaking.message.status='foundaplayer';
         }
     },
     extraReducers:{
@@ -62,5 +65,5 @@ export const menuSlice = createSlice({
 
     }
 });
-export const { gameFound } = menuSlice.actions;
+export const { gameFound, showMMConfig } = menuSlice.actions;
 export const menuReducer = menuSlice.reducer;

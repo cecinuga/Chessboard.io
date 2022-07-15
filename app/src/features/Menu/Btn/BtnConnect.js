@@ -20,7 +20,7 @@ export default function BtnConnect({ id, names, href, img, classes, current }) {
     }, [isAuthenticated]);
 
     return (
-        <div className={"Btn-Connect inline-block mr-2 mt-2 bg-red-400 p-1 text-gray-200 rounded border-2 border-solid border-red-600 mb-2"+classes}>
+        <div className={"Btn-Connect inline-block mr-2 mt-2 bg-red-400 p-1 text-gray-200 rounded border-2 border-solid border-red-600 mb-2 font-semibold "+classes}>
             <button id="btn-connect-header" className="Connect-Link" onClick={()=>{ dispatch(logHandler({isAuthenticated, authenticate, logout})).then(()=>console.log(store.getState()))} }>{names[0]}</button>
             <img className="" src={img}></img>
         </div>

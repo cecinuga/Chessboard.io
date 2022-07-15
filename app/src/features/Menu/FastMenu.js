@@ -2,6 +2,7 @@ import React, { useState, useEffect }  from 'react';
 import { store } from './../../app/store';
 import { ethers, provider, signer } from '../../App';
 import MatchMaking from './LoadingPanel/MatchMaking';
+import PreMatchMaking from './LoadingPanel/PreMatchMaking';
 import Moralis from 'moralis';
 import ChessBoard from '../../artifacts/ChessBoard'
 import { gameFound } from './menuSlice'
@@ -78,7 +79,6 @@ export default function FastMenu() {
     }
   })
 
-  const [displayMMPanel, setDisplayMMPanel] = useState('hidden');
   store.subscribe( async ()=>{
     if(store.getState().menu.matchmaking.message.status=='pending'){
       console.log('matchmaking avviato...');
@@ -87,6 +87,10 @@ export default function FastMenu() {
     else if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
       console.log("ci siamo entrambi");
       setDisplayMMPanel('hidden');  
+    }
+    else if(store.getState().menu.matchmaking.message.status=='foundaplayer'){
+      console.log("found a player pls");
+      setDisplayPMMPanel(' ');  
     }
     else if(store.getState().menu.matchmaking.message.status=='letsplay'){
       console.log('matchmaking completato aspetto laltro si connetta...');
@@ -103,17 +107,23 @@ export default function FastMenu() {
       setDisplayMMPanel('hidden');  
     }
   });
+
+  const [displayMMPanel, setDisplayMMPanel] = useState('hidden');
+  const [displayPMMPanel, setDisplayPMMPanel] = useState('block');
   
   return (
-    <div className="FastMenu w-1/3 bg-amber-200 inline-block rounded">
+    <div className="FastMenu w-1/3 bg-amber-600 inline-block rounded">
       <div
         id="LoadingMatchMaking" 
         className={"LoadingMatchMaking py-4 z-3 text-center bg-rose-200 opacity-80 "+displayMMPanel}>
         <MatchMaking />
       </div>
-      <div className="Status-Row">
-        <span className="Status">status:{store.getState().menu.matchmaking.message.status}</span>
+      <div className="Status-Row p-1">
+        <span className="Status font-semibold text-white">status:<div className="Stats inline-block">{store.getState().menu.matchmaking.message.status}</div></span>
         <div className="Status-Btn">{}</div>
+      </div>
+      <div className={"PreMatchMaking "+displayPMMPanel}>
+       <PreMatchMaking />
       </div>
     </div>
   );
