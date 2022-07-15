@@ -1,5 +1,5 @@
 Moralis.Cloud.define(
-    "updateGames", 
+    "updateStatusGames", 
     async (req)=>{
         const logger = Moralis.Cloud.getLogger();
         const filter = [
@@ -7,4 +7,15 @@ Moralis.Cloud.define(
         ]
         const mod = Moralis.bulkUpdate("Games", filter)
         return mod;
-})
+    }
+)
+Moralis.Cloud.define(
+    'removeWUser',
+    async (req) => {
+        const todelete = [
+            {filter:{address:req.params.address}}
+        ]
+        const del = Moralis.bulkDelete('WRoom', todelete);
+        return del;
+    }
+)

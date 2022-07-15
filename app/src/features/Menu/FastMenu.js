@@ -25,11 +25,18 @@ export default function FastMenu() {
             if(game.get('player2')==await signer.getAddress()){
               //game.set("status","founded")  
               Moralis.Cloud.run(
-                  'updateGames',
+                  'updateStatusGames',
                   { player2:await signer.getAddress() }
                 )
                 .then((res)=>{
                   console.log(res)
+                })
+              Moralis.Cloud.run(
+                  'removeWUser',
+                  { address:await signer.getAddress() }
+                )
+                .then((res)=>{
+                  console.log(res);
                   store.dispatch(gameFound({player:game.get('player1'), chessboard:game.get('chessboard')}))
                 })
               }
