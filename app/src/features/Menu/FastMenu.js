@@ -6,77 +6,12 @@ import PreMatchMaking from './LoadingPanel/PreMatchMaking';
 import Moralis from 'moralis';
 import ChessBoard from '../../artifacts/ChessBoard'
 import { gameFound } from './menuSlice'
+import { foundMyEnemy, foundMyGame } from '../../fun/matchmaking';
 
 export default function FastMenu() {
-  const foundMyGame = () => {
-    const time = setTimeout(async ()=>{
-      console.log('sto aspettando eh...')
-      let chessboard_address='';
-      let enemy_address='';
-      
-      const fetchGame = new Moralis.Query("Games");
-      fetchGame.equalTo('player2', await signer.getAddress());
-      fetchGame.equalTo('status', 'unfounded')
-      const games = await fetchGame.find();
-      
-      console.log(games);    
-      if(games.length>0){
-        return games.map(async (game)=>{ 
-            console.log(game)
-            if(game.get('player2')==await signer.getAddress()){
-              //game.set("status","founded")  
-              Moralis.Cloud.run(
-                  'updateStatusGames',
-                  { player2:await signer.getAddress() }
-                )
-                .then((res)=>{
-                  console.log(res)
-                })
-              Moralis.Cloud.run(
-                  'removeWUser',
-                  { address:await signer.getAddress() }
-                )
-                .then((res)=>{
-                  console.log(res);
-                  store.dispatch(gameFound({player:game.get('player1'), chessboard:game.get('chessboard')}))
-                })
-              }
-        })
-      } else { foundMyGame() }
-    },2000);
-    return time
-  }
-  const foundMyEnemy = () => {
-    const time = setTimeout(async ()=>{
-      console.log('sto aspettando che il mio nemico prenda parte   eh...')
-      let chessboard_address='';
-      let enemy_address='';
-      
-      const fetchGame = new Moralis.Query("Games");
-      fetchGame.equalTo('player1', await signer.getAddress());
-      fetchGame.equalTo('status', 'founded')
-      const games = await fetchGame.find();
   
-      console.log(games);
-      
-      if(games.length>0){
-        return games.map(async (game)=>{ 
-            if(game.get('player1')==await signer.getAddress()){
-                store.dispatch(gameFound({player:game.get('player2'), chessboard:game.get('chessboard')}))
-              }
-        })
-      } else { foundMyEnemy() }
-    },2000);
-    return time
-  }
   useEffect(() =>{
-    if(store.getState().menu.matchmaking.message.status=='waiting'){
-      const mygame = foundMyGame();
-      
-    }
-    if(store.getState().menu.matchmaking.message.status=='letsplay'){
-      const mygame = foundMyEnemy();
-    }
+   
   })
 
   store.subscribe( async ()=>{
@@ -86,6 +21,7 @@ export default function FastMenu() {
     }
     else if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
       console.log("ci siamo entrambi");
+      //FAI PAGARE LE PERSONE
       setDisplayMMPanel('hidden');  
     }
     else if(store.getState().menu.matchmaking.message.status=='foundaplayer'){

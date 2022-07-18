@@ -61,6 +61,9 @@ export const menuSlice = createSlice({
             }
             state.matchmaking.chessboard=action.payload.chessboard;
             state.matchmaking.enemy=action.payload.enemy;
+            state.matchmaking.from=action.payload.from;
+            state.matchmaking.to=action.payload.to;
+            state.matchmaking.quote=action.payload.quote;
         }
 
     }

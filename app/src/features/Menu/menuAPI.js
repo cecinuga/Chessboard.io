@@ -4,6 +4,7 @@ import Moralis from 'moralis';
 import { useNewMoralisObject } from "react-moralis";
 import { ethers, provider, signer } from '../../App';
 import ChessBoard from '../../artifacts/ChessBoard'
+import { matchPrizes } from '../../fun/matchmaking';
 
 export const logHandler = createAsyncThunk(
     "menu/logHandler",
@@ -28,7 +29,12 @@ export const newGame = createAsyncThunk(
         //GESTIRE IL MATCHMAKING!!!
         console.log('Invio richiesta al server')
         const fetchWUser = new Moralis.Query("WRoom")
-        const fetchWUserQuery = await fetchWUser.equalTo("status","ok")
+        const quote = matchPrizes(data.from, data.to)
+        const fetchWUserQuery = await fetchWUser
+                                .equalTo("status","ok")
+                                .greaterThan("prizefrom", quote)
+                                .lessThan("prizeto", quote)
+
         return await fetchWUserQuery.find()
             .then( 
                 async (users)=>{
@@ -50,13 +56,14 @@ export const newGame = createAsyncThunk(
                         new_chessboard.save({
                             chessboard:chessboard.address, 
                             player1:await signer.getAddress(),
-                            player2:WRenemy.get('address')
+                            player2:WRenemy.get('address'),
+                            quote:quote
                         }).then(
                             (chess)=>{console.log(chess)}, 
                             (error)=>{console.log(error)}
                         )
                         console.log(chessboard)
-                        return { chessboard:chessboard.address, enemy:WRenemy.get('address') }
+                        return { chessboard:chessboard.address, enemy:WRenemy.get('address'), from:data.from, to:data.to, quote:quote }
                     } else if(users.length==0) {//CAMBIARE IF
                         //mi metto in coda 
                         console.log('mi metto in fila...')
@@ -65,10 +72,13 @@ export const newGame = createAsyncThunk(
 
                         const user = await waiting_user.save({
                             status:'ok', 
-                            address: await signer.getAddress()
+                            address: await signer.getAddress(),
+                            prizefrom: data.from, 
+                            prizeto: data.to,
+                            quote:quote,
                         });   
                                        
-                        return { chessboard:'', enemy:'' }
+                        return { chessboard:'', enemy:'', from:data.from, to:data.to }
                     }
                 }
             )
