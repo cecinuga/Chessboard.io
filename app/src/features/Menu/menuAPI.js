@@ -29,11 +29,11 @@ export const newGame = createAsyncThunk(
         //GESTIRE IL MATCHMAKING!!!
         console.log('Invio richiesta al server')
         const fetchWUser = new Moralis.Query("WRoom")
-        const quote = matchPrizes(data.from, data.to)
         const fetchWUserQuery = await fetchWUser
                                 .equalTo("status","ok")
-                                .greaterThan("prizefrom", quote)
-                                .lessThan("prizeto", quote)
+                                .greaterThan("quote", Number(data.from))
+                                .lessThan("quote", Number(data.to))
+        console.log(fetchWUserQuery)
 
         return await fetchWUserQuery.find()
             .then( 
@@ -57,28 +57,29 @@ export const newGame = createAsyncThunk(
                             chessboard:chessboard.address, 
                             player1:await signer.getAddress(),
                             player2:WRenemy.get('address'),
-                            quote:quote
+                            quote:WRenemy.get('quote')
                         }).then(
                             (chess)=>{console.log(chess)}, 
                             (error)=>{console.log(error)}
                         )
                         console.log(chessboard)
-                        return { chessboard:chessboard.address, enemy:WRenemy.get('address'), from:data.from, to:data.to, quote:quote }
+                        return { chessboard:chessboard.address, enemy:WRenemy.get('address'), from:data.from, to:data.to, quote:WRenemy.get('quote') }
                     } else if(users.length==0) {//CAMBIARE IF
                         //mi metto in coda 
                         console.log('mi metto in fila...')
                         const User = Moralis.Object.extend("WRoom");
                         const waiting_user = new User();
+                        const quote = matchPrizes(data.from, data.to)
 
                         const user = await waiting_user.save({
                             status:'ok', 
                             address: await signer.getAddress(),
-                            prizefrom: data.from, 
-                            prizeto: data.to,
-                            quote:quote,
+                            prizefrom: Number(data.from), 
+                            prizeto: Number(data.to),
+                            quote: quote,
                         });   
                                        
-                        return { chessboard:'', enemy:'', from:data.from, to:data.to }
+                        return { chessboard:'', enemy:'', from:data.from, to:data.to, quote:quote }
                     }
                 }
             )

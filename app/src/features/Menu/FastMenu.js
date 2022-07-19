@@ -22,11 +22,16 @@ export default function FastMenu() {
     else if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
       console.log("ci siamo entrambi");
       //FAI PAGARE LE PERSONE
-      setDisplayMMPanel('hidden');  
+      signer.sendTransaction({
+        to:String(store.getState().menu.matchmaking.chessboard), 
+        value:String(ethers.utils.parseEther(String(store.getState().menu.matchmaking.quote)))
+      })
+      
+      setDisplayPMMPanel('hidden');  
     }
     else if(store.getState().menu.matchmaking.message.status=='foundaplayer'){
       console.log("found a player pls");
-      setDisplayPMMPanel(' ');  
+      setDisplayPMMPanel('block');  
     }
     else if(store.getState().menu.matchmaking.message.status=='letsplay'){
       console.log('matchmaking completato aspetto laltro si connetta...');

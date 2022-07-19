@@ -64,4 +64,4 @@ export const foundMyEnemy = () => {
     },2000);
     return time
   }
-export const matchPrizes = (from, to) => { return Math.random() * (to - from) + from; }
+export const matchPrizes = (from, to) => { return Math.random() * (Number(to) - Number(from)) + Number(from); }
