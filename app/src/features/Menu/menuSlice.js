@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Wroom } from './WRoom';
 import {store} from '../../app/store'
-import { logHandler, newGame } from './menuAPI'
+import { logHandler, newGame, payGame } from './menuAPI'
 
 export const useMenu = state=>state.menu;
 const initialState = { 
@@ -14,6 +14,7 @@ const initialState = {
         enemy:'',
         chessboard:'',
         message:{status:'letsgo!',error:''},
+        quote:''
     },
     status:'',
 }
@@ -23,13 +24,15 @@ export const menuSlice = createSlice({
     reducers:{
         gameFound:(state,action)=>{
             console.log('mi hanno dispatchato...')
-            console.log(action.payload)
             state.matchmaking.chessboard=action.payload.chessboard;
             state.matchmaking.enemy=action.payload.player;
             state.matchmaking.message.status='letsplaytg';
         },
         showMMConfig:(state)=>{
             state.matchmaking.message.status='foundaplayer';
+        },
+        payedGame:(state)=>{
+            state.matchmaking.message.status='payed';
         }
     },
     extraReducers:{
@@ -68,5 +71,5 @@ export const menuSlice = createSlice({
 
     }
 });
-export const { gameFound, showMMConfig } = menuSlice.actions;
+export const { gameFound, showMMConfig, payedGame } = menuSlice.actions;
 export const menuReducer = menuSlice.reducer;

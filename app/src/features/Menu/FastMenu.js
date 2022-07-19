@@ -4,14 +4,26 @@ import { ethers, provider, signer } from '../../App';
 import MatchMaking from './LoadingPanel/MatchMaking';
 import PreMatchMaking from './LoadingPanel/PreMatchMaking';
 import Moralis from 'moralis';
-import ChessBoard from '../../artifacts/ChessBoard'
-import { gameFound } from './menuSlice'
+import ChessBoard from '../../artifacts/ChessBoard';
+import { gameFound } from './menuSlice';
 import { foundMyEnemy, foundMyGame } from '../../fun/matchmaking';
+import { payedGame } from './menuSlice'
 
 export default function FastMenu() {
   
   useEffect(() =>{
-   
+    if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
+      console.log("giorno di paga");
+      signer.sendTransaction({
+        to:String(store.getState().menu.matchmaking.chessboard), 
+        value:String(ethers.utils.parseEther(String(store.getState().menu.matchmaking.quote))),
+        gasLimit:100000
+      })
+      .then((tx)=>{
+        console.log(tx);
+        store.dispatch(payedGame())
+      })
+    }
   })
 
   store.subscribe( async ()=>{
@@ -22,11 +34,7 @@ export default function FastMenu() {
     else if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
       console.log("ci siamo entrambi");
       //FAI PAGARE LE PERSONE
-      signer.sendTransaction({
-        to:String(store.getState().menu.matchmaking.chessboard), 
-        value:String(ethers.utils.parseEther(String(store.getState().menu.matchmaking.quote)))
-      })
-      
+      console.log(store.getState())
       setDisplayPMMPanel('hidden');  
     }
     else if(store.getState().menu.matchmaking.message.status=='foundaplayer'){
@@ -42,6 +50,9 @@ export default function FastMenu() {
       console.log('matchmaking completato sono in lista...');
       const founded = foundMyGame();
       setDisplayMMPanel(' ');  
+    }
+    else if(store.getState().menu.matchmaking.message.status=='payed'){
+      setDisplayMMPanel('hidden');  
     }
     else if(store.getState().menu.matchmaking.message.status=='rejected'){
       console.log('matchmaking annullato...');    
