@@ -18,13 +18,17 @@ export default function Chessboard() {
         })
 
         return(
-            <div className="Chessboard p-4 w-2/3 inline-block text-center bg-amber-400 rounded">
+            <div className="Chess p-4 w-2/3 inline-block text-center bg-amber-400 rounded">
                 <div className="Enemy">{store.getState().menu.matchmaking.enemy}</div>
-                {
-                    row.map((col)=>{
-                        return(<Col key={col} x={col}/>);
-                    })
-                }
+
+                <div className="Chessboard">
+                    {
+                        row.map((col)=>{
+                            return(<Col key={col} x={col}/>);
+                        })
+                    }
+                </div>
+
                 <div className="Player">{store.getState().menu.user.ads}</div>
 
             </div>

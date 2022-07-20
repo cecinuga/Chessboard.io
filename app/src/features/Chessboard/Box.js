@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { store } from '../../app/store';
-import { Move } from './chessSlice';
+import { Move } from './chessAPI';
 import ChessBoard from '../../artifacts/ChessBoard.json'; 
 import Web3 from 'web3';
 
@@ -30,7 +30,11 @@ export default class Box extends React.Component{
                     onChange={()=>{//PASSARE DESTRUTTURANDO LA FUNZIONE RUN CONTRACT MORALIS PER CHESSSLICE.JS
                         store.dispatch(Move({ step:this.props.coo, piece:this.props.p, }))
                             .then(
-                                ()=>console.log(store.getState().chess.lastMove)
+                                ()=>{
+                                    console.log(store.getState().chess.lastMove);
+                                    console.log(store.getState().chess.status)
+                                    console.log(store.getState().chess.error)
+                                    }
                             );
                     }}
                 /> {this.props.p}

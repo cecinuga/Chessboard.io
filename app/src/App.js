@@ -16,6 +16,7 @@ import Banner from './features/Menu/Banner';
 export { ethers }
 export const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
 export const signer = provider.getSigner();
+
 const logAddress = async()=>{
   //console.log("Account: "+await signer.getAddress());
 };logAddress();

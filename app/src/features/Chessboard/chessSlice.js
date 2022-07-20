@@ -1,22 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { store } from '../../app/store';
 import ChessBoard from '../../artifacts/ChessBoard';
-
-export const useMenu = state=>state.memu;
-export const Move = createAsyncThunk(
-    "chess/move",
-    async ( data ) => { 
-        if((store.getState().chess.lastMove.firstStep!=''&&store.getState().chess.lastMove.secondStep=='')){
-        // RUN CONTRACT MORALIS FUNCTION
-        
-        }
-        return data;
-    }
-) 
+import { signer, ethers } from '../../App';
+import { id } from 'moralis/node_modules/@ethersproject/hash';
+import { Move, useMenu } from './chessAPI';
 
 const initialState = { 
     lastMove:{ firstStep:'', piece:'', secondStep:'' },
-    status:''
+    status:'',
+    error:''
 }
 export const chessSlice = createSlice({
     name:'chess',
@@ -29,7 +21,7 @@ export const chessSlice = createSlice({
         },
         [Move.rejected]: (state, action) => { 
             state.status='rejected';
-            state.error = action.payload.error;
+            state.error = action.error.message;
         },
         [Move.fulfilled]: (state, action) => { 
             state.status='fulfilled';
