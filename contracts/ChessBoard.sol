@@ -202,7 +202,7 @@ contract ChessBoard {
         Chessboard[4][7] = Box(6, true);
         Chessboard[5][7] = Box(4, true);
         Chessboard[6][7] = Box(3, true);
-        Chessboard[7][7] = Box(2, true);
+        Chessboard[7][7] = Box(2, true); 
     }
     receive() external payable onlyPlayers{
         prizes[msg.sender] = msg.value;
