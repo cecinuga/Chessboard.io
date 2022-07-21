@@ -69,12 +69,12 @@ contract ChessBoard {
     function getCheck(bool _player) public view returns(bool res){ res = check[_player];}
 
     function Move(uint[2] memory oldpos, uint[2] memory newpos) public
-        onlyYPayYPlay(teams[msg.sender])
+        /*onlyYPayYPlay(teams[msg.sender])*/
         onlyPlayers /*yourTurn*/ 
         Movecontrol(oldpos, newpos) 
-        PedestrianToQueen(oldpos, newpos)
+        /*PedestrianToQueen(oldpos, newpos)
         isSetKing(oldpos, newpos)
-        isSetCheck(oldpos)
+        isSetCheck(oldpos)*/
         returns(bool res){
             bool isArrocco = false;
             
@@ -169,71 +169,40 @@ contract ChessBoard {
         Rules[6] = _Rules([true, true, true], 8);//REGINA
 
         Chessboard[0][0] = Box(2, false);
-        Chessboard[0][1] = Box(3, false);
-        Chessboard[0][2] = Box(4, false);
-        Chessboard[0][3] = Box(6, false);
-        Chessboard[0][4] = Box(5, false);
-        Chessboard[0][5] = Box(4, false);
-        Chessboard[0][6] = Box(3, false);
-        Chessboard[0][7] = Box(2, false);
+        Chessboard[1][0] = Box(3, false);
+        Chessboard[2][0] = Box(4, false);
+        Chessboard[3][0] = Box(6, false);
+        Chessboard[4][0] = Box(5, false);
+        Chessboard[5][0] = Box(4, false);
+        Chessboard[6][0] = Box(3, false);
+        Chessboard[7][0] = Box(2, false);
 
-        Chessboard[1][0] = Box(1, false);
+        Chessboard[0][1] = Box(1, false);
         Chessboard[1][1] = Box(1, false);
-        Chessboard[1][2] = Box(1, false);
-        Chessboard[1][3] = Box(1, false);
-        Chessboard[1][4] = Box(1, false);
-        Chessboard[1][5] = Box(1, false);
-        Chessboard[1][6] = Box(1, false);
-        Chessboard[1][7] = Box(1, false);
+        Chessboard[2][1] = Box(1, false);
+        Chessboard[3][1] = Box(1, false);
+        Chessboard[4][1] = Box(1, false);
+        Chessboard[5][1] = Box(1, false);
+        Chessboard[6][1] = Box(1, false);
+        Chessboard[7][1] = Box(1, false);
 
-        Chessboard[6][0] = Box(1, true);
-        Chessboard[6][1] = Box(1, true);
-        Chessboard[6][2] = Box(1, true);
-        Chessboard[6][3] = Box(1, true);
-        Chessboard[6][4] = Box(1, true);
-        Chessboard[6][5] = Box(1, true);
+        Chessboard[0][6] = Box(1, true);
+        Chessboard[1][6] = Box(1, true);
+        Chessboard[2][6] = Box(1, true);
+        Chessboard[3][6] = Box(1, true);
+        Chessboard[4][6] = Box(1, true);
+        Chessboard[5][6] = Box(1, true);
         Chessboard[6][6] = Box(1, true);
-        Chessboard[6][7] = Box(1, true);
+        Chessboard[7][6] = Box(1, true);
     
-        Chessboard[7][0] = Box(2, true);
-        Chessboard[7][1] = Box(3, true);
-        Chessboard[7][2] = Box(4, true);
-        Chessboard[7][3] = Box(5, true);
-        Chessboard[7][4] = Box(6, true);
-        Chessboard[7][5] = Box(4, true);
-        Chessboard[7][6] = Box(3, true);
+        Chessboard[0][7] = Box(2, true);
+        Chessboard[1][7] = Box(3, true);
+        Chessboard[2][7] = Box(4, true);
+        Chessboard[3][7] = Box(5, true);
+        Chessboard[4][7] = Box(6, true);
+        Chessboard[5][7] = Box(4, true);
+        Chessboard[6][7] = Box(3, true);
         Chessboard[7][7] = Box(2, true);
-
-        /*TESTING MOCHA TOGLIERE DAL CAZZO
-        Chessboard[5][5] = Box(1, true);
-        Chessboard[5][1] = Box(1, true);
-        Chessboard[5][3] = Box(2, true);
-        Chessboard[4][3] = Box(2, true);
-        Chessboard[2][6] = Box(2, true);
-
-        Chessboard[7][7] = Box(4,true);
-        Chessboard[6][6] = Box(0,false);
-
-        Chessboard[1][4] = Box(2,false);
-        Chessboard[3][4] = Box(0,false);
-        Chessboard[3][5] = Box(0,false);
-        Chessboard[3][6] = Box(2,false);
-
-        Chessboard[5][1] = Box(1, true);
-        Chessboard[3][0] = Box(1, false);
-
-        Chessboard[6][5] = Box(1, false);
-        Chessboard[1][5] = Box(1, true);
-
-        Chessboard[7][5] = Box(0, false);
-        Chessboard[0][5] = Box(0, false);
-
-        Chessboard[0][1] = Box(0, false);
-        Chessboard[0][2] = Box(0, false);
-        Chessboard[0][3] = Box(0, false);
-        Chessboard[0][5] = Box(0, false);
-        Chessboard[0][6] = Box(0, false);*/
-        //TESTING MOCHA TOGLIERE DAL CAZZO
     }
     receive() external payable onlyPlayers{
         prizes[msg.sender] = msg.value;

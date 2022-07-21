@@ -21,19 +21,19 @@ contract MoveController {
     modifier pedestrianMod(uint[2] memory oldpos, uint[2] memory newpos, bool team, uint maxsteps_){
             if(Chessboard.getBox(oldpos[0],oldpos[1]).pedina==1){ 
                 bool PedfirstMove;maxsteps=maxsteps_;
-                if(team){ require(oldpos[0]>newpos[0],'');if(oldpos[0]==6)PedfirstMove=true; else PedfirstMove=false; }
-                if(!team){ require(oldpos[0]<newpos[0],'');if(oldpos[0]==1)PedfirstMove=true; else PedfirstMove=false; }   
-                if(abs(int(newpos[0])-int(oldpos[0]))==2&&PedfirstMove){ maxsteps=2; }
+                if(team){ require(oldpos[1]>newpos[1],'');if(oldpos[1]==6)PedfirstMove=true; else PedfirstMove=false; }
+                if(!team){ require(oldpos[1]<newpos[1],'');if(oldpos[1]==1)PedfirstMove=true; else PedfirstMove=false; }   
+                if(abs(int(newpos[1])-int(oldpos[1]))==2&&PedfirstMove){ maxsteps=2; }
             }_;
         }
     modifier isArrocco(uint[2] memory oldpos, uint[2] memory newpos){
-        if( (oldpos[0]==0&&oldpos[1]==4&&Chessboard.getBox(0,4).pedina==5 && ( ( newpos[0]==0&&newpos[1]==6&&Chessboard.getBox(0,7).pedina==2 )|| (newpos[0]==0&&newpos[1]==2&&Chessboard.getBox(0,0).pedina==2)))||(oldpos[0]==7&&oldpos[1]==3&&Chessboard.getBox(7,3).pedina==5&&((newpos[0]==7&&newpos[1]==6&&Chessboard.getBox(7,7).pedina==2 ) || (newpos[0]==7&&newpos[1]==2&&Chessboard.getBox(7,0).pedina==2 )) ) ){
+        if( (oldpos[1]==0&&oldpos[0]==4&&Chessboard.getBox(4,0).pedina==5 && ( ( newpos[1]==0&&newpos[0]==6&&Chessboard.getBox(0,7).pedina==2 )|| (newpos[1]==0&&newpos[0]==2&&Chessboard.getBox(0,0).pedina==2)))||(oldpos[1]==7&&oldpos[0]==3&&Chessboard.getBox(7,3).pedina==5&&((newpos[1]==7&&newpos[0]==6&&Chessboard.getBox(7,7).pedina==2 ) || (newpos[1]==7&&newpos[0]==2&&Chessboard.getBox(0,7).pedina==2 )) ) ){
             maxsteps = 2;
         }_;
     }
     function Direction(uint[2] memory oldpos, uint[2] memory newpos)/**OKOKOK*/ 
         public view /*yourChessboard*/ returns(bool res)    
-    {   int _x =(int(newpos[0]) - int(oldpos[0]));
+    {   int _x =(int(newpos[0])  - int(oldpos[0]));
         int _y =(int(newpos[1]) - int(oldpos[1]));
         if(_x!=0&&_y==0) { 
             if(!Chessboard.getRules(Chessboard.getBox(oldpos[0],oldpos[1]).pedina).moves_directions[0]) { res=false; }
