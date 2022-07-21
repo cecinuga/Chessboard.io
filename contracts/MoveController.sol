@@ -27,13 +27,15 @@ contract MoveController {
             }_;
         }
     modifier isArrocco(uint[2] memory oldpos, uint[2] memory newpos){
-        if( (oldpos[1]==0&&oldpos[0]==4&&Chessboard.getBox(4,0).pedina==5 && ( ( newpos[1]==0&&newpos[0]==6&&Chessboard.getBox(0,7).pedina==2 )|| (newpos[1]==0&&newpos[0]==2&&Chessboard.getBox(0,0).pedina==2)))||(oldpos[1]==7&&oldpos[0]==3&&Chessboard.getBox(7,3).pedina==5&&((newpos[1]==7&&newpos[0]==6&&Chessboard.getBox(7,7).pedina==2 ) || (newpos[1]==7&&newpos[0]==2&&Chessboard.getBox(0,7).pedina==2 )) ) ){
+        if( 
+            (oldpos[1]==0&&oldpos[0]==4&&Chessboard.getBox(4,0).pedina==5 && ( ( newpos[1]==0&&newpos[0]==6&&Chessboard.getBox(0,7).pedina==2 )
+          ||(newpos[1]==0&&newpos[0]==2&&Chessboard.getBox(0,0).pedina==2)))||(oldpos[1]==7&&oldpos[0]==3&&Chessboard.getBox(7,3).pedina==5&&((newpos[1]==7&&newpos[0]==6&&Chessboard.getBox(7,7).pedina==2 ) || (newpos[1]==7&&newpos[0]==2&&Chessboard.getBox(7,0).pedina==2)))) {
             maxsteps = 2;
         }_;
     }
     function Direction(uint[2] memory oldpos, uint[2] memory newpos)/**OKOKOK*/ 
         public view /*yourChessboard*/ returns(bool res)    
-    {   int _x =(int(newpos[0])  - int(oldpos[0]));
+    {   int _x =(int(newpos[0]) - int(oldpos[0]));
         int _y =(int(newpos[1]) - int(oldpos[1]));
         if(_x!=0&&_y==0) { 
             if(!Chessboard.getRules(Chessboard.getBox(oldpos[0],oldpos[1]).pedina).moves_directions[0]) { res=false; }
@@ -99,7 +101,7 @@ contract MoveController {
     function MoveControl(uint[2] memory oldpos, uint[2] memory newpos, bool team, uint _maxsteps) 
         public 
         pedestrianMod(oldpos, newpos, team, _maxsteps)
-        isArrocco(oldpos, newpos)
+        /*isArrocco(oldpos, newpos)*/
         logicalControls(oldpos, newpos, team, maxsteps) 
         returns(bool res){
             

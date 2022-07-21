@@ -161,7 +161,7 @@ contract ChessBoard {
         TowersFirstmove[teams[players[false]]][true] = false;
 
         Rules[0] = _Rules([false, false, false], 0);//NULL
-        Rules[1] = _Rules([true, false, false], 1);//PEDONE
+        Rules[1] = _Rules([false, true, false], 1);//PEDONE
         Rules[2] = _Rules([true, true, false], 8);//TORRE
         Rules[3] = _Rules([false, false, false], 4);//CAVALLO
         Rules[4] = _Rules([false, false, true], 8);//ALFIERE
