@@ -11,12 +11,12 @@ export const Move = createAsyncThunk(
         if(
             store.getState().chess.lastMove.firstStep!=''&&
             store.getState().chess.lastMove.secondStep==''&&
-            /*store.getState().menu.matchmaking.chessboard*/chessboard_address!=''
+            /*store.getState().menu.matchmaking.chessboard=!''*/chessboard_address!=''
         ){ 
-/*TOGLIERE*/const Chessboard = new ethers.ContractFactory(ChessBoard.abi, ChessBoard.bytecode, signer);
-/*TOGLIERE*/const chessboard = await Chessboard.deploy(signer.getAddress(), store.getState().menu.user.ads)
+/*TOGLIERE const Chessboard = new ethers.ContractFactory(ChessBoard.abi, ChessBoard.bytecode, signer);*/
+/*TOGLIERE const chessboard = await Chessboard.deploy(signer.getAddress(), store.getState().menu.user.ads)*/
 
-            //const chessboard = new ethers.Contract(/*store.getState().menu.matchmaking.chessboard*/chessboard_address, ChessBoard.abi, signer)
+            const chessboard = new ethers.Contract(/*store.getState().menu.matchmaking.chessboard*/chessboard_address, ChessBoard.abi, signer)
             const x1 = store.getState().chess.lastMove.firstStep[0];const y1 = store.getState().chess.lastMove.firstStep[1];
             const tx = await chessboard.connect(signer).Move(
                     [Number(x1),Number(y1)],
@@ -25,7 +25,6 @@ export const Move = createAsyncThunk(
             )
             tx.wait()
             console.log(tx)
-        // RUN CONTRACT MORALIS FUNCTION
         }
         return data;
     }

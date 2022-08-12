@@ -9,6 +9,7 @@
     "hardhat": "^2.10.1"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.3"
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.3",
+    "bignumber": "^1.1.0"
   }
 }
