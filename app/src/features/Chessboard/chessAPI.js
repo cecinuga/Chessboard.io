@@ -11,13 +11,14 @@ export const Move = createAsyncThunk(
         if(
             store.getState().chess.lastMove.firstStep!=''&&
             store.getState().chess.lastMove.secondStep==''&&
-            /*store.getState().menu.matchmaking.chessboard=!''*/chessboard_address!=''
+            store.getState().menu.matchmaking.chessboard!=''
         ){ 
-/*TOGLIERE const Chessboard = new ethers.ContractFactory(ChessBoard.abi, ChessBoard.bytecode, signer);*/
-/*TOGLIERE const chessboard = await Chessboard.deploy(signer.getAddress(), store.getState().menu.user.ads)*/
 
-            
-            const chessboard = new ethers.Contract(/*store.getState().menu.matchmaking.chessboard*/chessboard_address, ChessBoard.abi, signer)
+            const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
+            console.log('chessboard: ',chessboard.address)
+            console.log('player1: ',chessboard.player1)
+            console.log('player2: ',chessboard.player2)
+
             const x1 = store.getState().chess.lastMove.firstStep[0];const y1 = store.getState().chess.lastMove.firstStep[1];
             console.log(x1, y1);
             console.log(data.step[0], data.step[1])
