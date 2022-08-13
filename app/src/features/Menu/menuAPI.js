@@ -63,7 +63,7 @@ export const newGame = createAsyncThunk(
                             (error)=>{console.log(error)}
                         )
                         console.log(chessboard)
-                        return { chessboard:chessboard.address, enemy:WRenemy.get('address'), from:data.from, to:data.to, quote:WRenemy.get('quote') }
+                        return { chessboard:chessboard.address, enemy:WRenemy.get('address'), from:data.from, to:data.to, quote:WRenemy.get('quote'), team:true }
                     } else if(users.length==0) {//CAMBIARE IF
                         //mi metto in coda 
                         console.log('mi metto in fila...')
@@ -78,8 +78,8 @@ export const newGame = createAsyncThunk(
                             prizeto: Number(data.to),
                             quote: quote,
                         });   
-                                       
-                        return { chessboard:'', enemy:'', from:data.from, to:data.to, quote:quote }
+
+                        return { chessboard:'', enemy:'', from:data.from, to:data.to, quote:quote,team:false }
                     }
                 }
             )

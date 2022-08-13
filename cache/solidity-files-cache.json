@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/peterbruegel/GitHub/chessboard.io/contracts/ChessBoard.sol": {
-      "lastModificationDate": 1658424774477,
-      "contentHash": "3fe611e810d52ef8216f81fb0771058d",
+      "lastModificationDate": 1660392556379,
+      "contentHash": "d1aa15b64308683389fb0fe9ea6d060e",
       "sourceName": "contracts/ChessBoard.sol",
       "solcConfig": {
         "version": "0.8.14",

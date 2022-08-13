@@ -15,6 +15,17 @@ export default function Chessboard() {
                 console.log("bene, ora c'è da giocare.")
                 setContent('block')
             }
+            if(store.getState().chess.lastMove.secondStep!=''){
+                console.log("spostiamo sti pezzi va")
+                let className;
+                if(store.getState().menu.matchmaking.team){ className = 'text-white' }
+                else if(!store.getState().menu.matchmaking.team){ className = 'text-black' }
+                document.getElementById('Box-p-'+store.getState().chess.lastMove.secondStep).innerHTML = store.getState().chess.lastMove.piece;
+                document.getElementById('Box-p-'+store.getState().chess.lastMove.firstStep).innerHTML = '';
+                document.getElementById('Box-p-'+store.getState().chess.lastMove.secondStep).className = className
+                document.getElementById('Box-'+store.getState().chess.lastMove.secondStep).checked = false;
+                document.getElementById('Box-'+store.getState().chess.lastMove.firstStep).checked = false; 
+            }
         })
 
         return(

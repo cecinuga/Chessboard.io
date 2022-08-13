@@ -21,6 +21,7 @@ export const chessSlice = createSlice({
         },
         [Move.rejected]: (state, action) => { 
             state.status='rejected';
+            state.lastMove.firstStep = '';
             state.error = action.error.message;
         },
         [Move.fulfilled]: (state, action) => { 

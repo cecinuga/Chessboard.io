@@ -24,7 +24,7 @@ contract ChessBoard {
     mapping(bool => mapping(bool => bool)) public TowersFirstmove;
     mapping(bool => bool) public check;
     mapping(address => bool) private teams;
-    mapping(bool => address) private players;
+    mapping(bool => address) public players;
     mapping(address => uint) public prizes;
 
     Box[8][8] private Chessboard;

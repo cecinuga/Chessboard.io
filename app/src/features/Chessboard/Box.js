@@ -10,6 +10,9 @@ export default class Box extends React.Component{
     }
     
     render(){
+        this.defaultProps = {
+            checked: false
+          }
         return(
             <div 
                 id={this.props.id}
@@ -26,6 +29,7 @@ export default class Box extends React.Component{
                     type="checkbox"
                     id={"Box-"+String(this.props.coo)} 
                     value={this.props.p}
+                    checked={false}
                     className="Boxes w-12 h-12"
                     onChange={()=>{//PASSARE DESTRUTTURANDO LA FUNZIONE RUN CONTRACT MORALIS PER CHESSSLICE.JS
                         store.dispatch(Move({ step:this.props.coo, piece:this.props.p, }))
@@ -37,7 +41,8 @@ export default class Box extends React.Component{
                                     }
                             );
                     }}
-                /> {this.props.p}
+                /> 
+                <span id={"Box-p-"+String(this.props.coo)}>{this.props.p}</span>
             </div>
         );
     }

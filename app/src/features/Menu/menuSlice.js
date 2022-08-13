@@ -14,7 +14,8 @@ const initialState = {
         enemy:'',
         chessboard:'',
         message:{status:'letsgo!',error:''},
-        quote:''
+        quote:'',
+        team:''
     },
     status:'',
 }
@@ -67,6 +68,7 @@ export const menuSlice = createSlice({
             state.matchmaking.from=action.payload.from;
             state.matchmaking.to=action.payload.to;
             state.matchmaking.quote=action.payload.quote;
+            state.matchmaking.team=action.payload.team;
         }
 
     }
