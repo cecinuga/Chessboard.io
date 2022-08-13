@@ -74,7 +74,7 @@ contract MoveController {
     modifier logicalControls(uint[2] memory oldpos, uint[2] memory newpos, bool team, uint _maxsteps){
         require(Chessboard.getBox(oldpos[0],oldpos[1]).color == team, 'not y p');//Sposta i Tuoi Pezzi.
         require((oldpos[0]!=newpos[0]||oldpos[1]!=newpos[1]),'spostati');//Spostati...
-        //if(Chessboard.getBox(newpos[0],newpos[1]).pedina!=0) {require( Chessboard.getBox(newpos[0],newpos[1]).color!=team, 'ff');}//Fuoco Amico.
+        if(Chessboard.getBox(newpos[0],newpos[1]).pedina!=0) {require( Chessboard.getBox(newpos[0],newpos[1]).color!=team, 'ff');}//Fuoco Amico.
         
         x=(int(newpos[0]) - int(oldpos[0]));
         y=(int(newpos[1]) - int(oldpos[1]));

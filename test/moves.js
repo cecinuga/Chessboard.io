@@ -13,9 +13,9 @@ describe("Various Moves.", function() {
     
         return { chessboard, controller, player1, player2 }
     }
-    it("Pedestrian [0,6],[0,4]", async function(){
+    it("Pedestrian [1,6],[1,3]", async function(){
         const { chessboard, controller, player1, player2 } = await loadFixture(deployContracts)
-        const tx = await chessboard.Move([0,6],[0,4])
+        const tx = await chessboard.Move([1,6],[1,3])
         tx.wait();
         console.log(tx)
     })

@@ -13,8 +13,8 @@ export const Move = createAsyncThunk(
             store.getState().chess.lastMove.secondStep==''&&
             store.getState().menu.matchmaking.chessboard!=''
         ){ 
-
             const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
+            console.log(chessboard)
             console.log('chessboard: ',chessboard.address)
             console.log('player1: ',chessboard.player1)
             console.log('player2: ',chessboard.player2)

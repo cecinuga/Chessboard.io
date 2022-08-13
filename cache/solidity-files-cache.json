@@ -40,8 +40,8 @@
       ]
     },
     "/home/peterbruegel/GitHub/chessboard.io/contracts/MoveController.sol": {
-      "lastModificationDate": 1660315541921,
-      "contentHash": "44937f840967967a4439b30782e55a8c",
+      "lastModificationDate": 1660388617431,
+      "contentHash": "a023d027fb8f79d89d104b0bc4cf567a",
       "sourceName": "contracts/MoveController.sol",
       "solcConfig": {
         "version": "0.8.14",
