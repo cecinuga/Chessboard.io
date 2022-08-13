@@ -52,7 +52,7 @@ describe('Directions.', function(){
   it("King Directions", async () => {
     const { chessboard, controller, player1, player2 } = await loadFixture(deployContracts)
 
-    expect(await controller.Direction([4,0],[4,1])).to.equal(true);
+    expect(await controller.Direction([4,0],[4,2])).to.equal(true);
     expect(await controller.Direction([4,0],[3,1])).to.equal(true);
     expect(await controller.Direction([4,0],[3,0])).to.equal(true);
   });

@@ -26,13 +26,6 @@ contract MoveController {
                 if(abs(int(newpos[1])-int(oldpos[1]))==2&&PedfirstMove){ maxsteps=2; }
             }_;
         }
-    modifier isArrocco(uint[2] memory oldpos, uint[2] memory newpos){
-        if( 
-            (oldpos[1]==0&&oldpos[0]==4&&Chessboard.getBox(4,0).pedina==5 && ( ( newpos[1]==0&&newpos[0]==6&&Chessboard.getBox(0,7).pedina==2 )
-          ||(newpos[1]==0&&newpos[0]==2&&Chessboard.getBox(0,0).pedina==2)))||(oldpos[1]==7&&oldpos[0]==3&&Chessboard.getBox(7,3).pedina==5&&((newpos[1]==7&&newpos[0]==6&&Chessboard.getBox(7,7).pedina==2 ) || (newpos[1]==7&&newpos[0]==2&&Chessboard.getBox(7,0).pedina==2)))) {
-            maxsteps = 2;
-        }_;
-    }
     function Direction(uint[2] memory oldpos, uint[2] memory newpos)/**OKOKOK*/ 
         public view /*yourChessboard*/ returns(bool res)    
     {   int _x =(int(newpos[0]) - int(oldpos[0]));
@@ -79,29 +72,40 @@ contract MoveController {
         
     }
     modifier logicalControls(uint[2] memory oldpos, uint[2] memory newpos, bool team, uint _maxsteps){
-        //require(Chessboard.getBox(oldpos[0],oldpos[1]).color == team, '');//Sposta i Tuoi Pezzi.
-        require((oldpos[0]!=newpos[0]||oldpos[1]!=newpos[1]),'');//Spostati...
-        if(Chessboard.getBox(newpos[0],newpos[1]).pedina!=0) {require( Chessboard.getBox(newpos[0],newpos[1]).color!=team, '');}//Fuoco Amico.
+        require(Chessboard.getBox(oldpos[0],oldpos[1]).color == team, 'not y p');//Sposta i Tuoi Pezzi.
+        require((oldpos[0]!=newpos[0]||oldpos[1]!=newpos[1]),'spostati');//Spostati...
+        //if(Chessboard.getBox(newpos[0],newpos[1]).pedina!=0) {require( Chessboard.getBox(newpos[0],newpos[1]).color!=team, 'ff');}//Fuoco Amico.
         
         x=(int(newpos[0]) - int(oldpos[0]));
         y=(int(newpos[1]) - int(oldpos[1]));
 
         bool dir = Direction(oldpos, newpos);
-        require( dir, '');//
+        require( dir, 'dirm' );//
+
+        if( 
+            (oldpos[1]==0&&oldpos[0]==4&&Chessboard.getBox(4,0).pedina==5 &&
+                ((newpos[1]==0&&newpos[0]==6&&Chessboard.getBox(7,0).pedina==2)
+                 ||(newpos[1]==0&&newpos[0]==2&&Chessboard.getBox(0,0).pedina==2)
+                  ))
+            ||(oldpos[1]==7&&oldpos[0]==3&&Chessboard.getBox(3,7).pedina==5 &&
+                ((newpos[1]==1&&newpos[0]==7&&Chessboard.getBox(7,7).pedina==2 ) 
+                || (newpos[1]==5&&newpos[0]==2&&Chessboard.getBox(0,7).pedina==2)))
+          ) 
+            {
+                maxsteps = 2;
+            }
 
         if(Chessboard.getBox(oldpos[0], oldpos[1]).pedina!=3){
-            require( maxsteps>=uint(abs(x)) && maxsteps>=uint(abs(y)), '');//Se non arrocchi controllo i passi...
+            require( maxsteps>=uint(abs(x)) && maxsteps>=uint(abs(y)), 'max');
             bool obs; uint[2] memory pos;
             (obs, pos) = isObstacled(oldpos, newpos);
-            require(obs, '');       
+            require(obs, 'obs');       
         }
-
         _;    
     }
     function MoveControl(uint[2] memory oldpos, uint[2] memory newpos, bool team, uint _maxsteps) 
         public 
         pedestrianMod(oldpos, newpos, team, _maxsteps)
-        /*isArrocco(oldpos, newpos)*/
         logicalControls(oldpos, newpos, team, maxsteps) 
         returns(bool res){
             
