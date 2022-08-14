@@ -15,6 +15,10 @@ export default function Chessboard() {
                 console.log("bene, ora c'è da giocare.")
                 setContent('block')
             }
+            if(store.getState().chess.lastMove.firstStep==''){
+                document.getElementById('Box-'+store.getState().chess.lastMove.secondStep).checked = false;
+                document.getElementById('Box-'+store.getState().chess.lastMove.firstStep).checked = false; 
+            }
             if(store.getState().chess.lastMove.secondStep!=''){
                 console.log("spostiamo sti pezzi va")
                 let className;
