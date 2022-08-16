@@ -33,20 +33,20 @@ export default class Box extends React.Component{
                             'Box bg-amber-800 text-center text-white':
                             'Box bg-amber-800 text-center text-black'
                     }> 
-                <input 
-                    type="checkbox"
-                    id={"Box-"+String(this.props.coo)} 
-                    value={this.props.p}
-                    checked={this.state.checked}
-                    className="Boxes w-12 h-12"
-                    onChange={
-                        async ()=>{//PASSARE DESTRUTTURANDO LA FUNZIONE RUN CONTRACT MORALIS PER CHESSSLICE.JS
-                            this.setState({ checked: true })
-                            store.dispatch(Move({ step:this.props.coo, piece:this.props.p}))
+                    <input 
+                        type="checkbox"
+                        id={"Box-"+String(this.props.coo)} 
+                        value={this.props.p}
+                        checked={this.state.checked}
+                        className="Boxes w-12 h-12"
+                        onChange={
+                            async ()=>{//PASSARE DESTRUTTURANDO LA FUNZIONE RUN CONTRACT MORALIS PER CHESSSLICE.JS
+                                this.setState({ checked: true })
+                                store.dispatch(Move({ step:this.props.coo, piece:this.props.p}))
+                            }
                         }
-                    }
-                /> 
-                <span id={"Box-p-"+String(this.props.coo)}>{this.props.p}</span>
+                    /> 
+                    <span id={"Box-p-"+String(this.props.coo)}>{this.props.p}</span>
             </div>
         );
     }

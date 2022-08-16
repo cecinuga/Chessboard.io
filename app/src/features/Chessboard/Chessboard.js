@@ -16,7 +16,6 @@ export default function Chessboard() {
         const q = ['30','37']
         const k = ['40','47']
 
-
         const [ content, setContent ] = useState('hidden');
         const boxes = document.getElementsByClassName('Boxes');
 
@@ -39,45 +38,45 @@ export default function Chessboard() {
                 document.getElementById('Box-p-'+store.getState().chess.lastMove.secondStep).className = className
                 document.getElementById('Box-'+store.getState().chess.lastMove.firstStep).checked = false; 
                 document.getElementById('Box-'+store.getState().chess.lastMove.secondStep).checked = false;
-                //Cambia l'interfaccia per l'attesa con useState
             } 
         })
         //Controlla il turner ogni volta che ricarica la scacchiera
     
         return(
-            <div className="Chess p-4 w-2/3 inline-block text-center bg-amber-400 rounded">
+            <div className="Chess p-4 w-2/3 inline-block text-center bg-amber-400 rounded relative">
                 <div className="Enemy">{store.getState().menu.matchmaking.enemy}</div>
 
                 <div 
-                    className="Chessboard"
+                    className="Chessboard inline-block"
                     id="Chessboard"    
                 >
                     {
                         row.map((x)=>{
-                            return <div className={'Col-'+x+' inline-block'}>{col.map((y)=>{
-                                let team;
-                                let piece;
-                                if(y==0||y==1) team=false
-                                if(y==6||y==7) team=true
-                                
-                                p.map((coo)=>{ if(coo==String(x)+String(y)){piece='p'} })
-                                t.map((coo)=>{ if(coo==String(x)+String(y)){piece='t'} })
-                                c.map((coo)=>{ if(coo==String(x)+String(y)){piece='c'} })
-                                a.map((coo)=>{ if(coo==String(x)+String(y)){piece='a'} })
-                                q.map((coo)=>{ if(coo==String(x)+String(y)){piece='q'} })
-                                k.map((coo)=>{ if(coo==String(x)+String(y)){piece='k'} })
+                            return( 
+                                <div key={x} className={'Col-'+x+' inline-block'}>{
+                                    col.map((y)=>{
+                                        let team;
+                                        let piece;
+                                        if(y==0||y==1) team=false
+                                        if(y==6||y==7) team=true
+                                        
+                                        p.map((coo)=>{ if(coo==String(x)+String(y)){piece='p'} })
+                                        t.map((coo)=>{ if(coo==String(x)+String(y)){piece='t'} })
+                                        c.map((coo)=>{ if(coo==String(x)+String(y)){piece='c'} })
+                                        a.map((coo)=>{ if(coo==String(x)+String(y)){piece='a'} })
+                                        q.map((coo)=>{ if(coo==String(x)+String(y)){piece='q'} })
+                                        k.map((coo)=>{ if(coo==String(x)+String(y)){piece='k'} })
 
-                                if((x%2==0&&y%2!=0)||(x%2!=0&&y%2==0)) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={true}/>);
-                                else if((x%2==0&&y%2==0)||(x%2!=0&&y%2!=0)) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={false}/>);
-                            })}
-                            </div>
-                            
+                                        if((x%2==0&&y%2!=0)||(x%2!=0&&y%2==0)) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={true}/>);
+                                        else if((x%2==0&&y%2==0)||(x%2!=0&&y%2!=0)) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={false}/>);
+                                    })}
+                                </div>
+                            );
                         })
                     }
                 </div>
 
                 <div className="Player">{store.getState().menu.user.ads}</div>
-
             </div>
         );
 }
