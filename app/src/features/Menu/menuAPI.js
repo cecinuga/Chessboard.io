@@ -57,7 +57,8 @@ export const newGame = createAsyncThunk(
                             chessboard:chessboard.address, 
                             player1:await signer.getAddress(),
                             player2:WRenemy.get('address'),
-                            quote:WRenemy.get('quote')
+                            quote:WRenemy.get('quote'),
+                            turner:await signer.getAddress()
                         }).then(
                             (chess)=>{console.log(chess)}, 
                             (error)=>{console.log(error)}

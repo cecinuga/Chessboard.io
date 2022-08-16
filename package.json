@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@nomicfoundation/hardhat-network-helpers": "^1.0.3",
-    "bignumber": "^1.1.0"
+    "bignumber": "^1.1.0",
+    "moralis-admin-cli": "^2.1.16"
   }
 }
