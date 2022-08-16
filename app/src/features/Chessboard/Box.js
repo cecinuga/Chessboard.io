@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
 import { store } from '../../app/store';
 import { Move } from './chessAPI';
+import { Step } from './chessSlice';
 import ChessBoard from '../../artifacts/ChessBoard.json'; 
 import Web3 from 'web3';
 
 export default class Box extends React.Component{
     constructor(props){
         super(props);
+        this.state = { checked:false }
     }
     
-    render(){
-        this.defaultProps = {
-            checked: false
-          }
+    render(){      
+        /*
+            store.dispatch(Move({ step:this.props.coo, piece:this.props.p, }))
+                .then(
+                    ()=>{
+                        console.log(store.getState().chess.lastMove);
+                        console.log(store.getState().chess.status)
+                        console.log(store.getState().chess.error)
+                        }
+                ); */
         return(
             <div 
                 id={this.props.id}
@@ -29,18 +37,14 @@ export default class Box extends React.Component{
                     type="checkbox"
                     id={"Box-"+String(this.props.coo)} 
                     value={this.props.p}
-                    checked={false}
+                    checked={this.state.checked}
                     className="Boxes w-12 h-12"
-                    onChange={()=>{//PASSARE DESTRUTTURANDO LA FUNZIONE RUN CONTRACT MORALIS PER CHESSSLICE.JS
-                        store.dispatch(Move({ step:this.props.coo, piece:this.props.p, }))
-                            .then(
-                                ()=>{
-                                    console.log(store.getState().chess.lastMove);
-                                    console.log(store.getState().chess.status)
-                                    console.log(store.getState().chess.error)
-                                    }
-                            );
-                    }}
+                    onChange={
+                        async ()=>{//PASSARE DESTRUTTURANDO LA FUNZIONE RUN CONTRACT MORALIS PER CHESSSLICE.JS
+                            this.setState({ checked: true })
+                            store.dispatch(Move({ step:this.props.coo, piece:this.props.p}))
+                        }
+                    }
                 /> 
                 <span id={"Box-p-"+String(this.props.coo)}>{this.props.p}</span>
             </div>

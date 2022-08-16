@@ -53,6 +53,13 @@ export default function FastMenu() {
     }
     else if(store.getState().menu.matchmaking.message.status=='payed'){
       setDisplayMMPanel('hidden');  
+      if(!store.getState().menu.matchmaking.team){
+        document.getElementById('Chessboard').classList.add('rotate-180')
+        const el = document.getElementsByClassName('Box')
+        for(let i=0; i<el.length; i++){
+          el.item(i).classList.add('rotate-180')
+        }
+      }
     }
     else if(store.getState().menu.matchmaking.message.status=='rejected'){
       console.log('matchmaking annullato...');    

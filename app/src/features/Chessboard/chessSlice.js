@@ -14,6 +14,9 @@ export const chessSlice = createSlice({
     name:'chess',
     initialState,
     reducers:{
+        Step: (state, action) => {
+            
+        }
     },
     extraReducers:{
         [Move.pending]: state => { 
@@ -21,19 +24,22 @@ export const chessSlice = createSlice({
         },
         [Move.rejected]: (state, action) => { 
             state.status='rejected';
-            state.lastMove.firstStep = '';
+            state.lastMove.firstStep='';
+            state.lastMove.piece='';
+            state.lastMove.secondStep='';
             state.error = action.error.message;
         },
         [Move.fulfilled]: (state, action) => { 
             state.status='fulfilled';
-            if((state.lastMove.firstStep==''&&state.lastMove.secondStep=='')||(state.lastMove.firstStep!=''&&state.lastMove.secondStep!='')) { 
+            if((state.lastMove.firstStep==''&&state.lastMove.secondStep=='')||(state.lastMove.firstStep!='' && state.lastMove.secondStep!='')) { 
                 state.lastMove.firstStep = action.payload.step;
                 state.lastMove.piece = action.payload.piece;
-                state.lastMove.secondStep = '';
+                state.lastMove.secondStep = ''
             } else if(state.lastMove.firstStep!=''&&state.lastMove.secondStep=='') {
                 state.lastMove.secondStep = action.payload.step;
             } 
         }
     }
 });
+export const { Step } = chessSlice.actions;
 export const chessReducer = chessSlice.reducer;

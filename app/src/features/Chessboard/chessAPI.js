@@ -10,11 +10,11 @@ export const Move = createAsyncThunk(
         const chessboard_address = "0x9DB6CFb2b5E39dbc0Bcf3C7a04C59eA12cb5212e"
         if(
             store.getState().chess.lastMove.firstStep!=''&&
-            store.getState().chess.lastMove.secondStep==''&&
-            store.getState().menu.matchmaking.chessboard!=''
+            store.getState().chess.lastMove.secondStep==''/*&&
+            store.getState().menu.matchmaking.chessboard!=''*/
         ){ 
-            const chessboard_address = "0x388d502DEe9A317D498c8382C3B7261Ae6471452"
-            const chessboard = new ethers.Contract(/*store.getState().menu.matchmaking.chessboard*/chessboard_address   , ChessBoard.abi, signer)
+            //const chessboard_address = "0x388d502DEe9A317D498c8382C3B7261Ae6471452"
+            const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard/*chessboard_address*/   , ChessBoard.abi, signer)
             console.log(chessboard)
             console.log('chessboard: ',chessboard.address)
 
@@ -26,7 +26,8 @@ export const Move = createAsyncThunk(
                     [Number(data.step[0]),Number(data.step[1])],
                     { gasLimit:150000 }
             )
-            tx.wait()
+            await tx.wait()
+            //Connettiti al DB e cambia lastFirstStep, lastSecondStep, e a turner metti l'indirizzo dell'avversario
             console.log(tx)
         }
         return data;
