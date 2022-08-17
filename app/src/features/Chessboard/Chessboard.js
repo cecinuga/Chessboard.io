@@ -27,6 +27,12 @@ export default function Chessboard() {
                 console.log("bene, ora c'è da giocare.")
                 setContent('block')
             }
+            if(store.getState().chess.status=='notyturn'){
+                const el = document.getElementsByClassName('Boxes')
+                for(let i=0; i<el.length; i++){
+                    el.item(i).checked = false;
+                }
+            }
             if(store.getState().chess.lastMove.firstStep!=''&&store.getState().chess.lastMove.secondStep!=''){
                 console.log("spostiamo sti pezzi va")
                 console.log(store.getState().chess.lastMove)
@@ -39,6 +45,9 @@ export default function Chessboard() {
                 document.getElementById('Box-p-'+store.getState().chess.lastMove.secondStep).className = className
                 document.getElementById('Box-'+store.getState().chess.lastMove.firstStep).checked = false; 
                 document.getElementById('Box-'+store.getState().chess.lastMove.secondStep).checked = false;
+                //Controlla se hai vinto, altrimenti 
+                
+
                 //inserire ascoltatore per capire quando l'avversario ha mosso e cambiare il dom
                 const turn = changeTurnerListener();
                 console.log('turn: '+turn)

@@ -41,16 +41,16 @@ export const Move = createAsyncThunk(
                         { gasLimit:150000 }
                 )
                 
-                await tx.wait()
+                //await tx.wait()
                 console.log(tx)
 
                 //Connettiti al DB e cambia lastFirstStep, lastSecondStep, e a turner metti l'indirizzo dell'avversario
                 console.log('data.piece: '+data.piece)
 
-                const par = {chessboard: chessboard.address, turner:store.getState().menu.matchmaking.enemy, x:String(x1+y1), y:String(data.step[0]+data.step[1]), piece:data.piece }
+                const par = {chessboard: chessboard.address, turner:store.getState().menu.matchmaking.enemy, x:String(x1+y1), y:String(data.step[0]+data.step[1]) }
                 const updated = await Moralis.Cloud.run("updateTurnerGame", par)
                 console.log(updated)
-            } else { console.log('Non è il tuo turno'); console.log(res); return Error }
+            } else { console.log('Non è il tuo turno'); console.log(res); return {error:true} }
         }
         return data;
     }

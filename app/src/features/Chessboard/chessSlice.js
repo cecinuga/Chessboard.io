@@ -30,14 +30,21 @@ export const chessSlice = createSlice({
             state.error = action.error.message;
         },
         [Move.fulfilled]: (state, action) => { 
-            state.status='fulfilled';
-            if((state.lastMove.firstStep==''&&state.lastMove.secondStep=='')||(state.lastMove.firstStep!='' && state.lastMove.secondStep!='')) { 
-                state.lastMove.firstStep = action.payload.step;
-                state.lastMove.piece = action.payload.piece;
-                state.lastMove.secondStep = ''
-            } else if(state.lastMove.firstStep!=''&&state.lastMove.secondStep=='') {
-                state.lastMove.secondStep = action.payload.step;
-            } 
+            if(!action.payload.error){
+                state.status='fulfilled';
+                if((state.lastMove.firstStep==''&&state.lastMove.secondStep=='')||(state.lastMove.firstStep!='' && state.lastMove.secondStep!='')) { 
+                    state.lastMove.firstStep = action.payload.step;
+                    state.lastMove.piece = action.payload.piece;
+                    state.lastMove.secondStep = '';
+                } else if(state.lastMove.firstStep!=''&&state.lastMove.secondStep=='') {
+                    state.lastMove.secondStep = action.payload.step;
+                } 
+            } else { 
+                state.status='notyturn';
+                state.lastMove.firstStep = '';
+                state.lastMove.secondStep = '';
+                state.lastMove.piece = '';
+            }
         }
     }
 });

@@ -10,6 +10,7 @@ import './MoveHandler.sol';
 contract ChessBoard {
     uint public totalPrize;
     address private turner;
+    address public winner;
     struct _Rules{
         bool[3] moves_directions;
         uint maxsteps;
