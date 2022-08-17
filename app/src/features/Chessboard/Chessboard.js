@@ -3,6 +3,7 @@ import ChessBoard from '../../artifacts/ChessBoard.json';
 import { store } from '../../app/store';
 import { Move } from './chessAPI';
 import Box from './Box';
+import { changeTurnerListener } from '../../fun/chessboard'
 
 export default function Chessboard() {   
         let row = [];
@@ -20,7 +21,7 @@ export default function Chessboard() {
         const boxes = document.getElementsByClassName('Boxes');
 
 
-        store.subscribe(()=>{
+        store.subscribe(async ()=>{
             console.log(store.getState())
             if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
                 console.log("bene, ora c'è da giocare.")
@@ -38,10 +39,17 @@ export default function Chessboard() {
                 document.getElementById('Box-p-'+store.getState().chess.lastMove.secondStep).className = className
                 document.getElementById('Box-'+store.getState().chess.lastMove.firstStep).checked = false; 
                 document.getElementById('Box-'+store.getState().chess.lastMove.secondStep).checked = false;
-            } 
+                //inserire ascoltatore per capire quando l'avversario ha mosso e cambiare il dom
+                const turn = changeTurnerListener();
+                console.log('turn: '+turn)
+                if(turn.firstStep!=undefined&&turn.secondStep!=undefined){
+                    console.log('È ORA CARO MIO....!!!!')
+                    document.getElementById('Box-p-'+turn.secondStep).innerHTML = document.getElementById('Box-p-'+turn.firstStep).innerHTML;
+                    document.getElementById('Box-p-'+turn.firstStep).innerHTML = '';
+                }
+            }  
         })
-        //Controlla il turner ogni volta che ricarica la scacchiera
-    
+   
         return(
             <div className="Chess p-4 w-2/3 inline-block text-center bg-amber-400 rounded relative">
                 <div className="Enemy">{store.getState().menu.matchmaking.enemy}</div>

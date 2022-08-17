@@ -27,7 +27,7 @@ export const Move = createAsyncThunk(
             const Turner = Moralis.Object.extend("Games");
             const query = new Moralis.Query(Turner);
             query
-                .equalTo("chessboard",store.getState().menu.matchmaking.chessboard)
+                .equalTo("chessboard",chessboard.address)
                 .equalTo("turner",await signer.getAddress())
             const res = await query.find();
             
@@ -45,8 +45,8 @@ export const Move = createAsyncThunk(
                 console.log(tx)
 
                 //Connettiti al DB e cambia lastFirstStep, lastSecondStep, e a turner metti l'indirizzo dell'avversario
-                const par = {chessboard: chessboard.address, turner:store.getState().menu.matchmaking.enemy }
-                const updated = await Moralis.Cloud.run("updateGame", par)
+                const par = {chessboard: chessboard.address, turner:store.getState().menu.matchmaking.enemy, x:String(x1+y1), y:String(data.step[0]+data.step[1]) }
+                const updated = await Moralis.Cloud.run("updateTurnerGame", par)
                 console.log(updated)
             } else { console.log('Non è il tuo turno'); console.log(res); return Error }
         }

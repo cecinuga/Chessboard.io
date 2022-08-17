@@ -6,8 +6,6 @@ import { gameFound } from '../features/Menu/menuSlice'
 export const foundMyGame = () => {
     const time = setTimeout(async ()=>{
       console.log('sto aspettando eh...')
-      let chessboard_address='';
-      let enemy_address='';
       
       const fetchGame = new Moralis.Query("Games");
       fetchGame.equalTo('player2', await signer.getAddress());
@@ -19,15 +17,14 @@ export const foundMyGame = () => {
         return games.map(async (game)=>{ 
             console.log(game)
             if(game.get('player2')==await signer.getAddress()){
-              //game.set("status","founded")  
-              Moralis.Cloud.run(
+             await Moralis.Cloud.run(
                   'updateStatusGames',
                   { player2:await signer.getAddress() }
                 )
                 .then((res)=>{
                   console.log(res)
                 })
-              Moralis.Cloud.run(
+              await Moralis.Cloud.run(
                   'removeWUser',
                   { address:await signer.getAddress() }
                 )
@@ -44,9 +41,7 @@ export const foundMyGame = () => {
 export const foundMyEnemy = () => {
     const time = setTimeout(async ()=>{
       console.log('sto aspettando che il mio nemico prenda parte   eh...')
-      let chessboard_address='';
-      let enemy_address='';
-      
+
       const fetchGame = new Moralis.Query("Games");
       fetchGame.equalTo('player1', await signer.getAddress());
       fetchGame.equalTo('status', 'founded')
