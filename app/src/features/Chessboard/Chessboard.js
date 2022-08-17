@@ -42,11 +42,6 @@ export default function Chessboard() {
                 //inserire ascoltatore per capire quando l'avversario ha mosso e cambiare il dom
                 const turn = changeTurnerListener();
                 console.log('turn: '+turn)
-                if(turn.firstStep!=undefined&&turn.secondStep!=undefined){
-                    console.log('È ORA CARO MIO....!!!!')
-                    document.getElementById('Box-p-'+turn.secondStep).innerHTML = document.getElementById('Box-p-'+turn.firstStep).innerHTML;
-                    document.getElementById('Box-p-'+turn.firstStep).innerHTML = '';
-                }
             }  
         })
    

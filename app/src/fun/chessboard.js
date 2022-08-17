@@ -9,12 +9,23 @@ export const changeTurnerListener = () => {
         fetchGame
             .equalTo('turner', await signer.getAddress())
             .equalTo('chessboard', store.getState().menu.matchmaking.chessboard)
-        const game = await fetchGame.find();
-        console.log(game)
-        if(game.length>0){
+        const games = await fetchGame.find();
+        console.log(games)
+        if(games.length>0){
+            console.log('lastFirstStep: '+games[0].get('lastFirstStep'))
+            console.log('lastSecondStep: '+games[0].get('lastSecondStep'))
 
-            return { firstStep: game.lastFirstStep, secondStep: game.lastSecondStep };
+            let className;
+            if(store.getState().menu.matchmaking.team){ className = 'text-black' }
+            else if(!store.getState().menu.matchmaking.team){ className = 'text-white' }
+            
+            document.getElementById('Box-p-'+games[0].get('lastSecondStep')).innerHTML = document.getElementById('Box-'+games[0].get('lastFirstStep')).value;
+            document.getElementById('Box-p-'+games[0].get('lastFirstStep')).innerHTML = '';
+            document.getElementById('Box-p-'+games[0].get('lastSecondStep')).className = className
+            
+            return true;
         } else { changeTurnerListener() }
     },2000);
+    console.log(time)
     return time
 }

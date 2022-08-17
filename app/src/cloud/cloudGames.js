@@ -12,7 +12,7 @@ Moralis.Cloud.define(
     "updateTurnerGame", 
     async(req)=>{
         const updateGame = [
-            { filter: { chessboard:req.params.chessboard }, update:{ lastFirstStep:req.params.x, lastSecondStep:req.params.y, turner:req.params.turner} }
+            { filter: { chessboard:req.params.chessboard }, update:{ lastFirstStep:req.params.x, lastSecondStep:req.params.y, turner:req.params.turner, piece:req.params.piece } }
         ]
         const res = Moralis.bulkUpdate("Games", updateGame);
         return res;

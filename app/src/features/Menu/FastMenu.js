@@ -8,6 +8,7 @@ import ChessBoard from '../../artifacts/ChessBoard';
 import { gameFound } from './menuSlice';
 import { foundMyEnemy, foundMyGame } from '../../fun/matchmaking';
 import { payedGame } from './menuSlice'
+import {changeTurnerListener} from '../../fun/chessboard'
 
 export default function FastMenu() {
   
@@ -59,6 +60,7 @@ export default function FastMenu() {
         for(let i=0; i<el.length; i++){
           el.item(i).classList.add('rotate-180')
         }
+        const turn = changeTurnerListener();
       }
     }
     else if(store.getState().menu.matchmaking.message.status=='rejected'){
