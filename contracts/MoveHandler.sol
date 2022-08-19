@@ -12,10 +12,10 @@ contract MoveHandler {
     modifier onlyYourChessboard{require(msg.sender==address(Chessboard),'');_;}
     modifier onlyYourController{require(msg.sender==address(Movecontroller),'');_;}
 
-    function isCheckMate(bool team) public view returns(bool res, bool nopos){
-        if(Chessboard.getCheck(team)&&NoMorePos(team)){ res=true;nopos=true; }
-        else if(!Chessboard.getCheck(team)&&NoMorePos(team)){ res = false;nopos=true; }
-        else { res = false;nopos=false; }
+    function isCheckMate(bool team) public view returns(bool checked, bool nopos){
+        if(Chessboard.getCheck(team)&&NoMorePos(team)){ checked=true;nopos=true; }
+        else if(!Chessboard.getCheck(team)&&NoMorePos(team)){ checked = false;nopos=true; }
+        else { checked = false;nopos=false; }
     } 
 
     function NoMorePos(bool team)
@@ -25,13 +25,13 @@ contract MoveHandler {
             bool res1;bool res2;bool res3;bool res4;
             bool res5;bool res6;bool res7;bool res8;
             (res1, poss)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])+1)), pos[1]], team );
-            (res1, poss)=isEvilBox( [uint(Movecontroller.arrdec(int(pos[0])-1)), pos[1]], team );
-            (res1, poss)=isEvilBox( [pos[0], uint(Movecontroller.arrecc(int(pos[1])+1))], team );
-            (res1, poss)=isEvilBox( [pos[0], uint(Movecontroller.arrecc(int(pos[1])-1))], team );
-            (res1, poss)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])+1)), uint(Movecontroller.arrecc(int(pos[1])+1))], team );
-            (res1, poss)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])+1)), uint(Movecontroller.arrecc(int(pos[1])-1))], team );
-            (res1, poss)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])-1)), uint(Movecontroller.arrecc(int(pos[1])+1))], team );
-            (res1, poss)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])-1)), uint(Movecontroller.arrecc(int(pos[1])-1))], team );
+            (res2, poss)=isEvilBox( [uint(Movecontroller.arrdec(int(pos[0])-1)), pos[1]], team );
+            (res3, poss)=isEvilBox( [pos[0], uint(Movecontroller.arrecc(int(pos[1])+1))], team );
+            (res4, poss)=isEvilBox( [pos[0], uint(Movecontroller.arrecc(int(pos[1])-1))], team );
+            (res5, poss)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])+1)), uint(Movecontroller.arrecc(int(pos[1])+1))], team );
+            (res6, poss)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])+1)), uint(Movecontroller.arrecc(int(pos[1])-1))], team );
+            (res7, poss)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])-1)), uint(Movecontroller.arrecc(int(pos[1])+1))], team );
+            (res8, poss)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])-1)), uint(Movecontroller.arrecc(int(pos[1])-1))], team );
 
             if(res1&&res2&&res3&&res4&&res5&&res6&&res7&&res8){ return true; }
             return false;

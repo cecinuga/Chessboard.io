@@ -4,6 +4,7 @@ import { store } from '../../app/store';
 import { Move } from './chessAPI';
 import Box from './Box';
 import { changeTurnerListener } from '../../fun/chessboard'
+import { ethers, signer } from '../../App'
 
 export default function Chessboard() {   
         let row = [];
@@ -46,11 +47,14 @@ export default function Chessboard() {
                 document.getElementById('Box-'+store.getState().chess.lastMove.firstStep).checked = false; 
                 document.getElementById('Box-'+store.getState().chess.lastMove.secondStep).checked = false;
                 //Controlla se hai vinto, altrimenti 
-                
-
-                //inserire ascoltatore per capire quando l'avversario ha mosso e cambiare il dom
-                const turn = changeTurnerListener();
-                console.log('turn: '+turn)
+                const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard/*chessboard_address*/, ChessBoard.abi, signer)
+                if(chessboard.winner==await signer.getAddress()){
+                    //Hai vinto.
+                } else{
+                    //inserire ascoltatore per capire quando l'avversario ha mosso e cambiare il dom
+                    const turn = changeTurnerListener();
+                    console.log('turn: '+turn)
+                }               
             }  
         })
    
