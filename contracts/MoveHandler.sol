@@ -2,6 +2,8 @@
 pragma solidity ^0.8.13;
 import './MoveController.sol';
 import './ChessBoard.sol';
+import "hardhat/console.sol";
+
 /*
     [!]Scacco di Scoperta,
 */
@@ -40,13 +42,20 @@ contract MoveHandler {
 
     function isEvilBox(uint[2] memory newpos, bool team) 
         public view returns(bool res, uint[2] memory pos) {
+
+        /*PROGETTARE NUOVA FUNZIONE YUPPI YAAAAAAAAA */
+
+
+
+
+        /*
         uint inc = uint(Movecontroller.min(Movecontroller.min(int(newpos[0]), int(7)-int(newpos[0])), Movecontroller.min(int(newpos[1]), int(7)-int(newpos[1]))));
         (res, pos) = Movecontroller.isObstacled(newpos, [0, newpos[1]]);///-x
         if(!res&&Movecontroller.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(pos[0])-int(newpos[0])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
-            return ( true, pos );
+            return ( true, pos);
         }//-x
 
-        /*(res, pos) = Movecontroller.isObstacled(newpos, [7, newpos[1]]);//+x
+        (res, pos) = Movecontroller.isObstacled(newpos, [7, newpos[1]]);//+x
         if(!res&&Movecontroller.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(pos[0])-int(newpos[0])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
             return ( true, pos);
         }//+x
@@ -73,15 +82,19 @@ contract MoveHandler {
         }//-x-y               
 
         (res, pos) = Movecontroller.isObstacled(newpos, [newpos[0]-inc,newpos[1]+inc]);//ok
-        if(!res&&Movecontroller.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(pos[1])-int(newpos[1])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
-            return ( true, pos);
+
+        if(!res&&
+           Movecontroller.Direction(pos, newpos)&&
+           Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(pos[1])-int(newpos[1])))&&
+           Chessboard.getBox(pos[0],pos[1]).color!=team){
+           return ( true, pos);
         }//-x+y              
 
         (res, pos) = Movecontroller.isObstacled(newpos, [newpos[0]+inc,newpos[1]+inc]);//ok
         if(!res&&Movecontroller.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(pos[1])-int(newpos[1])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
             return ( true, pos);
-        }//+x+y          */
-        return ( false, pos );
+        }//+x+y          
+        return ( false, pos );*/
     }
     
 

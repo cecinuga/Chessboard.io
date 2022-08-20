@@ -2,6 +2,8 @@
 pragma solidity ^0.8.13;
 import './MoveController.sol';
 import './MoveHandler.sol';
+import "hardhat/console.sol";
+
 /*
     Creare le eccezioni per:        
         [!]Randomicità tra colori, 
@@ -81,7 +83,7 @@ contract ChessBoard {
         Movecontrol(oldpos, newpos) 
         PedestrianToQueen(oldpos, newpos)
         isSetKing(oldpos, newpos)
-        isSetCheck(oldpos)
+        isSetCheck(newpos)
         returns(bool res){
             bool ischeck;bool nopos;
             (ischeck, nopos) = Movehandler.isCheckMate(teams[msg.sender]);
@@ -129,8 +131,8 @@ contract ChessBoard {
         teams[players[true]] = true;
         teams[players[false]] = false;
 
-        kingpos[teams[players[true]]] = [7,3];
-        kingpos[teams[players[false]]] = [0,4]; 
+        kingpos[teams[players[true]]] = [3,7];
+        kingpos[teams[players[false]]] = [3,0]; 
 
         check[teams[players[true]]] = false;
         check[teams[players[false]]] = false;

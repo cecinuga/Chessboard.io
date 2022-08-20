@@ -46,8 +46,8 @@ contract MoveController {
     function isObstacled(uint[2] memory oldpos,uint[2] memory newpos)
         public view returns(bool res, uint[2] memory pos)
     {
-        int _x = (int(newpos[0]) - int(oldpos[0]));
-        int _y = (int(newpos[1]) - int(oldpos[1]));
+        int _x =(int(newpos[0]) - int(oldpos[0]));
+        int _y =(int(newpos[1]) - int(oldpos[1]));
         int incx = increment(_x); int incy = increment(_y);
         uint i=oldpos[0];uint j=oldpos[1];
                     
@@ -61,9 +61,10 @@ contract MoveController {
                 res = false;
                 pos = [i,j];
                 break;
-            }else {res = true;pos = [i,j];}
+            }
+            res = true;pos=[i,j];
+            //console.log('pos: %s,%s',i,j );
         }
-        
     }
     modifier logicalControls(uint[2] memory oldpos, uint[2] memory newpos, bool team, uint _maxsteps){
         require(Chessboard.getBox(oldpos[0],oldpos[1]).color == team, 'not y p');//Sposta i Tuoi Pezzi.

@@ -7,11 +7,15 @@ describe("Various Moves.", function() {
         const [player1, player2] = await ethers.getSigners();
         const Chessboard = await ethers.getContractFactory('ChessBoard');
         const Movecontroller = await ethers.getContractFactory('MoveController');
-    
+        const Movehandler = await ethers.getContractFactory('MoveHandler');
+
+        
         const chessboard = await Chessboard.deploy(player1.address, player2.address);
         const controller = await Movecontroller.deploy(chessboard.address);
+        const handler = await Movehandler.deploy(controller.address, chessboard.address);
+
     
-        return { chessboard, controller, player1, player2 }
+        return { chessboard, controller,handler, player1, player2 }
     }
     it("isEvilBox Test.", async function(){
         const { chessboard, controller,handler, player1, player2 } = await loadFixture(deployContracts)
@@ -24,7 +28,9 @@ describe("Various Moves.", function() {
         const tx3 = await chessboard.connect(player2).Move([4,0],[0,4])//regina nero
         tx3.wait();
 
-        const tx4 = await chessboard.connect(player1).Move([3,7],[2,6])//re bianco
-        tx4.wait();
+        /*const tx4 = await chessboard.connect(player1).Move([3,7],[2,6])//re bianco
+        tx4.wait();*/
+        const res = await handler.isEvilBox([2,6],true);
+        console.log(res)
     })
 });
