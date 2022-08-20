@@ -43,10 +43,10 @@ contract MoveHandler {
         uint inc = uint(Movecontroller.min(Movecontroller.min(int(newpos[0]), int(7)-int(newpos[0])), Movecontroller.min(int(newpos[1]), int(7)-int(newpos[1]))));
         (res, pos) = Movecontroller.isObstacled(newpos, [0, newpos[1]]);///-x
         if(!res&&Movecontroller.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(pos[0])-int(newpos[0])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
-            return ( true, pos);
+            return ( true, pos );
         }//-x
 
-        (res, pos) = Movecontroller.isObstacled(newpos, [7, newpos[1]]);//+x
+        /*(res, pos) = Movecontroller.isObstacled(newpos, [7, newpos[1]]);//+x
         if(!res&&Movecontroller.Direction(pos, newpos)&&Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(pos[0])-int(newpos[0])))&&Chessboard.getBox(pos[0],pos[1]).color!=team){
             return ( true, pos);
         }//+x

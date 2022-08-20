@@ -13,10 +13,18 @@ describe("Various Moves.", function() {
     
         return { chessboard, controller, player1, player2 }
     }
-    it("Pedestrian [1,6],[1,4]", async function(){
-        const { chessboard, controller, player1, player2 } = await loadFixture(deployContracts)
-        const tx = await chessboard.Move([1,6],[1,3])
+    it("isEvilBox Test.", async function(){
+        const { chessboard, controller,handler, player1, player2 } = await loadFixture(deployContracts)
+        const tx = await chessboard.connect(player1).Move([2,6],[2,4])//pedone bianco 
         tx.wait();
-        console.log(tx)
+        const tx1 = await chessboard.connect(player2).Move([3,1],[3,3])//pedona nero
+        tx1.wait(); 
+        const tx2 = await chessboard.connect(player1).Move([7,6],[7,4])//pedone bianco
+        tx2.wait();
+        const tx3 = await chessboard.connect(player2).Move([4,0],[0,4])//regina nero
+        tx3.wait();
+
+        const tx4 = await chessboard.connect(player1).Move([3,7],[2,6])//re bianco
+        tx4.wait();
     })
 });

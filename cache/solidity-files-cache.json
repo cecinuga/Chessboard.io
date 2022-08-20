@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/peterbruegel/GitHub/chessboard.io/contracts/ChessBoard.sol": {
-      "lastModificationDate": 1660921317527,
-      "contentHash": "61857ee4077880beab31e05a122796d2",
+      "lastModificationDate": 1660936900825,
+      "contentHash": "a9f171db6aa9a5b5ec5d1a224c249334",
       "sourceName": "contracts/ChessBoard.sol",
       "solcConfig": {
         "version": "0.8.14",
@@ -40,8 +40,8 @@
       ]
     },
     "/home/peterbruegel/GitHub/chessboard.io/contracts/MoveController.sol": {
-      "lastModificationDate": 1660388617431,
-      "contentHash": "a023d027fb8f79d89d104b0bc4cf567a",
+      "lastModificationDate": 1660933715514,
+      "contentHash": "be536edf709d1ce65c8fab9c0cdf72f4",
       "sourceName": "contracts/MoveController.sol",
       "solcConfig": {
         "version": "0.8.14",
@@ -67,7 +67,8 @@
         }
       },
       "imports": [
-        "./ChessBoard.sol"
+        "./ChessBoard.sol",
+        "hardhat/console.sol"
       ],
       "versionPragmas": [
         "^0.8.13"
@@ -77,8 +78,8 @@
       ]
     },
     "/home/peterbruegel/GitHub/chessboard.io/contracts/MoveHandler.sol": {
-      "lastModificationDate": 1660918706720,
-      "contentHash": "54e46d21b5240081a05a0dcfa4f81f47",
+      "lastModificationDate": 1660937281114,
+      "contentHash": "261e023c58e76cde232feb72bcb5c513",
       "sourceName": "contracts/MoveHandler.sol",
       "solcConfig": {
         "version": "0.8.14",
@@ -112,6 +113,41 @@
       ],
       "artifacts": [
         "MoveHandler"
+      ]
+    },
+    "/home/peterbruegel/GitHub/chessboard.io/node_modules/hardhat/console.sol": {
+      "lastModificationDate": 1658423040591,
+      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.8.14",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
       ]
     }
   }

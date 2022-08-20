@@ -44,7 +44,7 @@ contract ChessBoard {
     function setKing(uint[2] memory pos) internal { kingpos[teams[msg.sender]] = pos; KingsFirstmove[teams[msg.sender]]=false; }
     modifier isSetKing(uint[2] memory oldpos, uint[2] memory newpos) { 
         if(  Chessboard[oldpos[0]][oldpos[1]].pedina==5  ){ 
-            require(isNotEvilBox(newpos, teams[msg.sender]),'');
+            require(isNotEvilBox(newpos, teams[msg.sender]),'evilbox');
             setKing(newpos);
         }_;
     }  
@@ -80,10 +80,9 @@ contract ChessBoard {
         onlyPlayers /*yourTurn*/ 
         Movecontrol(oldpos, newpos) 
         PedestrianToQueen(oldpos, newpos)
-        /*isSetKing(oldpos, newpos)
-        isSetCheck(oldpos)*/
+        isSetKing(oldpos, newpos)
+        isSetCheck(oldpos)
         returns(bool res){
-            bool isArrocco = false;
             bool ischeck;bool nopos;
             (ischeck, nopos) = Movehandler.isCheckMate(teams[msg.sender]);
             
@@ -95,20 +94,18 @@ contract ChessBoard {
                     Chessboard[oldpos[0]][oldpos[1]] = Box(0, teams[msg.sender]);
                     Chessboard[oldpos[0]][oldpos[1]+2] = Box(5, teams[msg.sender]);
                     Chessboard[oldpos[0]][oldpos[1]+1] = Box(2, teams[msg.sender]);
-                    isArrocco=true;
 
                 }
                 else if(TowersFirstmove[teams[msg.sender]][false] ){
                     Chessboard[oldpos[0]][oldpos[1]] = Box(0, teams[msg.sender]);
                     Chessboard[oldpos[0]][oldpos[1]-2] = Box(5, teams[msg.sender]);
                     Chessboard[oldpos[0]][oldpos[1]-1] = Box(2, teams[msg.sender]);                    
-                    isArrocco=true;
                 }
             }
             else if(ischeck&&nopos){ //Hai Perso
                 selfdestruct(payable(players[!teams[msg.sender]])); 
             }
-            else if(!ischeck&&!nopos&&!isArrocco){ //Continua
+            else if(!ischeck&&!nopos){ //Continua
                 Chessboard[newpos[0]][newpos[1]] = Chessboard[oldpos[0]][oldpos[1]];
                 Chessboard[oldpos[0]][oldpos[1]] = Box(0, false);
                 turner = players[!teams[msg.sender]];
@@ -147,17 +144,17 @@ contract ChessBoard {
 
         Rules[0] = _Rules([false, false, false], 0);//NULL
         Rules[1] = _Rules([false, true, false], 1);//PEDONE
-        Rules[2] = _Rules([true, true, false], 8);//TORRE
+        Rules[2] = _Rules([true, true, false], 7);//TORRE
         Rules[3] = _Rules([false, false, false], 4);//CAVALLO
-        Rules[4] = _Rules([false, false, true], 8);//ALFIERE
+        Rules[4] = _Rules([false, false, true], 7);//ALFIERE
         Rules[5] = _Rules([true, true, true], 1);//RE
-        Rules[6] = _Rules([true, true, true], 8);//REGINA
+        Rules[6] = _Rules([true, true, true], 7);//REGINA
 
         Chessboard[0][0] = Box(2, false);
         Chessboard[1][0] = Box(3, false);
         Chessboard[2][0] = Box(4, false);
-        Chessboard[3][0] = Box(6, false);
-        Chessboard[4][0] = Box(5, false);
+        Chessboard[3][0] = Box(5, false);
+        Chessboard[4][0] = Box(6, false);
         Chessboard[5][0] = Box(4, false);
         Chessboard[6][0] = Box(3, false);
         Chessboard[7][0] = Box(2, false);
