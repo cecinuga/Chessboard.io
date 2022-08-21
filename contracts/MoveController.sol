@@ -13,8 +13,8 @@ contract MoveController {
     ChessBoard private Chessboard; 
    
     function abs(int x_) public pure returns (int _x) { if(x_<0)_x=-x_;else{_x=x_;}}    
-    function max(int x_, int y_) public pure returns(int _max){ if(x_>=y_){_max=x_;}else{_max=y_;} }
-    function min(int x_, int y_) public pure returns(int _min){ if(x_<=y_){_min=x_;}else{_min=y_;} }
+    function max(uint x_, uint y_) public pure returns(uint _max){ if(x_>=y_){_max=x_;}else{_max=y_;} }
+    function min(uint x_, uint y_) public pure returns(uint _min){ if(x_<=y_){_min=x_;}else{_min=y_;} }
     function increment(int x_) public pure returns(int inc){ if(x_<0)inc=-1;else if(x_>0)inc=1;else inc=0; }
     function arrecc(int x_) public pure returns(int _x){  if(x_<=7)_x=x_;else _x=7; }
     function arrdec(int x_) public pure returns(int _x){  if(x_>=0)_x=x_;else _x=0; }
@@ -55,8 +55,10 @@ contract MoveController {
 
         res = true;
         while(( i!=uint(int(newpos[0]))  ||  j!=uint(int(newpos[1])) )){ 
-            i = uint(int(i)+(incx)); 
-            j = uint(int(j)+(incy));
+            i = uint(arrecc(int(i)+(incx))); 
+            j = uint(arrecc(int(j)+(incy)));
+            //console.logUint(i);
+            //console.logUint(j);
             if(Chessboard.getBox(i,j).pedina!=0&&(newpos[0]!=i&&newpos[1]!=j)){
                 res = false;
                 pos = [i,j];
