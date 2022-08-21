@@ -27,6 +27,8 @@ describe("Various Moves.", function() {
         tx2.wait();
         const tx3 = await chessboard.connect(player2).Move([4,0],[0,4])//regina nero
         tx3.wait();
+        const tx4 = await chessboard.connect(player2).Move([0,4],[1,5])//regina nero
+        tx4.wait();
 
         /*const tx4 = await chessboard.connect(player1).Move([3,7],[2,6])//re bianco
         tx4.wait();*/

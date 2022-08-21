@@ -17,8 +17,8 @@ describe("Obstacles.", function() {
     it('Any Obstacles', async () => {
         const { chessboard, controller, player1, player2 } = await loadFixture(deployContracts)
 
-        const x = new BigNumber(0x00);const y = new BigNumber(0x01)
-        const tx = await chessboard.connect(player1).Move([2,6],[2,4])//pedone bianco 
+        const x = new BigNumber(0x00);const y = new BigNumber(0x01);
+        /*const tx = await chessboard.connect(player1).Move([2,6],[2,4])//pedone bianco 
         tx.wait();
         const tx1 = await chessboard.connect(player2).Move([3,1],[3,3])//pedona nero
         tx1.wait(); 
@@ -29,7 +29,7 @@ describe("Obstacles.", function() {
 
         const res = await controller.isObstacled([3,7],[0,4])
         console.log(res[1])
-        expect(res[0]).to.equal(true)
+        expect(res[0]).to.equal(true)*/
         /*const res = await controller.isObstacled([0,0],[0,5])
         expect(res[0]).to.equal(false)
 

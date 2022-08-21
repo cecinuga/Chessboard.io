@@ -13,11 +13,11 @@ contract MoveController {
     ChessBoard private Chessboard; 
    
     function abs(int x_) public pure returns (int _x) { if(x_<0)_x=-x_;else{_x=x_;}}    
-    function max(int x_, int y_) public pure returns(int _max){ _max = x_ >= y_ ? _max : y_; }
-    function min(int x_, int y_) public pure returns(int _min){ _min = x_ <= y_ ? _min : y_; }
+    function max(int x_, int y_) public pure returns(int _max){ if(x_>=y_){_max=x_;}else{_max=y_;} }
+    function min(int x_, int y_) public pure returns(int _min){ if(x_<=y_){_min=x_;}else{_min=y_;} }
     function increment(int x_) public pure returns(int inc){ if(x_<0)inc=-1;else if(x_>0)inc=1;else inc=0; }
-    function arrecc(int x_) public pure returns(int _x){  _x=x_<=7?_x:int(7); }
-    function arrdec(int x_) public pure returns(int _x){  _x=x_<=0?_x:int(0); }
+    function arrecc(int x_) public pure returns(int _x){  if(x_<=7)_x=x_;else _x=7; }
+    function arrdec(int x_) public pure returns(int _x){  if(x_>=0)_x=x_;else _x=0; }
     
     modifier yourChessboard{require(msg.sender==address(Chessboard),'');_;}
     function Direction(uint[2] memory oldpos, uint[2] memory newpos)/**OKOKOK*/ 
@@ -54,15 +54,14 @@ contract MoveController {
         //if(Chessboard.getBox(oldpos[0],oldpos[1]).pedina==1&&Chessboard.getBox(newpos[0], newpos[1]).pedina!=0){ res=false; }
 
         res = true;
-        while(( i!=uint(int(newpos[0])-(incx))  ||  j!=uint(int(newpos[1])-(incy)) )){ 
+        while(( i!=uint(int(newpos[0]))  ||  j!=uint(int(newpos[1])) )){ 
             i = uint(int(i)+(incx)); 
             j = uint(int(j)+(incy));
-            if(Chessboard.getBox(i,j).pedina!=0){
+            if(Chessboard.getBox(i,j).pedina!=0&&(newpos[0]!=i&&newpos[1]!=j)){
                 res = false;
                 pos = [i,j];
                 break;
-            }
-            res = true;pos=[i,j];
+            } else { res = true;pos=[i,j]; }    
             //console.log('pos: %s,%s',i,j );
         }
     }
