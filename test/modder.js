@@ -16,7 +16,7 @@ describe("Modder.", function() {
     it("Pedestrian can fly.", async function() {
         const { controller } = await loadFixture(deployContracts)
 
-        console.log(await controller.MoveControl([1,6],[1,5],true,1))
+        expect(await controller.MoveControl([1,6],[1,5],true,1)).to.be.ok
         //expect(await controller.MoveControl([1,1],[1,3],false,1)).to.equal({})
     });
 });

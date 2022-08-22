@@ -44,7 +44,6 @@ describe('Directions.', function(){
   it("Queen Directions", async () => {
     const { chessboard, controller, player1, player2 } = await loadFixture(deployContracts)
 
-    expect(await controller.Direction([3,0],[4,0])).to.equal(true);
     expect(await controller.Direction([3,0],[3,1])).to.equal(true);
     expect(await controller.Direction([3,0],[4,1])).to.equal(true);
     expect(await controller.Direction([3,0],[2,1])).to.equal(true);

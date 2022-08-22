@@ -20,10 +20,19 @@ contract MoveController {
     function arrdec(int x_) public pure returns(int _x){  if(x_>=0)_x=x_;else _x=0; }
     
     modifier yourChessboard{require(msg.sender==address(Chessboard),'');_;}
+    function canArrive(uint[2] memory oldpos, uint[2] memory newpos, bool team) public returns(bool){ 
+        if(( Chessboard.getBox(oldpos[0],oldpos[1]).pedina!=0&&Chessboard.getBox(oldpos[0],oldpos[1]).color==team&&Direction(oldpos, newpos) )){ 
+            
+            return true;
+        } else{
+            return false;
+        }
+    }
     function Direction(uint[2] memory oldpos, uint[2] memory newpos)/**OKOKOK*/ 
         public view /*yourChessboard*/ returns(bool res)    
     {   int _x =(int(newpos[0]) - int(oldpos[0]));
         int _y =(int(newpos[1]) - int(oldpos[1]));
+
         if(_x!=0&&_y==0) { 
             if(!Chessboard.getRules(Chessboard.getBox(oldpos[0],oldpos[1]).pedina).moves_directions[0]) { res=false; }
             else{res=true;} 
