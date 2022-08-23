@@ -21,6 +21,9 @@ contract MoveHandler {
         if(Chessboard.getCheck(team)&&NoMorePos(team)){ checked=true;nopos=true; }
         else if(!Chessboard.getCheck(team)&&NoMorePos(team)){ checked = false;nopos=true; }
         else { checked = false;nopos=false; }
+        console.log(',,,,,,,,,,,,,,,,,,,,');
+        console.log(checked);
+        console.log(nopos);
     } 
 
     function NoMorePos(bool team)
@@ -29,20 +32,30 @@ contract MoveHandler {
             console.logUint(pos[0]);console.logUint(pos[1]);*/
             //PRENDO DA POSS LA PEDINA E CONTROLLO IL SUO TEAM, E SE PUÒ ARRIVARE ALLA CASELLA 
             //SE SI LA CASELLA È PROTETTA ALTRIMENTI NO.
-            uint[2] memory poss;
+            uint[8] memory possx;
+            uint[8] memory possy;
+            uint[2] memory temp; 
             bool[8] memory ress;
             uint[2] memory pos = Chessboard.getKing(team);
-            uint x = uint(Movecontroller.abs(int(poss[0])-int(pos[0])));
-            uint y = uint(Movecontroller.abs(int(poss[1])-int(pos[1])));
-            for(uint i = 0; i<ress.length; i++){
-                (ress[i], poss)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])+1)), pos[1]], team );
-                if(!ress[i]||( Chessboard.getBox(poss[0],poss[1]).pedina!=0&&Chessboard.getBox(poss[0],poss[1]).color==team&&Movecontroller.Direction(poss, pos) )&&x<=Chessboard.getRules(Chessboard.getBox(poss[0], poss[1]).pedina).maxsteps&&y<=Chessboard.getRules(Chessboard.getBox(poss[0], poss[1]).pedina).maxsteps  ){
-                    ress[i]=false;
-                } else if(ress[i]){ ress[i]=true; }
-            }
+            (ress[0], temp)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0]))), uint(Movecontroller.arrecc(int(pos[1]+1)))], team );
+            possx[0] = temp[0];possy[0] = temp[1];
+            (ress[1], temp)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])+1)), pos[1]], team );
+            possx[1] = temp[0];possy[1] = temp[1];
+            (ress[2], temp)=isEvilBox( [uint(Movecontroller.arrdec(int(pos[0])-1)), pos[1]], team );
+            possx[2] = temp[0];possy[2] = temp[1];
+            (ress[3], temp)=isEvilBox( [pos[0], uint(Movecontroller.arrdec(int(pos[1])-1))], team );
+            possx[3] = temp[0];possy[3] = temp[1];
+            (ress[4], temp)=isEvilBox( [uint(Movecontroller.arrdec(int(pos[0])-1)), uint(Movecontroller.arrdec(int(pos[1])-1))], team );
+            possx[4] = temp[0];possy[4] = temp[1];
+            (ress[5], temp)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])+1)), uint(Movecontroller.arrecc(int(pos[1])+1))], team );
+            possx[5] = temp[0];possy[5] = temp[1];
+            (ress[6], temp)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])+1)), uint(Movecontroller.arrdec(int(pos[1])-1))], team );
+            possx[6] = temp[0];possy[6] = temp[1];
+            (ress[7], temp)=isEvilBox( [uint(Movecontroller.arrdec(int(pos[0])-1)), uint(Movecontroller.arrecc(int(pos[1])+1))], team );
+            possx[7] = temp[0];possy[7] = temp[1];
 
-            if(ress[0]&&ress[1]&&ress[2]&&ress[3]&&ress[4]&&ress[5]&&ress[6]&&ress[7]){ return false; }
-            return true;
+            if(ress[0]&&ress[1]&&ress[2]&&ress[3]&&ress[4]&&ress[5]&&ress[6]&&ress[7]){ return true; }
+            return false;
         }
 
 
@@ -77,13 +90,27 @@ contract MoveHandler {
             /*console.log('..................');
             console.logUint(posx[i]);
             console.logUint(posy[i]);*/
-            if(Movecontroller.Direction(pos, newpos)&&
+            (res, pos) = canArrive(newpos, [posx[i],posy[i]], team);
+            if(res){
+                return ( true, pos);
+            }
+            /*if(Movecontroller.Direction(pos, newpos)&&
                Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(pos[1])-int(newpos[1])))&&
                Chessboard.getBox(pos[0],pos[1]).color!=team){
                 return ( true, pos);
-            }
+            }*/
         }
         return ( false, pos );
+    }
+    function canArrive(uint[2] memory oldpos, uint[2] memory newpos, bool team) public view returns(bool res, uint[2] memory pos){
+        (res, pos) = Movecontroller.isObstacled(oldpos, newpos);//ok
+        if( res&&
+            Movecontroller.Direction(pos, oldpos)&&
+            Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(pos[1])-int(oldpos[1])))&&
+            Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(pos[0])-int(oldpos[0])))&&
+            team!=Chessboard.getBox(pos[0],pos[1]).color){
+            res = true; pos;
+        } else { res = false; pos; }
     }
     
 

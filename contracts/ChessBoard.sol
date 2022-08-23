@@ -39,7 +39,7 @@ contract ChessBoard {
     modifier onlyPlayers{ require(msg.sender==players[true]||msg.sender==players[false],''); _; }
     modifier onlyMoveHandler{ require(msg.sender==address(Movehandler),'');_; }
     modifier onlyMoveController{ require(msg.sender==address(Movecontroller),'');_; }
-    modifier yourTurn{ require(msg.sender==turner);_; }
+    //modifier yourTurn{ require(msg.sender==turner);_; }
     modifier Movecontrol(uint[2] memory oldpos, uint[2] memory newpos){ require(Movecontroller.MoveControl(oldpos, newpos, teams[msg.sender], Rules[Chessboard[oldpos[0]][oldpos[1]].pedina].maxsteps),''); _; }
     modifier isSetKing(uint[2] memory oldpos, uint[2] memory newpos) { 
         if(  Chessboard[oldpos[0]][oldpos[1]].pedina==5  ){ 
@@ -86,7 +86,7 @@ contract ChessBoard {
 
     function Move(uint[2] memory oldpos, uint[2] memory newpos) public
         /*onlyYPayYPlay(teams[msg.sender])*/
-        onlyPlayers yourTurn
+        onlyPlayers /*yourTurn*/ 
         Movecontrol(oldpos, newpos) 
         PedestrianToQueen(oldpos, newpos)
         isSetKing(oldpos, newpos)
