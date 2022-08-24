@@ -20,14 +20,6 @@ contract MoveController {
     function arrdec(int x_) public pure returns(int _x){  if(x_>=0)_x=x_;else _x=0; }
     
     modifier yourChessboard{require(msg.sender==address(Chessboard),'');_;}
-    function canArrive(uint[2] memory oldpos, uint[2] memory newpos, bool team) public returns(bool){ 
-        if(( Chessboard.getBox(oldpos[0],oldpos[1]).pedina!=0&&Chessboard.getBox(oldpos[0],oldpos[1]).color==team&&Direction(oldpos, newpos) )){ 
-            
-            return true;
-        } else{
-            return false;
-        }
-    }
     function Direction(uint[2] memory oldpos, uint[2] memory newpos)/**OKOKOK*/ 
         public view /*yourChessboard*/ returns(bool res)    
     {   int _x =(int(newpos[0]) - int(oldpos[0]));
@@ -69,10 +61,10 @@ contract MoveController {
             //console.logUint(i);
             //console.logUint(j);
             if(Chessboard.getBox(i,j).pedina!=0&&(newpos[0]!=i&&newpos[1]!=j)){
-                res = false;
+                res = true;
                 pos = [i,j];
                 break;
-            } else { res = true;pos=[i,j]; }    
+            } else { res = false;pos=[i,j]; }    
             //console.log('pos: %s,%s',i,j );
         }
     }
@@ -112,7 +104,7 @@ contract MoveController {
             require( _maxsteps>=uint(abs(x)) && _maxsteps>=uint(abs(y)), 'max');
             bool obs; uint[2] memory pos;
             (obs, pos) = isObstacled(oldpos, newpos);
-            require(obs, 'obs');       
+            require(!obs, 'obs');       
         }
         _;    
     }

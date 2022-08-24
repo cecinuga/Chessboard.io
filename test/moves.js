@@ -21,6 +21,9 @@ describe("Various Moves.", function() {
         expect(await chessboard.connect(player2).Move([3,1],[3,3])).to.be.not.reverted//pedona nero
         expect(await chessboard.connect(player1).Move([7,6],[7,4])).to.be.not.reverted//pedone bianco
         expect(await chessboard.connect(player2).Move([4,0],[0,4])).to.be.not.reverted//regina nero
-        await expect(chessboard.connect(player1).Move([3,7],[2,6])).to.be.revertedWith('evilbox');//re bianco
+
+        //console.log(await handler.isEvilBox([2,6], true));
+
+        //await expect(chessboard.connect(player1).Move([3,7],[2,6])).to.be.revertedWith('kingonevilbox');//re bianco
     });
 });

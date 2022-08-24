@@ -13,104 +13,142 @@ contract MoveHandler {
 
     modifier onlyYourChessboard{require(msg.sender==address(Chessboard),'');_;}
     modifier onlyYourController{require(msg.sender==address(Movecontroller),'');_;}
+    function checkHandler(bool team) public view 
+    returns(bool resss){
+        uint[2] memory king = Chessboard.getKing(team);
+        bool res;bool[8] memory authres;bool[8] memory ress;uint[8] memory posx; uint[8] memory posy;
+        //console.log('-----------------------');
+        (res,ress,posx,posy) = isEvilBox(king, team);
+        if(res){
+            authres = AuthPos(team);
+            console.log(authres[0]);console.log(authres[1]);console.log(authres[2]);console.log(authres[3]);console.log(authres[4]);console.log(authres[5]);console.log(authres[6]);console.log(authres[7]);          
+            if(authres[0]&&authres[1]&&authres[2]&&authres[3]&&authres[4]&&authres[5]&&authres[6]&&authres[7]){
+                for(uint i = 0; i<ress.length; i++){
+                    //PROBLEMA: Parare tutti gli scacchi 
+                    if(ress[i]){ 
+                        console.log('.....................');
+                        console.logUint(posx[i]);
+                        console.logUint(posy[i]);
+                        
+                        int _x =(int(posx[i]) - int(king[0]));
+                        int _y =(int(posy[i]) - int(king[1]));
+                        int incx = Movecontroller.increment(_x); int incy = Movecontroller.increment(_y);
+                        uint z=posx[i];uint k=posy[i];
 
-    function isCheckMate(bool team) public view returns(bool checked, bool nopos){
-        /*console.log('------------');
-        console.log(Chessboard.getCheck(team));
-        console.log(NoMorePos(team));*/
-        if(Chessboard.getCheck(team)&&NoMorePos(team)){ checked=true;nopos=true; }
-        else if(!Chessboard.getCheck(team)&&NoMorePos(team)){ checked = false;nopos=true; }
-        else { checked = false;nopos=false; }
-        console.log(',,,,,,,,,,,,,,,,,,,,');
-        console.log(checked);
-        console.log(nopos);
+                    }
+                }
+            } else { 
+                //TUTT'APPPOST UAGLIO SCAPP A NAPULE TATTATA TATATAATAATATTTA
+            }
+
+            
+        }
+        /*for(uint i = 0; i< res.length; i++){
+            if(res[i]){ 
+
+                //Ho le posizioni delle caselle che minacciano il RE
+                //Prendo le posizioni dei miei pezzi e controllo se almeno un pezzo può coprire la traiettoria 
+                int _x =(int(posx[i]) - int(king[0]));
+                int _y =(int(posy[i]) - int(king[1]));
+                int incx = Movecontroller.increment(_x); int incy = Movecontroller.increment(_y);
+                uint ii=posx[i];uint j=posy[i];
+
+                ress = true;
+                while(( ii!=uint(int(posx[i]))  ||  j!=uint(int(posy[i])) )){ 
+                    ii = uint(Movecontroller.arrecc(int(ii)+(incx))); 
+                    j = uint(Movecontroller.arrecc(int(j)+(incy)));
+                    bool canpro;uint[2] memory propos;
+                    (canpro, propos) = isEvilBox([ii,j], !team);
+                    if(canpro) { prox[i]=posx[i];proy[i]=posy[i]; }
+                }
+                console.log('-------------------------');
+                console.logUint(posx[i]);
+                console.logUint(posy[i]);
+            }
+        }*/
     } 
-
-    function NoMorePos(bool team)
-        public view onlyYourChessboard returns(bool){
+    
+    function AuthPos(bool team)
+        public view onlyYourChessboard returns(bool[8] memory ress){
             /*console.log('pos');
             console.logUint(pos[0]);console.logUint(pos[1]);*/
             //PRENDO DA POSS LA PEDINA E CONTROLLO IL SUO TEAM, E SE PUÒ ARRIVARE ALLA CASELLA 
             //SE SI LA CASELLA È PROTETTA ALTRIMENTI NO.
-            uint[8] memory possx;
-            uint[8] memory possy;
-            uint[2] memory temp; 
-            bool[8] memory ress;
             uint[2] memory pos = Chessboard.getKing(team);
-            (ress[0], temp)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0]))), uint(Movecontroller.arrecc(int(pos[1]+1)))], team );
-            possx[0] = temp[0];possy[0] = temp[1];
-            (ress[1], temp)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])+1)), pos[1]], team );
-            possx[1] = temp[0];possy[1] = temp[1];
-            (ress[2], temp)=isEvilBox( [uint(Movecontroller.arrdec(int(pos[0])-1)), pos[1]], team );
-            possx[2] = temp[0];possy[2] = temp[1];
-            (ress[3], temp)=isEvilBox( [pos[0], uint(Movecontroller.arrdec(int(pos[1])-1))], team );
-            possx[3] = temp[0];possy[3] = temp[1];
-            (ress[4], temp)=isEvilBox( [uint(Movecontroller.arrdec(int(pos[0])-1)), uint(Movecontroller.arrdec(int(pos[1])-1))], team );
-            possx[4] = temp[0];possy[4] = temp[1];
-            (ress[5], temp)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])+1)), uint(Movecontroller.arrecc(int(pos[1])+1))], team );
-            possx[5] = temp[0];possy[5] = temp[1];
-            (ress[6], temp)=isEvilBox( [uint(Movecontroller.arrecc(int(pos[0])+1)), uint(Movecontroller.arrdec(int(pos[1])-1))], team );
-            possx[6] = temp[0];possy[6] = temp[1];
-            (ress[7], temp)=isEvilBox( [uint(Movecontroller.arrdec(int(pos[0])-1)), uint(Movecontroller.arrecc(int(pos[1])+1))], team );
-            possx[7] = temp[0];possy[7] = temp[1];
+            uint[8] memory posx;uint[8] memory posy;
+            posx[0] = uint(Movecontroller.arrecc(int(pos[0])));
+            posy[0] = uint(Movecontroller.arrecc(int(pos[1])+1));
+            posx[1] = uint(Movecontroller.arrecc(int(pos[0])+1));
+            posy[1] = uint(Movecontroller.arrecc(int(pos[1])));
+            posx[2] = uint(Movecontroller.arrecc(int(pos[0])));
+            posy[2] = uint(Movecontroller.arrdec(int(pos[1])-1));
+            posx[3] = uint(Movecontroller.arrdec(int(pos[0])-1));
+            posy[3] = uint(Movecontroller.arrecc(int(pos[1])));
+            posx[4] = uint(Movecontroller.arrecc(int(pos[0])+1));
+            posy[4] = uint(Movecontroller.arrdec(int(pos[1])-1));
+            posx[5] = uint(Movecontroller.arrdec(int(pos[0])-1));
+            posy[5] = uint(Movecontroller.arrecc(int(pos[1])+1));
+            posx[6] = uint(Movecontroller.arrdec(int(pos[0])-1));
+            posy[6] = uint(Movecontroller.arrdec(int(pos[1])-1));
+            posx[7] = uint(Movecontroller.arrecc(int(pos[0])+1));
+            posy[7] = uint(Movecontroller.arrecc(int(pos[1])+1));
 
-            if(ress[0]&&ress[1]&&ress[2]&&ress[3]&&ress[4]&&ress[5]&&ress[6]&&ress[7]){ return true; }
-            return false;
+            for(uint i = 0; i < posx.length; i++){
+                if(Chessboard.getBox(posx[i], posy[i]).pedina==0&&Chessboard.getBox(posx[i], posy[i]).color!=team){ 
+                        (ress[i],,,)=isEvilBox( [posx[i], posy[i]], team );
+                } else { ress[i] = true; }
+            }
+            return (ress);
         }
-
-
-    function isEvilBox(uint[2] memory newpos, bool team) 
-        public view returns(bool res, uint[2] memory pos) {
-
-        /*PROGETTARE NUOVA FUNZIONE YUPPI */
-        uint[8] memory posx;
-        uint[8] memory posy; 
+    
+    function isEvilBox(uint[2] memory oldpos, bool team) 
+        public view returns(bool res, bool[8] memory ress,uint[8] memory posx, uint[8] memory posy) {
+        /*console.log('--------------------');
+        console.logUint(oldpos[0]);
+        console.logUint(oldpos[1]);*/
         posx[0] = 0; 
-        posy[0] = newpos[1];//-x
+        posy[0] = oldpos[1];//-x
         posx[1] = 7; 
-        posy[1] = newpos[1];//+x
-        posx[2] = newpos[0]; //-y
+        posy[1] = oldpos[1];//+x
+        posx[2] = oldpos[0]; //-y
         posy[2] = 0;
-        posx[3] = newpos[0]; //+y
+        posx[3] = oldpos[0]; //+y
         posy[3] = 7;
 
-        posx[4] = newpos[0]+(7-Movecontroller.max(newpos[0],newpos[1]));//+x+y
-        posy[4] = newpos[1]+(7-Movecontroller.max(newpos[0],newpos[1]));
-        posx[5] = newpos[0]-Movecontroller.min(newpos[0],newpos[1]);//-x-y
-        posy[5] = newpos[1]-Movecontroller.min(newpos[0],newpos[1]);
-        posx[6] = uint(Movecontroller.arrecc(int(newpos[1])+int(newpos[0])));//+x-y
-        posy[6] = uint(Movecontroller.arrdec(int(newpos[1])-(7-int(newpos[0]))));
+        posx[4] = oldpos[0]+(7-Movecontroller.max(oldpos[0],oldpos[1]));//+x+y
+        posy[4] = oldpos[1]+(7-Movecontroller.max(oldpos[0],oldpos[1]));
+        posx[5] = oldpos[0]-Movecontroller.min(oldpos[0],oldpos[1]);//-x-y
+        posy[5] = oldpos[1]-Movecontroller.min(oldpos[0],oldpos[1]);
+        posx[6] = uint(Movecontroller.arrecc(int(oldpos[1])+int(oldpos[0])));//+x-y
+        posy[6] = uint(Movecontroller.arrdec(int(oldpos[1])-(7-int(oldpos[0]))));
 
-        posx[7] = uint(Movecontroller.arrdec(int(newpos[1])-(7-int(newpos[0]))));//-x+y
-        posy[7] = uint(Movecontroller.arrecc(int(newpos[1])+int(newpos[0])));
+        posx[7] = uint(Movecontroller.arrdec(int(oldpos[1])-(7-int(oldpos[0]))));//-x+y
+        posy[7] = uint(Movecontroller.arrecc(int(oldpos[1])+int(oldpos[0])));
 
         //console.log('----------------');
+        uint[2] memory pos; 
         for(uint i=0; i<posx.length; i++){
-            (res, pos) = Movecontroller.isObstacled(newpos, [posx[i],posy[i]]);//ok
             /*console.log('..................');
             console.logUint(posx[i]);
             console.logUint(posy[i]);*/
-            (res, pos) = canArrive(newpos, [posx[i],posy[i]], team);
-            if(res){
-                return ( true, pos);
+            (ress[i], pos) = canArriveToMe(oldpos, [posx[i],posy[i]], team);
+            if(ress[i]){
+                posx[i] = pos[0];
+                posy[i] = pos[1];
             }
-            /*if(Movecontroller.Direction(pos, newpos)&&
-               Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(pos[1])-int(newpos[1])))&&
-               Chessboard.getBox(pos[0],pos[1]).color!=team){
-                return ( true, pos);
-            }*/
         }
-        return ( false, pos );
+        if(ress[0]||ress[1]||ress[2]||ress[3]||ress[4]||ress[5]||ress[6]||ress[7]){ res=true; }
+        else{ res=false; }
     }
-    function canArrive(uint[2] memory oldpos, uint[2] memory newpos, bool team) public view returns(bool res, uint[2] memory pos){
+    function canArriveToMe(uint[2] memory oldpos, uint[2] memory newpos, bool team) public view returns(bool res, uint[2] memory pos){
         (res, pos) = Movecontroller.isObstacled(oldpos, newpos);//ok
-        if( res&&
+        if( Chessboard.getBox(pos[0], pos[1]).pedina!=0&&
             Movecontroller.Direction(pos, oldpos)&&
-            Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(pos[1])-int(oldpos[1])))&&
-            Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(pos[0])-int(oldpos[0])))&&
+            Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(oldpos[1])-int(pos[1])))&&
+            Chessboard.getRules(Chessboard.getBox(pos[0], pos[1]).pedina).maxsteps>=uint(Movecontroller.abs(int(oldpos[0])-int(pos[0])))&&
             team!=Chessboard.getBox(pos[0],pos[1]).color){
-            res = true; pos;
-        } else { res = false; pos; }
+            res = true;
+        } else { res = false; }
     }
     
 

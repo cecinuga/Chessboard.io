@@ -15,7 +15,7 @@ describe("Mates.", function(){
 
         return { chessboard, controller, handler, player1, player2 }
     }
-    it('Check.', async function(){
+    it('CheckMate Barbiere.', async function(){
         const { chessboard, controller,handler, player1, player2 } = await loadFixture(deployContracts)
 
     });

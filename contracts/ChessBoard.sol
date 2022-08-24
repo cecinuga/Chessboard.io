@@ -29,7 +29,6 @@ contract ChessBoard {
     mapping(address => bool) private teams;
     mapping(bool => address) public players;
     mapping(address => uint) public prizes;
-
     Box[8][8] private Chessboard;
     MoveController public Movecontroller;
     MoveHandler public Movehandler;
@@ -41,32 +40,18 @@ contract ChessBoard {
     modifier onlyMoveController{ require(msg.sender==address(Movecontroller),'');_; }
     //modifier yourTurn{ require(msg.sender==turner);_; }
     modifier Movecontrol(uint[2] memory oldpos, uint[2] memory newpos){ require(Movecontroller.MoveControl(oldpos, newpos, teams[msg.sender], Rules[Chessboard[oldpos[0]][oldpos[1]].pedina].maxsteps),''); _; }
-    modifier isSetKing(uint[2] memory oldpos, uint[2] memory newpos) { 
-        if(  Chessboard[oldpos[0]][oldpos[1]].pedina==5  ){ 
-            require(isNotEvilBox(newpos, teams[msg.sender]),'evilbox');
-            setKing(newpos);
-        }_;
-    }  
     modifier PedestrianToQueen(uint[2] memory oldpos, uint[2] memory newpos){
         if(teams[msg.sender]&&Chessboard[oldpos[0]][oldpos[1]].pedina==1&&newpos[1]==0){ Chessboard[oldpos[0]][oldpos[1]].pedina=6; }
         else if(!teams[msg.sender]&&Chessboard[oldpos[0]][oldpos[1]].pedina==1&&newpos[1]==7){ Chessboard[oldpos[0]][oldpos[1]].pedina=6; }
         _;
     }
-    function isNotEvilBox(uint[2] memory newpos, bool team) public view returns(bool res) { { bool resEvilBox; uint[2] memory evilbox; (resEvilBox, evilbox)=Movehandler.isEvilBox(newpos, team); if(!resEvilBox){ res=true; } else{ res=false; }}}//LOGICAMENTE COLLAUDATO
     function setKing(uint[2] memory pos) internal { kingpos[teams[msg.sender]] = pos; KingsFirstmove[teams[msg.sender]]=false; }
 
-    function setCheck(bool _check) private { check[!teams[msg.sender]]=_check; }
+    function setCheck(bool _check, bool team) private { check[team]=_check; }
     function isSetCheck(uint[2] memory newpos) private { 
-        bool obs;(obs, ) = Movecontroller.isObstacled(newpos, kingpos[!teams[msg.sender]]);
-        /*console.log('-----------------------');
-        console.log(Movecontroller.Direction(newpos, kingpos[!teams[msg.sender]]));
-        console.logUint(newpos[0]);
-        console.logUint(newpos[1]);
-        console.logUint(kingpos[!teams[msg.sender]][0]);
-        console.logUint(kingpos[!teams[msg.sender]][1]);*/
-
-        if(  Movecontroller.Direction(newpos, kingpos[!teams[msg.sender]])&&obs  ){ 
-            setCheck(true);
+        bool arr;(arr, ) = Movehandler.canArriveToMe(newpos, kingpos[!teams[msg.sender]], teams[msg.sender]);
+        if(  arr  ){ 
+            setCheck(true, !teams[msg.sender]);
         }
     }
     function setTowers(uint[2] memory pos) private {
@@ -89,42 +74,20 @@ contract ChessBoard {
         onlyPlayers /*yourTurn*/ 
         Movecontrol(oldpos, newpos) 
         PedestrianToQueen(oldpos, newpos)
-        isSetKing(oldpos, newpos)
         returns(bool res){
-            bool ischeck;bool nopos;
-            (ischeck, nopos) = Movehandler.isCheckMate(teams[msg.sender]);
+            if(Chessboard[oldpos[0]][oldpos[1]].pedina==5){ setKing(newpos); }
+            Chessboard[newpos[0]][newpos[1]] = Chessboard[oldpos[0]][oldpos[1]];
+            Chessboard[oldpos[0]][oldpos[1]] = Box(0, false);
+            
+            bool checkhandler = Movehandler.checkHandler(!teams[msg.sender]);    
 
-            if( Chessboard[oldpos[0]][oldpos[1]].pedina==5&&
-                (uint(int(oldpos[0])-int(newpos[0]))==2)&&
-                KingsFirstmove[teams[msg.sender]]&&
-                !getCheck(teams[msg.sender])){
-                if(TowersFirstmove[teams[msg.sender]][true] ){
-                    Chessboard[oldpos[0]][oldpos[1]] = Box(0, teams[msg.sender]);
-                    Chessboard[oldpos[0]][oldpos[1]+2] = Box(5, teams[msg.sender]);
-                    Chessboard[oldpos[0]][oldpos[1]+1] = Box(2, teams[msg.sender]);
-
-                }
-                else if(TowersFirstmove[teams[msg.sender]][false] ){
-                    Chessboard[oldpos[0]][oldpos[1]] = Box(0, teams[msg.sender]);
-                    Chessboard[oldpos[0]][oldpos[1]-2] = Box(5, teams[msg.sender]);
-                    Chessboard[oldpos[0]][oldpos[1]-1] = Box(2, teams[msg.sender]);                    
-                }
-            }
-            else if(ischeck&&nopos){ //Hai Perso
-                selfdestruct(payable(players[!teams[msg.sender]])); 
-            }
-            else if(!ischeck&&!nopos){ //Continua
-                Chessboard[newpos[0]][newpos[1]] = Chessboard[oldpos[0]][oldpos[1]];
-                Chessboard[oldpos[0]][oldpos[1]] = Box(0, false);
-                turner = players[!teams[msg.sender]];
-                isSetCheck(newpos);
-            }
-            else if(!ischeck&&nopos){ //Stallo
-                payable(players[teams[msg.sender]]).transfer(prizes[players[teams[msg.sender]]]/2);
-                payable(players[!teams[msg.sender]]).transfer(prizes[players[!teams[msg.sender]]]/2);
-            }
+            
+            bool evilbox; 
+            (evilbox,,,) = Movehandler.isEvilBox(kingpos[teams[msg.sender]], teams[msg.sender]);
+            require(!evilbox,'kingonevilbox');
+            setCheck(false, teams[msg.sender]);
+            isSetCheck(newpos);
             setTowers(oldpos);
-            res = true;
         }
 
     constructor(address _player1, address _player2) {
