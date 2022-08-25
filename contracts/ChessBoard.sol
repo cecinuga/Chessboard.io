@@ -79,12 +79,18 @@ contract ChessBoard {
             Chessboard[newpos[0]][newpos[1]] = Chessboard[oldpos[0]][oldpos[1]];
             Chessboard[oldpos[0]][oldpos[1]] = Box(0, false);
             
-            bool checkhandler = Movehandler.checkHandler(!teams[msg.sender]);    
+            bool[8] memory authress = Movehandler.AuthPos(!teams[msg.sender]);bool authres;
+            if(authress[0]||authress[1]||authress[2]||authress[3]||authress[4]||authress[5]||authress[6]||authress[7]){ 
+                authres = true;
+            } else { authres = false; }
+            bool checkhandler = Movehandler.checkHandler(!teams[msg.sender], authres);    
 
             
             bool evilbox; 
-            (evilbox,,,) = Movehandler.isEvilBox(kingpos[teams[msg.sender]], teams[msg.sender]);
+            evilbox = Movehandler.isEvilBox(kingpos[teams[msg.sender]], teams[msg.sender]).res;
             require(!evilbox,'kingonevilbox');
+
+
             setCheck(false, teams[msg.sender]);
             isSetCheck(newpos);
             setTowers(oldpos);

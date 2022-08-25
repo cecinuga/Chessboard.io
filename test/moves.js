@@ -19,11 +19,12 @@ describe("Various Moves.", function() {
         const { chessboard, controller,handler, player1, player2 } = await loadFixture(deployContracts)
         expect(await chessboard.connect(player1).Move([2,6],[2,4])).to.be.not.reverted//pedone bianco 
         expect(await chessboard.connect(player2).Move([3,1],[3,3])).to.be.not.reverted//pedona nero
+        //expect(await chessboard.connect(player1).Move([3,6],[3,4])).to.be.not.reverted//pedone bianco
         expect(await chessboard.connect(player1).Move([7,6],[7,4])).to.be.not.reverted//pedone bianco
         expect(await chessboard.connect(player2).Move([4,0],[0,4])).to.be.not.reverted//regina nero
 
         //console.log(await handler.isEvilBox([2,6], true));
 
-        //await expect(chessboard.connect(player1).Move([3,7],[2,6])).to.be.revertedWith('kingonevilbox');//re bianco
+        //await expect(chessboard.connect(player1).Move([3,7],[2,6])).to.be.revertedWith('');//re bianco
     });
 });
