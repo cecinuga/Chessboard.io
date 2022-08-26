@@ -21,20 +21,22 @@ contract MoveHandler {
     modifier onlyYourController{require(msg.sender==address(Movecontroller),'');_;}
     function checkHandler(bool team, bool authres) public view 
     returns(bool){
+        bool[8] memory prot;
+        uint checks = 0;
         uint[2] memory king = Chessboard.getKing(team);
-        EvilBoxs memory evilboxs = isEvilBox(king, team);
         EvilBoxs memory protected;
         for(uint i=0; i<protected.ress.length; i++){ protected.ress[i]=false; }
         //console.log('-----------------------');
-        if(evilboxs.res&&authres){
-            for(uint i = 0; i<evilboxs.ress.length; i++){
+        if(isEvilBox(king, team).res&&authres){
+            for(uint i = 0; i<isEvilBox(king, team).ress.length; i++){
                 //PROBLEMA: Parare tutti gli scacchi 
-                if(evilboxs.ress[i]){                     
-                    int _x =(int(evilboxs.posx[i]) - int(king[0]));
-                    int _y =(int(evilboxs.posy[i]) - int(king[1]));
+                if(isEvilBox(king, team).ress[i]){ 
+                    checks++;
+                    int _x =(int(isEvilBox(king, team).posx[i]) - int(king[0]));
+                    int _y =(int(isEvilBox(king, team).posy[i]) - int(king[1]));
                     int incx = Movecontroller.increment(_x); int incy = Movecontroller.increment(_y);
                     uint z=king[0];uint k=king[1];
-                    while(( z!=uint(int(evilboxs.posx[i]))  ||  k!=uint(int(evilboxs.posy[i])) )){ 
+                    while(( z!=uint(int(isEvilBox(king, team).posx[i]))  ||  k!=uint(int(isEvilBox(king, team).posy[i])) )){ 
                         z = uint(Movecontroller.arrecc(int(z)+(incx))); 
                         k = uint(Movecontroller.arrecc(int(k)+(incy)));
                         protected = isEvilBox([z,k], !team);
@@ -47,18 +49,17 @@ contract MoveHandler {
                             console.logUint(protected.posy[m]);
                         }
                         if(protected.res&&Chessboard.getBox(protected.posx[i], protected.posy[i]).pedina!=5){ 
-                            console.log(protected.res);
-                                                        
-                           
+                            console.log('ma ciao');
+                            prot[i]=true;             
                             break; 
                         }
                      
                     }
-                } else {  }
+                } else { prot[i]=true; }
             }
-            console.log(protected.ress[0]);console.log(protected.ress[1]);console.log(protected.ress[2]);console.log(protected.ress[3]);console.log(protected.ress[4]);console.log(protected.ress[5]);console.log(protected.ress[6]);console.log(protected.ress[7]);
+            console.log(prot[0]);console.log(prot[1]);console.log(prot[2]);console.log(prot[3]);console.log(prot[4]);console.log(prot[5]);console.log(prot[6]);console.log(prot[7]);
 
-            if(protected.ress[0]&&protected.ress[1]&&protected.ress[2]&&protected.ress[3]&&protected.ress[4]&&protected.ress[5]&&protected.ress[6]&&protected.ress[7]){ return true; }
+            if(checks<2&&prot[0]&&prot[1]&&prot[2]&&prot[3]&&prot[4]&&prot[5]&&prot[6]&&prot[7]){ return true; }
             else{ return false; }
         }
         else { 
@@ -93,9 +94,9 @@ contract MoveHandler {
             posy[7] = uint(Movecontroller.arrecc(int(pos[1])+1));
 
             for(uint i = 0; i < posx.length; i++){
-                if(Chessboard.getBox(posx[i], posy[i]).pedina==0&&Chessboard.getBox(posx[i], posy[i]).color!=team){ 
-                    ress[i]=isEvilBox( [posx[i], posy[i]], team ).res;
-                } else { ress[i] = true; }
+                if(Chessboard.getBox(posx[i], posy[i]).pedina!=0&&Chessboard.getBox(posx[i], posy[i]).color==team){
+                   ress[i] = true;
+                } else {  ress[i]=isEvilBox( [posx[i], posy[i]], team ).res; }
             }
             return (ress);
         }
@@ -130,6 +131,7 @@ contract MoveHandler {
             /*console.log('..................');
             console.logUint(evilboxs.posx[i]);
             console.logUint(evilboxs.posy[i]);*/
+
             (evilboxs.ress[i], pos) = canArriveToMe(oldpos, [evilboxs.posx[i],evilboxs.posy[i]], team);
             if(evilboxs.ress[i]){
                 evilboxs.posx[i] = pos[0];

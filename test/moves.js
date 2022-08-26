@@ -25,6 +25,6 @@ describe("Various Moves.", function() {
 
         //console.log(await handler.isEvilBox([2,6], true));
 
-        //await expect(chessboard.connect(player1).Move([3,7],[2,6])).to.be.revertedWith('');//re bianco
+        //await expect(chessboard.connect(player1).Move([3,7],[2,6])).to.be.revertedWith('kingonevilbox');//re bianco
     });
 });
