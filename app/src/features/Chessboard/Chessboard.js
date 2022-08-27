@@ -34,7 +34,7 @@ export default function Chessboard() {
                     el.item(i).checked = false;
                 }
             }
-            if(store.getState().chess.lastMove.firstStep!=''&&store.getState().chess.lastMove.secondStep!=''){
+            if(store.getState().chess.lastMove.firstStep!=''&&store.getState().chess.lastMove.secondStep!=''&&store.getState().chess.lastMove.status=='ok'){
                 console.log("spostiamo sti pezzi va")
                 console.log(store.getState().chess.lastMove)
                 let className;
@@ -55,7 +55,8 @@ export default function Chessboard() {
                     const turn = changeTurnerListener();
                     console.log('turn: '+turn)
                 }               
-            }  
+            }
+            if(store.getState().chess.lastMove.status=='repeat'){document.getElementById('Box-'+store.getState().chess.lastMove.firstStep).checked = false; }
         })
    
         return(

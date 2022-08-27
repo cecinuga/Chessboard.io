@@ -47,18 +47,19 @@ contract MoveHandler {
                             console.log(protected.ress[m]);
                             console.logUint(protected.posx[m]);
                             console.logUint(protected.posy[m]);
+                            if(protected.ress[m]&&Chessboard.getBox(protected.posx[m], protected.posy[m]).pedina!=5){ 
+                                console.log('ma ciao');
+                                prot[i]=true;             
+                                break; 
+                            }
                         }
-                        if(protected.res&&Chessboard.getBox(protected.posx[i], protected.posy[i]).pedina!=5){ 
-                            console.log('ma ciao');
-                            prot[i]=true;             
-                            break; 
-                        }
-                     
+                        if(prot[i]) break;
                     }
                 } else { prot[i]=true; }
             }
+            console.log(',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,');
             console.log(prot[0]);console.log(prot[1]);console.log(prot[2]);console.log(prot[3]);console.log(prot[4]);console.log(prot[5]);console.log(prot[6]);console.log(prot[7]);
-
+            console.log(',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,');
             if(checks<2&&prot[0]&&prot[1]&&prot[2]&&prot[3]&&prot[4]&&prot[5]&&prot[6]&&prot[7]){ return true; }
             else{ return false; }
         }
@@ -95,7 +96,7 @@ contract MoveHandler {
 
             for(uint i = 0; i < posx.length; i++){
                 if(Chessboard.getBox(posx[i], posy[i]).pedina!=0&&Chessboard.getBox(posx[i], posy[i]).color==team){
-                   ress[i] = true;
+                   ress[i] = true;//occupato da un amico
                 } else {  ress[i]=isEvilBox( [posx[i], posy[i]], team ).res; }
             }
             return (ress);

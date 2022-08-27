@@ -34,7 +34,7 @@ export const Move = createAsyncThunk(
             console.log('res')
             console.log(res)
             
-            if(res.length){
+            if(res.length&&(String(data.step[0]+data.step[1])!=String(x1+y1))){
                 const tx = await chessboard.connect(signer).Move(
                         [Number(x1),Number(y1)],
                         [Number(data.step[0]),Number(data.step[1])],

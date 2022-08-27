@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/peterbruegel/GitHub/chessboard.io/contracts/ChessBoard.sol": {
-      "lastModificationDate": 1661532669065,
-      "contentHash": "fe9cc1ded63275bd6d95823eef8f3a56",
+      "lastModificationDate": 1661603098342,
+      "contentHash": "f92570b26e4e7a6607a80962d990d068",
       "sourceName": "contracts/ChessBoard.sol",
       "solcConfig": {
         "version": "0.8.14",
@@ -79,8 +79,8 @@
       ]
     },
     "/home/peterbruegel/GitHub/chessboard.io/contracts/MoveHandler.sol": {
-      "lastModificationDate": 1661532638172,
-      "contentHash": "49a473e55b30d311b98a997825e4131b",
+      "lastModificationDate": 1661603952854,
+      "contentHash": "317f2a81e46f5bf406ca58ce340b527d",
       "sourceName": "contracts/MoveHandler.sol",
       "solcConfig": {
         "version": "0.8.14",

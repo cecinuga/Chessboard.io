@@ -80,10 +80,10 @@ contract ChessBoard {
             Chessboard[oldpos[0]][oldpos[1]] = Box(0, false);
             
             bool[8] memory authress = Movehandler.AuthPos(!teams[msg.sender]);bool authres;
+            console.log('--------------------------');
             for(uint kk =0; kk<authress.length; kk++){
                 console.log(authress[kk]);
             }
-            console.log('--------------------------');
             if(authress[0]&&authress[1]&&authress[2]&&authress[3]&&authress[4]&&authress[5]&&authress[6]&&authress[7]){ 
                 authres = true;
             } else { authres = false; }
