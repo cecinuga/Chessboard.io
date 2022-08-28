@@ -8,7 +8,7 @@ export const useMenu = state=>state.memu;
 export const Move = createAsyncThunk(
     "chess/move",
     async ( data ) => { 
-        const chessboard_address = "0x9DB6CFb2b5E39dbc0Bcf3C7a04C59eA12cb5212e"
+        //const chessboard_address = "0x9DB6CFb2b5E39dbc0Bcf3C7a04C59eA12cb5212e"
         if(
             store.getState().chess.lastMove.firstStep!=''&&
             store.getState().chess.lastMove.secondStep==''&&
@@ -49,6 +49,7 @@ export const Move = createAsyncThunk(
 
                 const par = {chessboard: chessboard.address, turner:store.getState().menu.matchmaking.enemy, x:String(x1+y1), y:String(data.step[0]+data.step[1]) }
                 const updated = await Moralis.Cloud.run("updateTurnerGame", par)
+                data.turner = store.getState().menu.matchmaking.enemy;
                 console.log(updated)
             } else { console.log('Non è il tuo turno'); console.log(res); return {error:true} }
         }

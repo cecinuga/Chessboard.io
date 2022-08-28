@@ -60,10 +60,10 @@ export default function Chessboard() {
         })
    
         return(
-            <div className="Chess p-5 w-2/3 inline-block text-center bg-amber-400 rounded">
-                <div className="Enemy">{store.getState().menu.matchmaking.enemy}</div>
+            <div className="Chess p-5 w-2/3 inline-block text-center bg-amber-400 rounded text-center">
+                <div className="Enemy rounded-full w-2/3 relative bg-orange-400 mb-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">0xcf70e93b75BC5D94652445282DeC2DdaB223Aac1{store.getState().menu.matchmaking.enemy}</div>
                 <div 
-                    className="Chessboard inline-block"
+                    className="Chessboard relative"
                     id="Chessboard"    
                 >
                     {
@@ -92,7 +92,7 @@ export default function Chessboard() {
                     }
                 </div>
 
-                <div className="Player">{store.getState().menu.user.ads}</div>
+                <div className="Player rounded-full w-2/3 relative bg-orange-400 mt-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{store.getState().menu.user.ads}</div>
             </div>
         );
 }

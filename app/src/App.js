@@ -30,8 +30,7 @@ class App extends React.Component {
 
   render(){
     return (
-      <div className="App">    
-        <Banner />  
+      <div className="App">     
         <Menu/>
         <div className="Body my-2 relative">
           <FastMenu />

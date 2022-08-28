@@ -90,7 +90,7 @@ export default function FastMenu() {
       <div className={"PrizeMatchMaking "+displayPMMPanel}>
        <PrizeMatchMaking />
       </div>
-      <div className={"InfoGame "+displayInfoGame}>
+      <div className={"InfoGame text-center "+displayInfoGame}>
        <InfoGame />
       </div>
     </div>

@@ -7,6 +7,7 @@ import { Move, useMenu } from './chessAPI';
 
 const initialState = { 
     lastMove:{ firstStep:'', piece:'', secondStep:'',status:'' },
+    turner:'',
     status:'',
     error:''
 }
@@ -39,6 +40,7 @@ export const chessSlice = createSlice({
                 } else if(state.lastMove.firstStep!=''&&state.lastMove.secondStep=='') {
                     if(state.lastMove.firstStep!=action.payload.step){
                         state.lastMove.secondStep = action.payload.step;
+                        state.turner = action.payload.turner
                         state.lastMove.status='ok';
                     } else {state.lastMove.status='repeat';}
                 } 

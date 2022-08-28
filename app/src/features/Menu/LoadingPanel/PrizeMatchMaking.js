@@ -8,12 +8,11 @@ export default function PreMatchMaking(from, to){
     }
 
     return(
-        <div className="PrizeMatchMaking p-1 text-white font-semibold bg-amber-600 rounded">
-            
+        <div className="PrizeMatchMaking p-1 pb-2 mb-2 text-white font-semibold bg-amber-600 rounded text-center">
             <select
                 name="Currency"
                 id="Currency"
-                className="mr-2 mb-1 rounded p-1 text-amber-800">
+                className="mr-2 mt-1 rounded p-1 text-amber-800">
                 <option value="" className="font-normal">ether</option>
                 <option value="">finney</option>
                 <option value="">szabo</option> 

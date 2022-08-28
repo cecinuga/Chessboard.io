@@ -16,8 +16,10 @@ export default function Menu() {
   console.log(store.getState())
   return (
     <div className="Menu-Child bg-amber-200 ">
-      <img className="w-12 h-12 inline-block" src={logo}></img>
-      <div className="inline-block font-semibold font-4xl ml-2 text-orange-700">dChess.io</div>
+      <a href="http://localhost:3000"  className="inline-block font-semibold font-6xl ml-2 mr-6 text-orange-800 relative top-1">
+        <img className="w-12 h-12 inline-block mb-2" src={logo}></img>
+        dChess.io
+      </a>
       <BtnMatchM name={matchmaking.name} classes={matchmaking.classes} />
       { 
         navigation.map((btn)=>{ 
