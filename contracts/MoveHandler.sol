@@ -29,7 +29,6 @@ contract MoveHandler {
         //console.log('-----------------------');
         if(isEvilBox(king, team).res&&authres){
             for(uint i = 0; i<isEvilBox(king, team).ress.length; i++){
-                //PROBLEMA: Parare tutti gli scacchi 
                 if(isEvilBox(king, team).ress[i]){ 
                     checks++;
                     int _x =(int(isEvilBox(king, team).posx[i]) - int(king[0]));
@@ -41,14 +40,13 @@ contract MoveHandler {
                         k = uint(Movecontroller.arrecc(int(k)+(incy)));
                         protected = isEvilBox([z,k], !team);
                         for(uint m = 0; m<protected.ress.length; m++){ 
-                            console.log('....................');
+                            /*console.log('....................');
                             console.logUint(z);
                             console.logUint(k);
                             console.log(protected.ress[m]);
                             console.logUint(protected.posx[m]);
-                            console.logUint(protected.posy[m]);
+                            console.logUint(protected.posy[m]);*/
                             if(protected.ress[m]&&Chessboard.getBox(protected.posx[m], protected.posy[m]).pedina!=5){ 
-                                console.log('ma ciao');
                                 prot[i]=true;             
                                 break; 
                             }
@@ -57,9 +55,9 @@ contract MoveHandler {
                     }
                 } else { prot[i]=true; }
             }
-            console.log(',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,');
-            console.log(prot[0]);console.log(prot[1]);console.log(prot[2]);console.log(prot[3]);console.log(prot[4]);console.log(prot[5]);console.log(prot[6]);console.log(prot[7]);
-            console.log(',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,');
+            //console.log(',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,');
+            //console.log(prot[0]);console.log(prot[1]);console.log(prot[2]);console.log(prot[3]);console.log(prot[4]);console.log(prot[5]);console.log(prot[6]);console.log(prot[7]);
+            //console.log(',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,');
             if(checks<2&&prot[0]&&prot[1]&&prot[2]&&prot[3]&&prot[4]&&prot[5]&&prot[6]&&prot[7]){ return true; }
             else{ return false; }
         }

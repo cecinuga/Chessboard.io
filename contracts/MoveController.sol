@@ -60,7 +60,7 @@ contract MoveController {
             j = uint(arrecc(int(j)+(incy)));
             //console.logUint(i);
             //console.logUint(j);
-            if(Chessboard.getBox(i,j).pedina!=0&&(newpos[0]!=i&&newpos[1]!=j)){
+            if(Chessboard.getBox(i,j).pedina!=0&&(newpos[0]!=i||newpos[1]!=j)){//ATTENZIONE
                 res = true;
                 pos = [i,j];
                 break;
@@ -69,15 +69,15 @@ contract MoveController {
         }
     }
     modifier logicalControls(uint[2] memory oldpos, uint[2] memory newpos, bool team, uint _maxsteps){
-        require(Chessboard.getBox(oldpos[0],oldpos[1]).color == team, '');//Sposta i Tuoi Pezzi.
-        require((oldpos[0]!=newpos[0]||oldpos[1]!=newpos[1]),'');//Spostati...
-        if(Chessboard.getBox(newpos[0],newpos[1]).pedina!=0) {require( Chessboard.getBox(newpos[0],newpos[1]).color!=team, '');}//Fuoco Amico.
+        require(Chessboard.getBox(oldpos[0],oldpos[1]).color == team, 'nyp');//Sposta i Tuoi Pezzi.
+        require((oldpos[0]!=newpos[0]||oldpos[1]!=newpos[1]),'sp');//Spostati...
+        if(Chessboard.getBox(newpos[0],newpos[1]).pedina!=0) {require( Chessboard.getBox(newpos[0],newpos[1]).color!=team, 'ff');}//Fuoco Amico.
         
         x=(int(newpos[0]) - int(oldpos[0]));
         y=(int(newpos[1]) - int(oldpos[1]));
 
         bool dir = Direction(oldpos, newpos);
-        require( dir, '' );//
+        require( dir, 'dir' );//
 
         if(Chessboard.getBox(oldpos[0],oldpos[1]).pedina==5){
             if( 
@@ -104,7 +104,7 @@ contract MoveController {
             require( _maxsteps>=uint(abs(x)) && _maxsteps>=uint(abs(y)), '');
             bool obs; uint[2] memory pos;
             (obs, pos) = isObstacled(oldpos, newpos);
-            require(!obs, '');       
+            require(!obs, 'obs');       
         }
         _;    
     }

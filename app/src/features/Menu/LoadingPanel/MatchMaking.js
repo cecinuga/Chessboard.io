@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import MMlogo from '../../../public/matchmaking2.gif';
+import MMlogo from '../../../public/matchmaking3.gif';
 
 export default function MatchMaking() {
   return (

@@ -33,7 +33,7 @@ class App extends React.Component {
       <div className="App">    
         <Banner />  
         <Menu/>
-        <div className="Body my-2">
+        <div className="Body my-2 relative">
           <FastMenu />
           <Chessboard />
         </div>

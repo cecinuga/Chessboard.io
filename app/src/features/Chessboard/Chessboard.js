@@ -60,9 +60,8 @@ export default function Chessboard() {
         })
    
         return(
-            <div className="Chess p-4 w-2/3 inline-block text-center bg-amber-400 rounded relative">
+            <div className="Chess p-5 w-2/3 inline-block text-center bg-amber-400 rounded">
                 <div className="Enemy">{store.getState().menu.matchmaking.enemy}</div>
-
                 <div 
                     className="Chessboard inline-block"
                     id="Chessboard"    

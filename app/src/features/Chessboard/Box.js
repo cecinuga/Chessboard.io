@@ -38,7 +38,7 @@ export default class Box extends React.Component{
                         id={"Box-"+String(this.props.coo)} 
                         value={this.props.p}
                         checked={this.state.checked}
-                        className="Boxes w-12 h-12"
+                        className="Boxes w-20 h-20"
                         onChange={
                             async ()=>{//PASSARE DESTRUTTURANDO LA FUNZIONE RUN CONTRACT MORALIS PER CHESSSLICE.JS
                                 this.setState({ checked: true })

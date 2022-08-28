@@ -80,9 +80,9 @@ contract ChessBoard {
             Chessboard[oldpos[0]][oldpos[1]] = Box(0, false);
             
             bool[8] memory authress = Movehandler.AuthPos(!teams[msg.sender]);bool authres;
-            console.log('--------------------------');
+            //console.log('--------------------------');
             for(uint kk =0; kk<authress.length; kk++){
-                console.log(authress[kk]);
+                //console.log(authress[kk]);
             }
             if(authress[0]&&authress[1]&&authress[2]&&authress[3]&&authress[4]&&authress[5]&&authress[6]&&authress[7]){ 
                 authres = true;
@@ -93,18 +93,24 @@ contract ChessBoard {
             require(!evilbox,'kingonevilbox');
 
             bool checkhandler = Movehandler.checkHandler(!teams[msg.sender], authres);    
-            console.log('!!!!!!!!!!!!!!!!!!!!!!!');
-            console.log(checkhandler);
+            //console.log('!!!!!!!!!!!!!!!!!!!!!!!');
+            //console.log(checkhandler);
+            bool[8] memory nomoreposs = Movehandler.AuthPos(teams[msg.sender]);bool nomorepos;
+            if(nomoreposs[0]&&nomoreposs[1]&&nomoreposs[2]&&nomoreposs[3]&&nomoreposs[4]&&nomoreposs[5]&&nomoreposs[6]&&nomoreposs[7]){ 
+                nomorepos = true;
+            } else { nomorepos = false; }
             if(checkhandler){ 
                 setCheck(false, teams[msg.sender]);
                 isSetCheck(newpos);
                 setTowers(oldpos);
-            } else {
+                res = true;
+            } else if(nomorepos&&!getCheck(!teams[msg.sender])){
+                //Stallo Bro
+                res = false;
+            } else if(!checkhandler){
                 //SCACCO MATTO BRO!
+                console.log('Scacco Matto! Ho vinto!');
             }
-
-
-            
         }
 
     constructor(address _player1, address _player2) {

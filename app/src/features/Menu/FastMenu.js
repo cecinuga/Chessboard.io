@@ -1,14 +1,16 @@
 import React, { useState, useEffect }  from 'react';
 import { store } from './../../app/store';
 import { ethers, provider, signer } from '../../App';
-import MatchMaking from './LoadingPanel/MatchMaking';
-import PreMatchMaking from './LoadingPanel/PreMatchMaking';
 import Moralis from 'moralis';
+import MatchMaking from './LoadingPanel/MatchMaking';
+import PrizeMatchMaking from './LoadingPanel/PrizeMatchMaking';
+import InfoGame from './LoadingPanel/InfoGame';
+
 import ChessBoard from '../../artifacts/ChessBoard';
 import { gameFound } from './menuSlice';
 import { foundMyEnemy, foundMyGame } from '../../fun/matchmaking';
 import { payedGame } from './menuSlice'
-import {changeTurnerListener} from '../../fun/chessboard'
+import { changeTurnerListener } from '../../fun/chessboard'
 
 export default function FastMenu() {
   
@@ -54,6 +56,8 @@ export default function FastMenu() {
     }
     else if(store.getState().menu.matchmaking.message.status=='payed'){
       setDisplayMMPanel('hidden');  
+      setDisplayPMMPanel('hidden');
+      setDisplayInfoGame('block');
       if(!store.getState().menu.matchmaking.team){
         document.getElementById('Chessboard').classList.add('rotate-180')
         const el = document.getElementsByClassName('Box')
@@ -71,20 +75,23 @@ export default function FastMenu() {
 
   const [displayMMPanel, setDisplayMMPanel] = useState('hidden');
   const [displayPMMPanel, setDisplayPMMPanel] = useState('block');
-  
+  const [displayInfoGame, setDisplayInfoGame] = useState('hidden');
+
   return (
-    <div className="FastMenu w-1/3 bg-amber-600 inline-block rounded">
+    <div className="FastMenu w-1/3 bg-amber-700 inline-block rounded relative top-3">
+      <div className="Status-Row p-1 mb-2 bg-amber-800">
+        <span className="Status font-semibold text-white">Status:<div className="Stats inline-block ml-2">{store.getState().menu.matchmaking.message.status}</div></span>
+      </div>
       <div
         id="LoadingMatchMaking" 
-        className={"LoadingMatchMaking py-4 z-3 text-center bg-rose-200 opacity-80 "+displayMMPanel}>
+        className={"LoadingMatchMaking py-4 z-3 text-center opacity-80 "+displayMMPanel}>
         <MatchMaking />
       </div>
-      <div className="Status-Row p-1">
-        <span className="Status font-semibold text-white">status:<div className="Stats inline-block">{store.getState().menu.matchmaking.message.status}</div></span>
-        <div className="Status-Btn">{}</div>
+      <div className={"PrizeMatchMaking "+displayPMMPanel}>
+       <PrizeMatchMaking />
       </div>
-      <div className={"PreMatchMaking "+displayPMMPanel}>
-       <PreMatchMaking />
+      <div className={"InfoGame "+displayInfoGame}>
+       <InfoGame />
       </div>
     </div>
   );
