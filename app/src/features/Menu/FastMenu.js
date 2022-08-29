@@ -5,12 +5,12 @@ import Moralis from 'moralis';
 import MatchMaking from './LoadingPanel/MatchMaking';
 import PrizeMatchMaking from './LoadingPanel/PrizeMatchMaking';
 import InfoGame from './LoadingPanel/InfoGame';
-
 import ChessBoard from '../../artifacts/ChessBoard';
 import { gameFound } from './menuSlice';
 import { foundMyEnemy, foundMyGame } from '../../fun/matchmaking';
 import { payedGame } from './menuSlice'
 import { changeTurnerListener } from '../../fun/chessboard'
+import { formatAddress, formatPrice } from '../../fun/formatter';
 
 export default function FastMenu() {
   
@@ -65,6 +65,9 @@ export default function FastMenu() {
           el.item(i).classList.add('rotate-180')
         }
         const turn = changeTurnerListener();
+        document.getElementById('InfoGame-Turner-value').innerHTML=formatAddress(store.getState().menu.matchmaking.enemy);
+      }else{
+        document.getElementById('InfoGame-Turner-value').innerHTML=formatAddress(store.getState().menu.user.ads);
       }
     }
     else if(store.getState().menu.matchmaking.message.status=='rejected'){
@@ -75,20 +78,20 @@ export default function FastMenu() {
 
   const [displayMMPanel, setDisplayMMPanel] = useState('hidden');
   const [displayPMMPanel, setDisplayPMMPanel] = useState('block');
-  const [displayInfoGame, setDisplayInfoGame] = useState('hidden');
+  const [displayInfoGame, setDisplayInfoGame] = useState('BLOCK');
 
   return (
-    <div className="FastMenu w-1/3 bg-amber-700 inline-block rounded relative top-3">
-      <div className="Status-Row p-1 mb-2 bg-amber-800">
+    <div className="FastMenu p-2 w-full bg-amber-700 inline-block rounded-md">
+      <div className="Status-Row p-1 mb-2 bg-amber-800 rounded-md">
         <span className="Status font-semibold text-white">Status:<div className="Stats inline-block ml-2">{store.getState().menu.matchmaking.message.status}</div></span>
-      </div>
-      <div
-        id="LoadingMatchMaking" 
-        className={"LoadingMatchMaking py-4 z-3 text-center opacity-80 "+displayMMPanel}>
-        <MatchMaking />
       </div>
       <div className={"PrizeMatchMaking "+displayPMMPanel}>
        <PrizeMatchMaking />
+      </div>
+      <div
+        id="LoadingMatchMaking" 
+        className={"LoadingMatchMaking py-2 z-3 text-center opacity-80 "+displayMMPanel}>
+        <MatchMaking />
       </div>
       <div className={"InfoGame text-center "+displayInfoGame}>
        <InfoGame />

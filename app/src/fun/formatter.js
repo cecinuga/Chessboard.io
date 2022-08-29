@@ -10,7 +10,7 @@ export const formatAddress = function(address){
 export const formatPrice = function(price){
     let prc;
     if(price!=''){
-        prc = price.slice(0,6);
+        prc = price.slice(0,8);
     } else { prc=''; }
     return prc;
 }

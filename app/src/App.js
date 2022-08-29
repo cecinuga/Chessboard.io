@@ -10,7 +10,6 @@ import {ethers} from 'ethers'
 import Menu from './features/Menu/Menu';
 import Btn from './components/Btn/Btn';
 import Chessboard from './features/Chessboard/Chessboard';
-import FastMenu from './features/Menu/FastMenu';
 import Banner from './features/Menu/Banner';
 
 export { ethers }
@@ -32,9 +31,9 @@ class App extends React.Component {
     return (
       <div className="App">     
         <Menu/>
-        <div className="Body my-2 relative">
-          <FastMenu />
+        <div className="Body relative bg-orange-300">
           <Chessboard />
+          <br />
         </div>
       </div>
     );

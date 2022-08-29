@@ -3,6 +3,7 @@ import ChessBoard from '../../artifacts/ChessBoard.json';
 import { store } from '../../app/store';
 import { Move } from './chessAPI';
 import Box from './Box';
+import FastMenu from './../Menu/FastMenu';
 import { changeTurnerListener } from '../../fun/chessboard'
 import { ethers, signer } from '../../App'
 
@@ -60,39 +61,49 @@ export default function Chessboard() {
         })
    
         return(
-            <div className="Chess p-5 w-2/3 inline-block text-center bg-amber-400 rounded text-center">
-                <div className="Enemy rounded-full w-2/3 relative bg-orange-400 mb-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">0xcf70e93b75BC5D94652445282DeC2DdaB223Aac1{store.getState().menu.matchmaking.enemy}</div>
-                <div 
-                    className="Chessboard relative"
-                    id="Chessboard"    
-                >
-                    {
-                        row.map((x)=>{
-                            return( 
-                                <div key={x} className={'Col-'+x+' inline-block'}>{
-                                    col.map((y)=>{
-                                        let team;
-                                        let piece;
-                                        if(y==0||y==1) team=false
-                                        if(y==6||y==7) team=true
-                                        
-                                        p.map((coo)=>{ if(coo==String(x)+String(y)){piece='p'} })
-                                        t.map((coo)=>{ if(coo==String(x)+String(y)){piece='t'} })
-                                        c.map((coo)=>{ if(coo==String(x)+String(y)){piece='c'} })
-                                        a.map((coo)=>{ if(coo==String(x)+String(y)){piece='a'} })
-                                        q.map((coo)=>{ if(coo==String(x)+String(y)){piece='q'} })
-                                        k.map((coo)=>{ if(coo==String(x)+String(y)){piece='k'} })
-
-                                        if((x%2==0&&y%2!=0)||(x%2!=0&&y%2==0)) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={true}/>);
-                                        else if((x%2==0&&y%2==0)||(x%2!=0&&y%2!=0)) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={false}/>);
-                                    })}
-                                </div>
-                            );
-                        })
-                    }
+            <div className="Chess p-5 w-full inline-block rounded relative">
+                <div className="FastMenu-container md:mb-4 md:w-full xl:w-2/6 text-center md:block xl:inline-block">
+                    <div className="FastMenu w-3/6 text-center relative xl:left-36 xl:bottom-56">
+                        <FastMenu />
+                    </div>
                 </div>
+                <div className="Chessboard_ w-4/6 inline-block text-left">
+                    <div className="_Chessboard_ w-fit text-center">
+                        <div className="Enemy rounded-full w-fit relative bg-orange-400 mb-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{store.getState().menu.matchmaking.enemy}</div>
+                        <div 
+                            className="Chessboard relative"
+                            id="Chessboard"    
+                        >
+                            {
+                                row.map((x)=>{
+                                    return( 
+                                        <div key={x} className={'Col-'+x+' inline-block'}>{
+                                            col.map((y)=>{
+                                                let team;
+                                                let piece;
+                                                if(y==0||y==1) team=false
+                                                if(y==6||y==7) team=true
+                                                
+                                                p.map((coo)=>{ if(coo==String(x)+String(y)){piece='p'} })
+                                                t.map((coo)=>{ if(coo==String(x)+String(y)){piece='t'} })
+                                                c.map((coo)=>{ if(coo==String(x)+String(y)){piece='c'} })
+                                                a.map((coo)=>{ if(coo==String(x)+String(y)){piece='a'} })
+                                                q.map((coo)=>{ if(coo==String(x)+String(y)){piece='q'} })
+                                                k.map((coo)=>{ if(coo==String(x)+String(y)){piece='k'} })
 
-                <div className="Player rounded-full w-2/3 relative bg-orange-400 mt-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{store.getState().menu.user.ads}</div>
+                                                if((x%2==0&&y%2!=0)||(x%2!=0&&y%2==0)) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={true}/>);
+                                                else if((x%2==0&&y%2==0)||(x%2!=0&&y%2!=0)) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={false}/>);
+                                            })}
+                                        </div>
+                                    );
+                                })
+                            }
+                        </div>
+
+                        <div className="Player rounded-full w-fit relative bg-orange-400 mt-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{store.getState().menu.user.ads}</div>
+        
+                    </div>
+                </div>
             </div>
         );
 }

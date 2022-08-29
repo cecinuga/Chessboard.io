@@ -7,6 +7,8 @@ import { Move, useMenu } from './chessAPI';
 
 const initialState = { 
     lastMove:{ firstStep:'', piece:'', secondStep:'',status:'' },
+    points:{ white:'', black:'' },
+    graveyard:{ white: '', black:'' },
     turner:'',
     status:'',
     error:''
@@ -15,9 +17,6 @@ export const chessSlice = createSlice({
     name:'chess',
     initialState,
     reducers:{
-        Step: (state, action) => {
-            
-        }
     },
     extraReducers:{
         [Move.pending]: state => { 
@@ -38,8 +37,8 @@ export const chessSlice = createSlice({
                     state.lastMove.piece = action.payload.piece;
                     state.lastMove.secondStep = '';
                 } else if(state.lastMove.firstStep!=''&&state.lastMove.secondStep=='') {
-                    if(state.lastMove.firstStep!=action.payload.step){
-                        state.lastMove.secondStep = action.payload.step;
+                    if(state.lastMove.firstStep!=action.payload.data.step){
+                        state.lastMove.secondStep = action.payload.data.step;
                         state.turner = action.payload.turner
                         state.lastMove.status='ok';
                     } else {state.lastMove.status='repeat';}
@@ -53,5 +52,4 @@ export const chessSlice = createSlice({
         }
     }
 });
-export const { Step } = chessSlice.actions;
 export const chessReducer = chessSlice.reducer;
