@@ -4,8 +4,9 @@ import { store } from '../../app/store';
 import { Move } from './chessAPI';
 import Box from './Box';
 import FastMenu from './../Menu/FastMenu';
+import { ethers, signer } from '../../App';
 import { changeTurnerListener } from '../../fun/chessboard'
-import { ethers, signer } from '../../App'
+import { formatAddress, formatPrice } from '../../fun/formatter';
 
 export default function Chessboard() {   
         let row = [];
@@ -20,11 +21,15 @@ export default function Chessboard() {
         const k = ['40','47']
 
         const [ content, setContent ] = useState('hidden');
+        const [ Rotate, setRotate ] = useState('');
         const boxes = document.getElementsByClassName('Boxes');
 
 
         store.subscribe(async ()=>{
             console.log(store.getState())
+            if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'&&!store.getState().menu.matchmaking.team){
+                setRotate('rotate-180');
+            }
             if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
                 console.log("bene, ora c'è da giocare.")
                 setContent('block')
@@ -35,43 +40,37 @@ export default function Chessboard() {
                     el.item(i).checked = false;
                 }
             }
-            if(store.getState().chess.lastMove.firstStep!=''&&store.getState().chess.lastMove.secondStep!=''&&store.getState().chess.lastMove.status=='ok'){
+            if(store.getState().chess.lastMove.status=='nextmove'){
                 console.log("spostiamo sti pezzi va")
-                console.log(store.getState().chess.lastMove)
-                let className;
-                if(store.getState().menu.matchmaking.team){ className = 'text-white' }
-                else if(!store.getState().menu.matchmaking.team){ className = 'text-black' }
-                
-                document.getElementById('Box-p-'+store.getState().chess.lastMove.secondStep).innerHTML = store.getState().chess.lastMove.piece;
-                document.getElementById('Box-p-'+store.getState().chess.lastMove.firstStep).innerHTML = '';
-                document.getElementById('Box-p-'+store.getState().chess.lastMove.secondStep).className = className
-                document.getElementById('Box-'+store.getState().chess.lastMove.firstStep).checked = false; 
-                document.getElementById('Box-'+store.getState().chess.lastMove.secondStep).checked = false;
+                /*if(document.getElementById('Box-'+store.getState().chess.lastMove.secondStep).value!=undefined){
+                    //Aggiungi al cimitero
+                    const hiddens = document.getElementsByClassName('Piece-value');
+                    for(let i = 0; i<hiddens.length; i++){
+                        console.log(hiddens[i])
+                        console.log(store.getState().chess.lastMove)
+                    }
+                    
+                } else {
+                }*/
+                document.getElementById('InfoGame-Turner-value').innerHTML=formatAddress(store.getState().chess.turner);
+
                 //Controlla se hai vinto, altrimenti 
-                const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard/*chessboard_address*/, ChessBoard.abi, signer)
-                if(chessboard.winner==await signer.getAddress()){
-                    //Hai vinto.
-                } else{
-                    //inserire ascoltatore per capire quando l'avversario ha mosso e cambiare il dom
-                    const turn = changeTurnerListener();
-                    console.log('turn: '+turn)
-                }               
+                               
             }
-            if(store.getState().chess.lastMove.status=='repeat'){document.getElementById('Box-'+store.getState().chess.lastMove.firstStep).checked = false; }
         })
    
         return(
             <div className="Chess p-5 w-full inline-block rounded relative">
-                <div className="FastMenu-container md:mb-4 md:w-full xl:w-2/6 text-center md:block xl:inline-block">
-                    <div className="FastMenu w-3/6 text-center relative xl:left-36 xl:bottom-56">
+                <div className="FastMenu-container md:w-full xl:w-2/6 text-center md:block xl:inline-block">
+                    <div className="FastMenu w-4/6 text-center relative xl:left-36 xl:bottom-56">
                         <FastMenu />
                     </div>
                 </div>
                 <div className="Chessboard_ w-4/6 inline-block text-left">
-                    <div className="_Chessboard_ w-fit text-center">
+                    <div className="_Chessboard_ border-8 border-solid border-orange-800 bg-orange-700 px-10 py-2 rounded-md w-fit text-center">
                         <div className="Enemy rounded-full w-fit relative bg-orange-400 mb-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{store.getState().menu.matchmaking.enemy}</div>
                         <div 
-                            className="Chessboard relative"
+                            className={"Chessboard relative border-8 border-solid border-orange-600 rounded-md "+Rotate}
                             id="Chessboard"    
                         >
                             {
@@ -91,8 +90,9 @@ export default function Chessboard() {
                                                 q.map((coo)=>{ if(coo==String(x)+String(y)){piece='q'} })
                                                 k.map((coo)=>{ if(coo==String(x)+String(y)){piece='k'} })
 
-                                                if((x%2==0&&y%2!=0)||(x%2!=0&&y%2==0)) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={true}/>);
-                                                else if((x%2==0&&y%2==0)||(x%2!=0&&y%2!=0)) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={false}/>);
+                                                if(y==7||y==6) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={' text-white'}/>);
+                                                else if(y==0||y==1) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={' text-black'}/>);
+                                                else{ return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={' text-black'}/>);}
                                             })}
                                         </div>
                                     );

@@ -31,9 +31,8 @@ class App extends React.Component {
     return (
       <div className="App">     
         <Menu/>
-        <div className="Body relative bg-orange-300">
+        <div className="Body relative bg-slate-600">
           <Chessboard />
-          <br />
         </div>
       </div>
     );

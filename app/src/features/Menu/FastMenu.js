@@ -27,6 +27,9 @@ export default function FastMenu() {
         store.dispatch(payedGame())
       })
     }
+    if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'&&!store.getState().menu.matchmaking.team){
+      const turn = changeTurnerListener();
+    }
   })
 
   store.subscribe( async ()=>{
@@ -37,7 +40,6 @@ export default function FastMenu() {
     else if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
       console.log("ci siamo entrambi");
       //FAI PAGARE LE PERSONE
-      console.log(store.getState())
       setDisplayPMMPanel('hidden');  
     }
     else if(store.getState().menu.matchmaking.message.status=='foundaplayer'){
@@ -54,21 +56,10 @@ export default function FastMenu() {
       const founded = foundMyGame();
       setDisplayMMPanel(' ');  
     }
-    else if(store.getState().menu.matchmaking.message.status=='payed'){
+    else if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'){
       setDisplayMMPanel('hidden');  
       setDisplayPMMPanel('hidden');
       setDisplayInfoGame('block');
-      if(!store.getState().menu.matchmaking.team){
-        document.getElementById('Chessboard').classList.add('rotate-180')
-        const el = document.getElementsByClassName('Box')
-        for(let i=0; i<el.length; i++){
-          el.item(i).classList.add('rotate-180')
-        }
-        const turn = changeTurnerListener();
-        document.getElementById('InfoGame-Turner-value').innerHTML=formatAddress(store.getState().menu.matchmaking.enemy);
-      }else{
-        document.getElementById('InfoGame-Turner-value').innerHTML=formatAddress(store.getState().menu.user.ads);
-      }
     }
     else if(store.getState().menu.matchmaking.message.status=='rejected'){
       console.log('matchmaking annullato...');    
@@ -78,10 +69,10 @@ export default function FastMenu() {
 
   const [displayMMPanel, setDisplayMMPanel] = useState('hidden');
   const [displayPMMPanel, setDisplayPMMPanel] = useState('block');
-  const [displayInfoGame, setDisplayInfoGame] = useState('BLOCK');
+  const [displayInfoGame, setDisplayInfoGame] = useState('block');
 
   return (
-    <div className="FastMenu p-2 w-full bg-amber-700 inline-block rounded-md">
+    <div className="FastMenu p-2 w-full bg-amber-700 inline-block rounded-md border-8 border-solid border-orange-800">
       <div className="Status-Row p-1 mb-2 bg-amber-800 rounded-md">
         <span className="Status font-semibold text-white">Status:<div className="Stats inline-block ml-2">{store.getState().menu.matchmaking.message.status}</div></span>
       </div>

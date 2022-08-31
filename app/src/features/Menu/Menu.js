@@ -9,13 +9,13 @@ const navigation = [
   { name: 'Join', href:'', img:'', classes:' ml-4 ' ,current: false },
   { name: 'Tournament', href:'', img:'', classes:' ml-4 ' ,current: false },
 ]
-const matchmaking = { name:'New Game', href:'', img:'', classes:' ml-4 ', current: false }
-const connect = { names: ['Connect', 'Logout'], img:'', classes:' absolute right-0 ml-4 ' ,current: true }
+const matchmaking = { name:'Donate', href:'', img:'', classes:' ml-4 ', current: false }
+const connect = { names: ['Connect Wallet', 'Logout'], img:'', classes:' absolute right-0 ml-4 ' ,current: true }
 
 export default function Menu() {
   console.log(store.getState())
   return (
-    <div className="Menu-Child bg-amber-200 ">
+    <div className="Menu-Child bg-gradient-to-r from-amber-300 to-amber-200">
       <a href="http://localhost:3000"  className="inline-block font-semibold font-6xl ml-2 mr-6 text-orange-800 relative top-1">
         <img className="w-12 h-12 inline-block mb-2" src={logo}></img>
         dChess.io

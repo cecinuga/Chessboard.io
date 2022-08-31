@@ -11,7 +11,7 @@ import "hardhat/console.sol";
 */
 contract ChessBoard {
     uint public totalPrize;
-    address private turner;
+    address public turner;
     address public winner;
     struct _Rules{
         bool[3] moves_directions;
