@@ -3,7 +3,7 @@ import ChessBoard from '../../artifacts/ChessBoard.json';
 import { store } from '../../app/store';
 import { Move } from './chessAPI';
 import Box from './Box';
-import FastMenu from './../Menu/FastMenu';
+import FastMenu from '../FastMenu/FastMenu';
 import { ethers, signer } from '../../App';
 import { changeTurnerListener } from '../../fun/chessboard'
 import { formatAddress, formatPrice } from '../../fun/formatter';
@@ -17,8 +17,8 @@ export default function Chessboard() {
         const t = ['00','70','07','77']
         const c = ['10','60','17','67']
         const a = ['20','50','27','57']
-        const q = ['30','37']
-        const k = ['40','47']
+        const q = ['40','47']
+        const k = ['30','37']
 
         const [ content, setContent ] = useState('hidden');
         const [ Rotate, setRotate ] = useState('');
@@ -40,23 +40,6 @@ export default function Chessboard() {
                     el.item(i).checked = false;
                 }
             }
-            if(store.getState().chess.lastMove.status=='nextmove'){
-                console.log("spostiamo sti pezzi va")
-                /*if(document.getElementById('Box-'+store.getState().chess.lastMove.secondStep).value!=undefined){
-                    //Aggiungi al cimitero
-                    const hiddens = document.getElementsByClassName('Piece-value');
-                    for(let i = 0; i<hiddens.length; i++){
-                        console.log(hiddens[i])
-                        console.log(store.getState().chess.lastMove)
-                    }
-                    
-                } else {
-                }*/
-                document.getElementById('InfoGame-Turner-value').innerHTML=formatAddress(store.getState().chess.turner);
-
-                //Controlla se hai vinto, altrimenti 
-                               
-            }
         })
    
         return(
@@ -68,7 +51,7 @@ export default function Chessboard() {
                 </div>
                 <div className="Chessboard_ w-4/6 inline-block text-left">
                     <div className="_Chessboard_ border-8 border-solid border-orange-800 bg-orange-700 px-10 py-2 rounded-md w-fit text-center">
-                        <div className="Enemy rounded-full w-fit relative bg-orange-400 mb-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{store.getState().menu.matchmaking.enemy}</div>
+                        <div className="Enemy rounded-full w-fit relative bg-orange-400 mb-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{formatPrice(store.getState().menu.matchmaking.enemy)}</div>
                         <div 
                             className={"Chessboard relative border-8 border-solid border-orange-600 rounded-md "+Rotate}
                             id="Chessboard"    
@@ -100,7 +83,7 @@ export default function Chessboard() {
                             }
                         </div>
 
-                        <div className="Player rounded-full w-fit relative bg-orange-400 mt-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{store.getState().menu.user.ads}</div>
+                        <div className="Player rounded-full w-fit relative bg-orange-400 mt-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{formatPrice(store.getState().menu.user.ads)}</div>
         
                     </div>
                 </div>

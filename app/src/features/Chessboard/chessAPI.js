@@ -8,13 +8,11 @@ export const useMenu = state=>state.memu;
 export const Move = createAsyncThunk(
     "chess/move",
     async ( data ) => { 
-        //const chessboard_address = "0x9DB6CFb2b5E39dbc0Bcf3C7a04C59eA12cb5212e"
         if(
             store.getState().chess.lastMove.firstStep!=''&&
             store.getState().chess.lastMove.secondStep==''&&
             store.getState().menu.matchmaking.chessboard!=''
         ){ 
-            //const chessboard_address = "0x388d502DEe9A317D498c8382C3B7261Ae6471452"
             const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard/*chessboard_address*/   , ChessBoard.abi, signer)
             console.log(chessboard)
             console.log('chessboard: ',chessboard.address)
@@ -51,7 +49,7 @@ export const Move = createAsyncThunk(
                 const updated = await Moralis.Cloud.run("updateTurnerGame", par)
                 console.log(updated)
             } else { console.log('Non è il tuo turno'); console.log(res); return {error:true} }
-        }
+        } else { console.log('Partita non deployata.'); return{error:true}; } 
         return {turner:store.getState().menu.matchmaking.enemy, data:data};
     }
 ) 

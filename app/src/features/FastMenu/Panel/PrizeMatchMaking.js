@@ -1,6 +1,6 @@
 import React, { useState, useEffect }  from 'react';
 import { store } from '../../../app/store';
-import { newGame } from '../menuAPI';
+import { newGame } from '../../Menu/menuAPI';
 
 export default function PreMatchMaking(from, to){
     function authData(from, to){

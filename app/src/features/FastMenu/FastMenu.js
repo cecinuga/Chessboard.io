@@ -1,14 +1,14 @@
 import React, { useState, useEffect }  from 'react';
-import { store } from './../../app/store';
+import { store } from '../../app/store';
 import { ethers, provider, signer } from '../../App';
 import Moralis from 'moralis';
-import MatchMaking from './LoadingPanel/MatchMaking';
-import PrizeMatchMaking from './LoadingPanel/PrizeMatchMaking';
-import InfoGame from './LoadingPanel/InfoGame';
+import MatchMaking from './Panel/MatchMaking';
+import PrizeMatchMaking from './Panel/PrizeMatchMaking';
+import InfoGame from './Panel/InfoGame';
 import ChessBoard from '../../artifacts/ChessBoard';
-import { gameFound } from './menuSlice';
+import { gameFound } from '../Menu/menuSlice';
 import { foundMyEnemy, foundMyGame } from '../../fun/matchmaking';
-import { payedGame } from './menuSlice'
+import { payedGame } from '../Menu/menuSlice'
 import { changeTurnerListener } from '../../fun/chessboard'
 import { formatAddress, formatPrice } from '../../fun/formatter';
 

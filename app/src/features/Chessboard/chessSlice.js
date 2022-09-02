@@ -7,8 +7,17 @@ import { Move, useMenu } from './chessAPI';
 
 const initialState = { 
     lastMove:{ firstStep:'', piece:'',piece2:'', secondStep:'',status:'' },
-    points:{ my:0, enemy:0 },
-    graveyard:{ my: [], enemy:[] },
+    points:{ my:0, enemy:0,
+        points_table:{
+            'p':1,
+            'c':3,
+            'a':3,
+            't':5,
+            'q':9
+        }, 
+    },
+    
+graveyard:{ my: [], enemy:[] },
     turner:'',
     status:'',
     error:''
@@ -22,7 +31,10 @@ export const chessSlice = createSlice({
             state.lastMove.secondStep = action.payload.secondStep;
             state.lastMove.piece = action.payload.piece;
             state.lastMove.piece2 = action.payload.piece2;
-            if(action.payload.piece2!==null&&action.payload.piece2!==undefined) state.graveyard.my.push(action.payload.piece2);
+            if(action.payload.piece2!==null&&action.payload.piece2!==undefined) {
+                state.graveyard.push(action.payload.piece2);
+                state.points.enemy+=state.points.points_table[action.payload.piece2];
+            }
             state.lastMove.status = 'enemynextmove';
         }
     },
@@ -49,7 +61,10 @@ export const chessSlice = createSlice({
                     if(state.lastMove.firstStep!=action.payload.data.step){
                         state.lastMove.secondStep = action.payload.data.step;
                         state.lastMove.piece2 = action.payload.data.piece;
-                        if(action.payload.data.piece!==null&&action.payload.data.piece!==undefined){ state.graveyard.enemy.push(action.payload.data.piece)}
+                        if(action.payload.data.piece!==null&&action.payload.data.piece!==undefined){ 
+                            state.graveyard.enemy.push(action.payload.data.piece)
+                            state.points.my+=state.points.points_table[action.payload.data.piece];
+                        }
                         state.turner = action.payload.turner;
                         state.lastMove.status='nextmove';
                     } else {state.lastMove.status='repeat';}

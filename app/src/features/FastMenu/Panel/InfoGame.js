@@ -1,5 +1,5 @@
 import React, { Component, useState }  from 'react';
-import { Graveyard } from './Graveyard';
+import { Graveyard } from './Graveyard/Graveyard';
 import { formatAddress, formatPrice } from '../../../fun/formatter';
 import { store } from '../../../app/store';
 
@@ -8,13 +8,13 @@ export default function InfoGames() {
   store.subscribe(async()=>{
     if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'){
       if(!store.getState().menu.matchmaking.team){ setTurner(store.getState().menu.matchmaking.enemy)}
-      else{ setTurner(store.getState().menu.user.ads); }
+      else{ setTurner(formatPrice(store.getState().menu.user.ads)); }
     }
     if(store.getState().chess.lastMove.status=="nextmove"){ 
-      setTurner(store.getState().chess.turner);
+      setTurner(formatPrice(store.getState().chess.turner));
     }
     if(store.getState().chess.lastMove.status=="enemynextmove"){ 
-      setTurner(store.getState().menu.user.ads);
+      setTurner(formatPrice(store.getState().menu.user.ads));
     }
   });
 
