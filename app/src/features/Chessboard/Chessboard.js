@@ -40,8 +40,7 @@ export default function Chessboard() {
                     el.item(i).checked = false;
                 }
             }
-        })
-   
+        })   
         return(
             <div className="Chess p-5 w-full inline-block rounded relative">
                 <div className="FastMenu-container md:w-full xl:w-2/6 text-center md:block xl:inline-block">
@@ -56,31 +55,18 @@ export default function Chessboard() {
                             className={"Chessboard relative border-8 border-solid border-orange-600 rounded-md "+Rotate}
                             id="Chessboard"    
                         >
-                            {
-                                row.map((x)=>{
-                                    return( 
-                                        <div key={x} className={'Col-'+x+' inline-block'}>{
-                                            col.map((y)=>{
-                                                let team;
-                                                let piece;
-                                                if(y==0||y==1) team=false
-                                                if(y==6||y==7) team=true
-                                                
-                                                p.map((coo)=>{ if(coo==String(x)+String(y)){piece='p'} })
-                                                t.map((coo)=>{ if(coo==String(x)+String(y)){piece='t'} })
-                                                c.map((coo)=>{ if(coo==String(x)+String(y)){piece='c'} })
-                                                a.map((coo)=>{ if(coo==String(x)+String(y)){piece='a'} })
-                                                q.map((coo)=>{ if(coo==String(x)+String(y)){piece='q'} })
-                                                k.map((coo)=>{ if(coo==String(x)+String(y)){piece='k'} })
+                            {()=>{
+                                    for(let x=0; x<store.getState().chess.chessboard.length;x++){
+                                        for(let y=0; y<store.getState().chess.chessboard.length;y++){ 
+                                            if(y==7||y==6) return(<div key={x} className={'Col-'+x+' inline-block'}><Box key={String(x.length)+String(y) } coo={String(x.length)+String(y) } p={store.getState().chess.chessboard[x][y]} team={true} color={' text-white'}/></div>);
+                                            else if(y==0||y==1) return(<div key={x} className={'Col-'+x+' inline-block'}><Box key={String(x.length)+String(y) } coo={String(x.length)+String(y) } p={store.getState().chess.chessboard[x][y]} team={false} color={' text-black'}/></div>);
+                                            else{ return(<div key={x} className={'Col-'+x+' inline-block'}><Box key={String(x.length)+String(y) } coo={String(x.length)+String(y) } p={store.getState().chess.chessboard[x][y]} team={false} color={' text-black'}/></div>);}
 
-                                                if(y==7||y==6) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={' text-white'}/>);
-                                                else if(y==0||y==1) return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={' text-black'}/>);
-                                                else{ return(<Box key={String(x)+String(y) } coo={String(x)+String(y) } p={piece} team={team} color={' text-black'}/>);}
-                                            })}
-                                        </div>
-                                    );
-                                })
-                            }
+                                        }                            
+                                    }
+                            }}
+                                
+                            
                         </div>
 
                         <div className="Player rounded-full w-fit relative bg-orange-400 mt-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{formatPrice(store.getState().menu.user.ads)}</div>
