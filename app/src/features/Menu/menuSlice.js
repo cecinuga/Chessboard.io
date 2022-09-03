@@ -46,6 +46,16 @@ export const menuSlice = createSlice({
         },
         [logHandler.fulfilled]:(state,action)=>{ 
             state.user = action.payload
+            if(action.payload.message.status=='logout'){
+                state.matchmaking.enemy='';
+                state.matchmaking.chessboard='';
+                state.matchmaking.quote=0;
+                state.matchmaking.message.status='';
+                state.matchmaking.from=0;
+                state.matchmaking.to=0;
+                state.status='logout';
+            }
+            state.status='login'
         },
         [newGame.pending]:state=>{ 
             state.matchmaking.message.status='pending'

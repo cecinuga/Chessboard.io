@@ -7,15 +7,34 @@ import thunk from 'redux-thunk'
 
 import { menuReducer } from '../features/Menu/menuSlice';
 import { chessReducer } from '../features/Chessboard/chessSlice';
+import createMigrate from 'redux-persist/es/createMigrate';
 
 export const rootReducer = combineReducers({
   menu:menuReducer,
   chess:chessReducer,
 });
-
+const migrations = {
+  1: (state) => {
+    // migration clear out device state
+    return {
+      ...state,
+      device: undefined   
+    }
+  },
+  2: (state) => {
+    // migration to keep only device state
+    return {
+      device: state.device
+    }
+  }
+}
 const persistConfig = {
   key:'root',
-  storage
+  storage,
+  version:2,
+  blacklist:['chess'],
+  stateReconciler: autoMergeLevel2,
+  migrate: createMigrate(migrations, { debug:true })
 }
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

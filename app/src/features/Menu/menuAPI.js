@@ -18,7 +18,7 @@ export const logHandler = createAsyncThunk(
         } 
         else {
             return await logout()
-                .then(()=>{return {id:'', ads:'', message:{status:'', error:''}}});
+                .then(()=>{return {id:'', ads:'', message:{status:'logout', error:''}}});
         }
     }
 )

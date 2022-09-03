@@ -21,6 +21,7 @@ export default function Chessboard() {
         const k = ['30','37']
 
         const [ content, setContent ] = useState('hidden');
+        const [ State, setState ] = useState('');
         const [ Rotate, setRotate ] = useState('');
         const boxes = document.getElementsByClassName('Boxes');
 
@@ -34,13 +35,26 @@ export default function Chessboard() {
                 console.log("bene, ora c'è da giocare.")
                 setContent('block')
             }
-            if(store.getState().chess.status=='notyturn'){
-                const el = document.getElementsByClassName('Boxes')
-                for(let i=0; i<el.length; i++){
-                    el.item(i).checked = false;
-                }
+            if(store.getState().chess.lastMove.status=='nextmove'){
+                setState('nextmove')
+            }
+            if(store.getState().chess.lastMove.status=='enemynextmove'){
+                setState('enemynextmove')
             }
         })   
+        useEffect(()=>{
+            if(store.getState().chess.lastMove.status=='nextmove'){
+                const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard/*chessboard_address*/, ChessBoard.abi, signer)
+                if(chessboard.winner==store.getState().menu.user.ads){
+                    //HAI VINTO.
+                } else{
+                    const turn = changeTurnerListener();
+                    console.log('turn: '+turn)
+                }  
+               
+            }
+        });
+        let x=-1;
         return(
             <div className="Chess p-5 w-full inline-block rounded relative">
                 <div className="FastMenu-container md:w-full xl:w-2/6 text-center md:block xl:inline-block">
@@ -55,18 +69,22 @@ export default function Chessboard() {
                             className={"Chessboard relative border-8 border-solid border-orange-600 rounded-md "+Rotate}
                             id="Chessboard"    
                         >
-                            {()=>{
-                                    for(let x=0; x<store.getState().chess.chessboard.length;x++){
-                                        for(let y=0; y<store.getState().chess.chessboard.length;y++){ 
-                                            if(y==7||y==6) return(<div key={x} className={'Col-'+x+' inline-block'}><Box key={String(x.length)+String(y) } coo={String(x.length)+String(y) } p={store.getState().chess.chessboard[x][y]} team={true} color={' text-white'}/></div>);
-                                            else if(y==0||y==1) return(<div key={x} className={'Col-'+x+' inline-block'}><Box key={String(x.length)+String(y) } coo={String(x.length)+String(y) } p={store.getState().chess.chessboard[x][y]} team={false} color={' text-black'}/></div>);
-                                            else{ return(<div key={x} className={'Col-'+x+' inline-block'}><Box key={String(x.length)+String(y) } coo={String(x.length)+String(y) } p={store.getState().chess.chessboard[x][y]} team={false} color={' text-black'}/></div>);}
-
-                                        }                            
+                            {store.getState().chess.chessboard.map((col)=>{
+                                let y = -1;
+                                x++;     
+                                return (
+                                    <div key={String(x+y)} className={'Row-'+x}>
+                                    {
+                                        col.map((piece)=>{
+                                           y++; 
+                                           if(x==7||x==6) return(<Box key={String(y)+String(x) } coo={String(y)+String(x) } p={piece} team={true} color={' text-white'}/>);
+                                           else if(x==0||x==1) return(<Box key={String(y)+String(x) } coo={String(y)+String(x) } p={piece} team={false} color={' text-black'}/>);
+                                           else{ return(<Box key={String(y)+String(x) } coo={String(y)+String(x) } p={piece} team={false} color={' text-black'}/>);}
+                                        })
                                     }
-                            }}
-                                
-                            
+                                    </div>
+                                );
+                            })}    
                         </div>
 
                         <div className="Player rounded-full w-fit relative bg-orange-400 mt-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{formatPrice(store.getState().menu.user.ads)}</div>

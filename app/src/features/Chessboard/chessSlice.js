@@ -18,13 +18,14 @@ const initialState = {
     },
     chessboard:[
         ['t','c','a','k','q','c','a','t'],
-        /*'1':{'0':'p','1':'p','2':'p','3':'p','4':'p','5':'p','6':'p','7':'p'},
-        '2':{'0':'','1':'','2':'','3':'','4':'','5':'','6':'','7':''},
-        '3':{'0':'','1':'','2':'','3':'','4':'','5':'','6':'','7':''},
-        '4':{'0':'','1':'','2':'','3':'','4':'','5':'','6':'','7':''},
-        '5':{'0':'','1':'','2':'','3':'','4':'','5':'','6':'','7':''},
-        '6':{'0':'p','1':'p','2':'p','3':'p','4':'p','5':'p','6':'p','7':'p'},
-    '7':{'0':'t','1':'c','2':'a','3':'k','4':'q','5':'c','6':'a','7':'t'}*/],
+        ['p','p','p','p','p','p','p','p'],
+        ['','','','','','','',''],
+        ['','','','','','','',''],
+        ['','','','','','','',''],
+        ['','','','','','','',''],
+        ['p','p','p','p','p','p','p','p'],
+        ['t','c','a','k','q','c','a','t']
+    ],
     graveyard:{ my: [], enemy:[] },
     turner:'',
     status:'',
@@ -39,8 +40,11 @@ export const chessSlice = createSlice({
             state.lastMove.secondStep = action.payload.secondStep;
             state.lastMove.piece = action.payload.piece;
             state.lastMove.piece2 = action.payload.piece2;
-            if(action.payload.piece2!==null&&action.payload.piece2!==undefined) {
-                state.graveyard.push(action.payload.piece2);
+            if(action.payload.firstStep!=undefined) {
+                state.chessboard[action.payload.firstStep[0]][state.lastMove.firstStep[1]] = '';
+                state.chessboard[state.lastMove.secondStep[0]][state.lastMove.secondStep[1]] = action.payload.piece; }
+            if(action.payload.piece2!==null&&action.payload.piece2!==undefined&&action.payload.piece2!='') {
+                state.graveyard.my.push(action.payload.piece2);
                 state.points.enemy+=state.points.points_table[action.payload.piece2];
             }
             state.lastMove.status = 'enemynextmove';
@@ -69,7 +73,9 @@ export const chessSlice = createSlice({
                     if(state.lastMove.firstStep!=action.payload.data.step){
                         state.lastMove.secondStep = action.payload.data.step;
                         state.lastMove.piece2 = action.payload.data.piece;
-                        if(action.payload.data.piece!==null&&action.payload.data.piece!==undefined){ 
+                        state.chessboard[state.lastMove.firstStep[0]][state.lastMove.firstStep[1]] = '';
+                        state.chessboard[action.payload.data.step[0]][action.payload.data.step[1]] = action.payload.data.piece;
+                        if(action.payload.data.piece!==null&&action.payload.data.piece!==undefined&&action.payload.data.piece!=''){ 
                             state.graveyard.enemy.push(action.payload.data.piece)
                             state.points.my+=state.points.points_table[action.payload.data.piece];
                         }

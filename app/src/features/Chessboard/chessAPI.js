@@ -49,7 +49,7 @@ export const Move = createAsyncThunk(
                 const updated = await Moralis.Cloud.run("updateTurnerGame", par)
                 console.log(updated)
             } else { console.log('Non è il tuo turno'); console.log(res); return {error:true} }
-        } else { console.log('Partita non deployata.'); return{error:true}; } 
+        } else if( store.getState().menu.matchmaking.chessboard=='' ) { console.log('Partita non deployata.'); return{error:true}; } 
         return {turner:store.getState().menu.matchmaking.enemy, data:data};
     }
 ) 

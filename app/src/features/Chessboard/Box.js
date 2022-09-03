@@ -22,7 +22,9 @@ export default function Box(props){
         if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'&&!store.getState().menu.matchmaking.team){
             setRotate(' rotate-180');
         }
-        if(store.getState().chess.lastMove.status=="nextmove"&&store.getState().chess.lastMove.firstStep==props.coo){
+        if(store.getState().chess.lastMove.status=='repeat'){setSelected(false);}
+
+        /*if(store.getState().chess.lastMove.status=="nextmove"&&store.getState().chess.lastMove.firstStep==props.coo){
             setSelected(false);
             setPiece('');
         }
@@ -35,9 +37,8 @@ export default function Box(props){
             else{ setPieceColor(' text-white'); }
             
             
-            const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard/*chessboard_address*/, ChessBoard.abi, signer)
+            const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
             if(chessboard.winner==store.getState().menu.matchmaking.enemy){
-                //HAI PERSO.
             } 
         }
         if(store.getState().chess.lastMove.status=='nextmove'&&store.getState().chess.lastMove.secondStep==props.coo){
@@ -49,12 +50,11 @@ export default function Box(props){
             else{ setPieceColor(' text-black'); }
 
             console.log(store.getState().chess)
-        }
-        if(store.getState().chess.lastMove.status=='repeat'){setSelected(false);}
+        }*/
     });
-    useEffect(()=>{
-        if(store.getState().chess.lastMove.status=='nextmove'&&store.getState().chess.lastMove.secondStep==props.coo){
-            const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard/*chessboard_address*/, ChessBoard.abi, signer)
+    /*useEffect(()=>{
+        if(store.getState().chess.lastMove.status=='nextmove'){
+            const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
             if(chessboard.winner==store.getState().menu.user.ads){
                 //HAI VINTO.
             } else{
@@ -63,7 +63,7 @@ export default function Box(props){
             }  
            
         }
-    });
+    });*/
     let background;
     if((props.coo[0]%2!=0&&props.coo[1]%2!=0)||props.coo[0]%2==0&&props.coo[1]%2==0){ 
         if(Selected) background=' bg-yellow-200';
@@ -71,13 +71,13 @@ export default function Box(props){
     }
     if((props.coo[0]%2==0&&props.coo[1]%2!=0)||(props.coo[0]%2!=0&&props.coo[1]%2==0)){ 
         if(Selected) background=' bg-amber-700';
-        else background=' bg-amber-900'
+        else background=' bg-amber-900'  
     }
 
     return(
         <div 
             id={props.id}
-            className={'Box bg-red-800 text-center relative'+PieceColor+Rotate}> 
+            className={'Box bg-red-800 text-center relative inline-block'+PieceColor+Rotate}> 
                 <button 
                     onClick={
                         async ()=>{//PASSARE DESTRUTTURANDO LA FUNZIONE RUN CONTRACT MORALIS PER CHESSSLICE.JS
