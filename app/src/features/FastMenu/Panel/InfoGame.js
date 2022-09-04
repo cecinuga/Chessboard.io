@@ -7,7 +7,7 @@ export default function InfoGames() {
   const [ Turner, setTurner ] = useState('');
   store.subscribe(async()=>{
     if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'){
-      if(!store.getState().menu.matchmaking.team){ setTurner(store.getState().menu.matchmaking.enemy)}
+      if(!store.getState().menu.matchmaking.team){ setTurner(formatPrice(store.getState().menu.matchmaking.enemy))}
       else{ setTurner(formatPrice(store.getState().menu.user.ads)); }
     }
     if(store.getState().chess.lastMove.status=="nextmove"){ 

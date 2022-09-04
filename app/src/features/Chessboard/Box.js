@@ -16,54 +16,18 @@ export default function Box(props){
     const [Rotate, setRotate] = useState('');
 
     store.subscribe(async()=>{
-        if(store.getState().chess.status=='notyturn'){
-            setSelected(false);
-        }
         if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'&&!store.getState().menu.matchmaking.team){
             setRotate(' rotate-180');
         }
-        if(store.getState().chess.lastMove.status=='repeat'){setSelected(false);}
-
-        /*if(store.getState().chess.lastMove.status=="nextmove"&&store.getState().chess.lastMove.firstStep==props.coo){
-            setSelected(false);
-            setPiece('');
-        }
-        if(store.getState().chess.lastMove.status=='enemynextmove'&&store.getState().chess.lastMove.firstStep==props.coo){
-            setPiece('');
-        }
-        if(store.getState().chess.lastMove.status=='enemynextmove'&&store.getState().chess.lastMove.secondStep==props.coo){
-            setPiece(store.getState().chess.lastMove.piece);
-            if(store.getState().menu.matchmaking.team){ setPieceColor(' text-black'); }
-            else{ setPieceColor(' text-white'); }
-            
-            
-            const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
-            if(chessboard.winner==store.getState().menu.matchmaking.enemy){
-            } 
-        }
-        if(store.getState().chess.lastMove.status=='nextmove'&&store.getState().chess.lastMove.secondStep==props.coo){
-            console.log('CHANGETURNERLISTENER')          
-            setSelected(false);
-            setPiece(store.getState().chess.lastMove.piece);
-            
-            if(store.getState().menu.matchmaking.team){ setPieceColor(' text-white'); }
-            else{ setPieceColor(' text-black'); }
-
-            console.log(store.getState().chess)
-        }*/
-    });
-    /*useEffect(()=>{
         if(store.getState().chess.lastMove.status=='nextmove'){
-            const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
-            if(chessboard.winner==store.getState().menu.user.ads){
-                //HAI VINTO.
-            } else{
-                const turn = changeTurnerListener();
-                console.log('turn: '+turn)
-            }  
-           
+            setSelected(false)
         }
-    });*/
+    });
+    useEffect(() =>{
+        setPiece(props.p)
+        setPieceColor(props.color)
+    })
+
     let background;
     if((props.coo[0]%2!=0&&props.coo[1]%2!=0)||props.coo[0]%2==0&&props.coo[1]%2==0){ 
         if(Selected) background=' bg-yellow-200';
@@ -80,7 +44,7 @@ export default function Box(props){
             className={'Box bg-red-800 text-center relative inline-block'+PieceColor+Rotate}> 
                 <button 
                     onClick={
-                        async ()=>{//PASSARE DESTRUTTURANDO LA FUNZIONE RUN CONTRACT MORALIS PER CHESSSLICE.JS
+                        async ()=>{
                             setSelected(true)
                             store.dispatch(Move({ step:props.coo, piece:Piece}))
                         }

@@ -32,7 +32,7 @@ const persistConfig = {
   key:'root',
   storage,
   version:2,
-  blacklist:['chess'],
+  //blacklist:['chess'],
   stateReconciler: autoMergeLevel2,
   migrate: createMigrate(migrations, { debug:true })
 }

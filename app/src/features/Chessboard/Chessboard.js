@@ -9,22 +9,9 @@ import { changeTurnerListener } from '../../fun/chessboard'
 import { formatAddress, formatPrice } from '../../fun/formatter';
 
 export default function Chessboard() {   
-        let row = [];
-        for ( let i = 0; i < 8; i++ ) { row.push(i); }
-        let col = [];
-        for(let i=0; i<8; i++){ col.push(i) }
-        const p = ['01','11','21','31','41','51','61','71','06','16','26','36','46','56','66','76']
-        const t = ['00','70','07','77']
-        const c = ['10','60','17','67']
-        const a = ['20','50','27','57']
-        const q = ['40','47']
-        const k = ['30','37']
-
         const [ content, setContent ] = useState('hidden');
         const [ State, setState ] = useState('');
         const [ Rotate, setRotate ] = useState('');
-        const boxes = document.getElementsByClassName('Boxes');
-
 
         store.subscribe(async ()=>{
             console.log(store.getState())
@@ -40,11 +27,18 @@ export default function Chessboard() {
             }
             if(store.getState().chess.lastMove.status=='enemynextmove'){
                 setState('enemynextmove')
+                const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
+                if(chessboard.winner==store.getState().menu.matchmaking.enemy){
+                    //Hai Perso.
+                } 
+            }
+            if(store.getState().menu.status=='logout'){
+                setState('logout')
             }
         })   
         useEffect(()=>{
             if(store.getState().chess.lastMove.status=='nextmove'){
-                const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard/*chessboard_address*/, ChessBoard.abi, signer)
+                const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
                 if(chessboard.winner==store.getState().menu.user.ads){
                     //HAI VINTO.
                 } else{
@@ -56,7 +50,7 @@ export default function Chessboard() {
         });
         let x=-1;
         return(
-            <div className="Chess p-5 w-full inline-block rounded relative">
+            <div className={"Chess p-5 w-full inline-block rounded relative"}>
                 <div className="FastMenu-container md:w-full xl:w-2/6 text-center md:block xl:inline-block">
                     <div className="FastMenu w-4/6 text-center relative xl:left-36 xl:bottom-56">
                         <FastMenu />
@@ -73,13 +67,14 @@ export default function Chessboard() {
                                 let y = -1;
                                 x++;     
                                 return (
-                                    <div key={String(x+y)} className={'Row-'+x}>
+                                    <div key={String(y+x)} className={'Row-'+x}>
                                     {
                                         col.map((piece)=>{
-                                           y++; 
-                                           if(x==7||x==6) return(<Box key={String(y)+String(x) } coo={String(y)+String(x) } p={piece} team={true} color={' text-white'}/>);
-                                           else if(x==0||x==1) return(<Box key={String(y)+String(x) } coo={String(y)+String(x) } p={piece} team={false} color={' text-black'}/>);
-                                           else{ return(<Box key={String(y)+String(x) } coo={String(y)+String(x) } p={piece} team={false} color={' text-black'}/>);}
+                                            let className 
+                                            if(piece.t) className=' text-white';
+                                            else className=' text-black';
+                                            y++; 
+                                            return(<Box key={String(y)+String(x) } coo={String(y)+String(x) } p={piece.l} team={piece.t} color={className}/>);
                                         })
                                     }
                                     </div>

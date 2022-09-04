@@ -6,22 +6,25 @@ import { ethers, provider, signer } from '../../App';
 import ChessBoard from '../../artifacts/ChessBoard'
 import { matchPrizes } from '../../fun/matchmaking';
 
-export const logHandler = createAsyncThunk(
-    "menu/logHandler",
+export const logIn = createAsyncThunk(
+    "menu/logIn",
     async ( data )=>{
-        const { isAuthenticated, authenticate, logout } = data;
-        if(!isAuthenticated) {
-            return await authenticate({signingMessage:'Benvenuto in chesssboard.io'})
-                .then(user=>{
-                    return {id:user.id, ads:user.get('ethAddress'), message:{}}
-                });
-        } 
-        else {
-            return await logout()
-                .then(()=>{return {id:'', ads:'', message:{status:'logout', error:''}}});
-        }
+        const { authenticate } = data;
+        return await authenticate({signingMessage:'Benvenuto in chesssboard.io'})
+            .then(user=>{
+                return {id:user.id, ads:user.get('ethAddress'), message:{}}
+            });
     }
 )
+export const logOut = createAsyncThunk(
+    'menu/logOut',
+    async(data) =>{
+        const { logout } = data;
+        return await logout()
+            .then(()=>{return {id:'', ads:'', message:{status:'logout', error:''}}});
+    }
+)
+
 
 export const newGame = createAsyncThunk(
     "menu/newGame",

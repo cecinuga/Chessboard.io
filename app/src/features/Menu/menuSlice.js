@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Wroom } from './WRoom';
 import {store} from '../../app/store'
-import { logHandler, newGame, payGame } from './menuAPI'
+import { logIn, logOut, newGame, payGame } from './menuAPI'
 
 export const useMenu = state=>state.menu;
 const initialState = { 
@@ -37,25 +37,32 @@ export const menuSlice = createSlice({
         }
     },
     extraReducers:{
-        [logHandler.pending]:state=>{ 
+        [logIn.pending]:state=>{ 
             state.user.message.status='pending'
         },
-        [logHandler.rejected]:state=>{ 
+        [logIn.rejected]:state=>{ 
             state.user.message.status='rejected'
             state.status='logerror'
         },
-        [logHandler.fulfilled]:(state,action)=>{ 
+        [logIn.fulfilled]:(state,action)=>{ 
             state.user = action.payload
-            if(action.payload.message.status=='logout'){
-                state.matchmaking.enemy='';
-                state.matchmaking.chessboard='';
-                state.matchmaking.quote=0;
-                state.matchmaking.message.status='';
-                state.matchmaking.from=0;
-                state.matchmaking.to=0;
-                state.status='logout';
-            }
             state.status='login'
+        },
+        [logOut.pending]:state=>{ 
+            state.user.message.status='pending'
+        },
+        [logOut.rejected]:state=>{ 
+            state.user.message.status='rejected'
+            state.status='logerror'
+        },
+        [logOut.fulfilled]:(state,action)=>{ 
+            state.matchmaking.enemy='';
+            state.matchmaking.chessboard='';
+            state.matchmaking.quote=0;
+            state.matchmaking.message.status='';
+            state.matchmaking.from=0;
+            state.matchmaking.to=0;
+            state.status='logout';
         },
         [newGame.pending]:state=>{ 
             state.matchmaking.message.status='pending'
