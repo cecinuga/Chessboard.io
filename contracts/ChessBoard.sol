@@ -108,7 +108,8 @@ contract ChessBoard {
                 //Stallo Bro
                 res = false;
             } else if(!checkhandler){
-                //SCACCO MATTO BRO!
+                //CHECK MATE!!!
+                winner = msg.sender;
                 console.log('Scacco Matto! Ho vinto!');
             }
         }
@@ -124,8 +125,8 @@ contract ChessBoard {
         teams[players[true]] = true;
         teams[players[false]] = false;
 
-        kingpos[teams[players[true]]] = [3,7];
-        kingpos[teams[players[false]]] = [3,0]; 
+        kingpos[teams[players[true]]] = [4,7];
+        kingpos[teams[players[false]]] = [4,0]; 
 
         check[teams[players[true]]] = false;
         check[teams[players[false]]] = false;
@@ -148,8 +149,8 @@ contract ChessBoard {
         Chessboard[0][0] = Box(2, false);
         Chessboard[1][0] = Box(3, false);
         Chessboard[2][0] = Box(4, false);
-        Chessboard[3][0] = Box(5, false);
-        Chessboard[4][0] = Box(6, false);
+        Chessboard[4][0] = Box(5, false);
+        Chessboard[3][0] = Box(6, false);
         Chessboard[5][0] = Box(4, false);
         Chessboard[6][0] = Box(3, false);
         Chessboard[7][0] = Box(2, false);
@@ -175,8 +176,8 @@ contract ChessBoard {
         Chessboard[0][7] = Box(2, true);
         Chessboard[1][7] = Box(3, true);
         Chessboard[2][7] = Box(4, true);
-        Chessboard[3][7] = Box(5, true);
-        Chessboard[4][7] = Box(6, true);
+        Chessboard[4][7] = Box(5, true);
+        Chessboard[3][7] = Box(6, true);
         Chessboard[5][7] = Box(4, true);
         Chessboard[6][7] = Box(3, true);
         Chessboard[7][7] = Box(2, true); 

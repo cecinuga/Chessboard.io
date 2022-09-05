@@ -24,7 +24,7 @@ class App extends React.Component {
     return (
       <div className="App">     
         <Menu/>
-        <div className="Body relative bg-slate-600">
+        <div className="Body bg-slate-600">
           <Chessboard />
         </div>
       </div>

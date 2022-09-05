@@ -23,6 +23,9 @@ export const menuSlice = createSlice({
     name:'menu',
     initialState,
     reducers:{
+        RestartGame:(state,action)=>{
+            state.matchmaking.message.status='letsgo!'
+        },
         gameFound:(state,action)=>{
             console.log('mi hanno dispatchato...')
             state.matchmaking.chessboard=action.payload.chessboard;
@@ -59,7 +62,7 @@ export const menuSlice = createSlice({
             state.matchmaking.enemy='';
             state.matchmaking.chessboard='';
             state.matchmaking.quote=0;
-            state.matchmaking.message.status='';
+            state.matchmaking.message.status='letsgo!';
             state.matchmaking.from=0;
             state.matchmaking.to=0;
             state.status='logout';
@@ -90,5 +93,5 @@ export const menuSlice = createSlice({
 
     }
 });
-export const { gameFound, showMMConfig, payedGame } = menuSlice.actions;
+export const { gameFound, showMMConfig, payedGame, RestartGame } = menuSlice.actions;
 export const menuReducer = menuSlice.reducer;

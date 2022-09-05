@@ -17,14 +17,14 @@ const initialState = {
         }, 
     },
     chessboard:[
-        [{l:'t',t:false},{l:'c',t:false},{l:'a',t:false},{l:'k',t:false},{l:'q',t:false},{l:'c',t:false},{l:'a',t:false},{l:'t',t:false}],
+        [{l:'t',t:false},{l:'c',t:false},{l:'a',t:false},{l:'q',t:false},{l:'k',t:false},{l:'a',t:false},{l:'c',t:false},{l:'t',t:false}],
         [{l:'p',t:false},{l:'p',t:false},{l:'p',t:false},{l:'p',t:false},{l:'p',t:false},{l:'p',t:false},{l:'p',t:false},{l:'p',t:false}],
         [{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false}],
         [{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false}],
         [{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false}],
         [{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false}],
         [{l:'p',t:true},{l:'p',t:true},{l:'p',t:true},{l:'p',t:true},{l:'p',t:true},{l:'p',t:true},{l:'p',t:true},{l:'p',t:true}],
-        [{l:'t',t:true},{l:'c',t:true},{l:'a',t:true},{l:'k',t:true},{l:'q',t:true},{l:'c',t:true},{l:'a',t:true},{l:'t',t:true}]
+        [{l:'t',t:true},{l:'c',t:true},{l:'a',t:true},{l:'q',t:true},{l:'k',t:true},{l:'a',t:true},{l:'c',t:true},{l:'t',t:true}]
     ],
     graveyard:{ my: [], enemy:[] },
     turner:'',
@@ -37,14 +37,14 @@ export const chessSlice = createSlice({
     reducers:{
         ResetChessboard: (state) => {
             state.chessboard = [
-                [{l:'t',t:false},{l:'c',t:false},{l:'a',t:false},{l:'k',t:false},{l:'q',t:false},{l:'c',t:false},{l:'a',t:false},{l:'t',t:false}],
+                [{l:'t',t:false},{l:'c',t:false},{l:'a',t:false},{l:'q',t:false},{l:'k',t:false},{l:'a',t:false},{l:'c',t:false},{l:'t',t:false}],
                 [{l:'p',t:false},{l:'p',t:false},{l:'p',t:false},{l:'p',t:false},{l:'p',t:false},{l:'p',t:false},{l:'p',t:false},{l:'p',t:false}],
                 [{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false}],
                 [{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false}],
                 [{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false}],
                 [{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false},{l:'',t:false}],
                 [{l:'p',t:true},{l:'p',t:true},{l:'p',t:true},{l:'p',t:true},{l:'p',t:true},{l:'p',t:true},{l:'p',t:true},{l:'p',t:true}],
-                [{l:'t',t:true},{l:'c',t:true},{l:'a',t:true},{l:'k',t:true},{l:'q',t:true},{l:'c',t:true},{l:'a',t:true},{l:'t',t:true}]
+                [{l:'t',t:true},{l:'c',t:true},{l:'a',t:true},{l:'q',t:true},{l:'k',t:true},{l:'a',t:true},{l:'c',t:true},{l:'t',t:true}]
             ]
             state.graveyard = {my:[], enemy:[]}
             state.turner = '';
@@ -59,7 +59,7 @@ export const chessSlice = createSlice({
             state.lastMove.piece = action.payload.piece;
             state.lastMove.piece2 = action.payload.piece2;
             if(action.payload.firstStep!=undefined) {
-                state.chessboard[action.payload.secondStep[1]][action.payload.secondStep[0]].t = state.chessboard[action.payload.firstStep[0]][action.payload.firstStep[1]].t;
+                state.chessboard[action.payload.secondStep[1]][action.payload.secondStep[0]].t = action.payload.team;
                 state.chessboard[action.payload.secondStep[1]][action.payload.secondStep[0]].l = action.payload.piece; 
                 state.chessboard[action.payload.firstStep[1]][action.payload.firstStep[0]].l = '';
                 state.chessboard[action.payload.firstStep[1]][action.payload.firstStep[0]].t = false;
@@ -96,7 +96,7 @@ export const chessSlice = createSlice({
                         state.lastMove.secondStep = action.payload.data.step;
                         state.lastMove.piece2 = action.payload.data.piece;
 
-                        state.chessboard[action.payload.data.step[1]][action.payload.data.step[0]].t = state.chessboard[state.lastMove.firstStep[0]][state.lastMove.firstStep[1]].t;
+                        state.chessboard[action.payload.data.step[1]][action.payload.data.step[0]].t = action.payload.data.team;
                         state.chessboard[action.payload.data.step[1]][action.payload.data.step[0]].l = state.lastMove.piece;
                         state.chessboard[state.lastMove.firstStep[1]][state.lastMove.firstStep[0]].l = '';
                         state.chessboard[state.lastMove.firstStep[1]][state.lastMove.firstStep[0]].t = false;

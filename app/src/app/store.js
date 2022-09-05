@@ -14,14 +14,14 @@ export const rootReducer = combineReducers({
   chess:chessReducer,
 });
 const migrations = {
-  1: (state) => {
+  3: (state) => {
     // migration clear out device state
     return {
       ...state,
       device: undefined   
     }
   },
-  2: (state) => {
+  4: (state) => {
     // migration to keep only device state
     return {
       device: state.device
@@ -31,7 +31,7 @@ const migrations = {
 const persistConfig = {
   key:'root',
   storage,
-  version:2,
+  version:4,
   //blacklist:['chess'],
   stateReconciler: autoMergeLevel2,
   migrate: createMigrate(migrations, { debug:true })

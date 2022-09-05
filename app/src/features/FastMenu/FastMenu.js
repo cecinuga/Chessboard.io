@@ -15,8 +15,9 @@ import { formatAddress, formatPrice } from '../../fun/formatter';
 export default function FastMenu() {
   
   useEffect(() =>{
-    if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
+    if(store.getState().menu.matchmaking.message.status=='letsplaytg'&&store.getState().menu.matchmaking.quote>0.01){
       console.log("giorno di paga");
+      
       signer.sendTransaction({
         to:String(store.getState().menu.matchmaking.chessboard), 
         value:String(ethers.utils.parseEther(String(store.getState().menu.matchmaking.quote))),
@@ -26,13 +27,18 @@ export default function FastMenu() {
         console.log(tx);
         store.dispatch(payedGame())
       })
-    }
-    if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'&&!store.getState().menu.matchmaking.team){
-      const turn = changeTurnerListener();
+    } else { console.log('Puntata troppo bassa.') }
+    if(store.getState().menu.matchmaking.message.status=='payed'&&!store.getState().chess.lastMove.status&&!store.getState().menu.matchmaking.team){
+      const turn = changeTurnerListener(!store.getState().menu.matchmaking.team);
     }
   })
 
   store.subscribe( async ()=>{
+    if(store.getState().menu.matchmaking.message.status=='letsgo!'){
+      setDisplayPMMPanel('block')
+      setDisplayMMPanel('hidden')
+      setDisplayInfoGame('block')
+    }
     if(store.getState().menu.matchmaking.message.status=='pending'){
       console.log('matchmaking avviato...');
       setDisplayMMPanel('block');

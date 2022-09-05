@@ -1,16 +1,16 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/peterbruegel/GitHub/chessboard.io/contracts/ChessBoard.sol": {
-      "lastModificationDate": 1661680884781,
-      "contentHash": "39c8e3157c8565cdf2b15dee0681025e",
+    "/home/peterbruegel/GitHub/dChess.io/contracts/ChessBoard.sol": {
+      "lastModificationDate": 1662395669551,
+      "contentHash": "844ffaba3efa44c6f41396b2f4485021",
       "sourceName": "contracts/ChessBoard.sol",
       "solcConfig": {
         "version": "0.8.14",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 300
           },
           "outputSelection": {
             "*": {
@@ -40,7 +40,7 @@
         "ChessBoard"
       ]
     },
-    "/home/peterbruegel/GitHub/chessboard.io/contracts/MoveController.sol": {
+    "/home/peterbruegel/GitHub/dChess.io/contracts/MoveController.sol": {
       "lastModificationDate": 1661681363659,
       "contentHash": "d5c088b16c399e21d693ee4595965cf3",
       "sourceName": "contracts/MoveController.sol",
@@ -48,8 +48,8 @@
         "version": "0.8.14",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 300
           },
           "outputSelection": {
             "*": {
@@ -78,7 +78,7 @@
         "MoveController"
       ]
     },
-    "/home/peterbruegel/GitHub/chessboard.io/contracts/MoveHandler.sol": {
+    "/home/peterbruegel/GitHub/dChess.io/contracts/MoveHandler.sol": {
       "lastModificationDate": 1661609252374,
       "contentHash": "488ad8d34b04cee138790a320227c74d",
       "sourceName": "contracts/MoveHandler.sol",
@@ -86,8 +86,8 @@
         "version": "0.8.14",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 300
           },
           "outputSelection": {
             "*": {
@@ -117,7 +117,7 @@
         "MoveHandler"
       ]
     },
-    "/home/peterbruegel/GitHub/chessboard.io/node_modules/hardhat/console.sol": {
+    "/home/peterbruegel/GitHub/dChess.io/node_modules/hardhat/console.sol": {
       "lastModificationDate": 1658423040591,
       "contentHash": "cc4777addd464ea56fa35b1c45df0591",
       "sourceName": "hardhat/console.sol",
@@ -125,8 +125,8 @@
         "version": "0.8.14",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 300
           },
           "outputSelection": {
             "*": {
