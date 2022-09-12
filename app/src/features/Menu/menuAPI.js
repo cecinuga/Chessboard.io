@@ -31,55 +31,44 @@ export const newGame = createAsyncThunk(
     async ( data )=>{
         //GESTIRE IL MATCHMAKING!!!
         console.log('Invio richiesta al server')
-        const fetchWUser = new Moralis.Query("WRoom")
+        const fetchWUser = new Moralis.Query("Games")
         const fetchWUserQuery = await fetchWUser
-                                .equalTo("status","ok")
+                                .equalTo("status","unfounded")
                                 .greaterThan("quote", Number(data.from))
                                 .lessThan("quote", Number(data.to))
         console.log(fetchWUserQuery)
 
         return await fetchWUserQuery.find()
             .then( 
-                async (users)=>{
+                async (games)=>{
                     //INSERIRE CRITERIO PER SCELTA SFIDANTE
-                    if(users.length > 0) {//CAMBIARE IF
-                        const WRenemy = users[0];
+                    if(games.length > 0) {//CAMBIARE IF
+                        const Game = games[0];
 
                         //deploy the smart contract 
-                        console.log('Player 1: ',await signer.getAddress())
-                        console.log('Player 2: ',WRenemy.get('address'))
+                        console.log('Player 1: ',store.getState().menu.user.ads)
+                        console.log('Player 2: ',Game.get('player2'))
                         console.log('deployo la partita....')
 
                         const Chessboard = new ethers.ContractFactory(ChessBoard.abi, ChessBoard.bytecode, signer);
-                        const chessboard = await Chessboard.deploy(signer.getAddress(), WRenemy.get('address'))
+                        const chessboard = await Chessboard.deploy(store.getState().menu.user.ads, Game.get('player2'))
                         
-                        const Games = Moralis.Object.extend("Games");
-                        const new_chessboard = new Games();
+                        //AGGIORNA GAMES A FOUNDED
+                        const res = await Moralis.Cloud.run('updateStatusGames', { player2:Game.get('player2'), quote:Game.get('quote'), player1:store.getState().menu.user.ads, chessboard:chessboard.address })
+                        console.log('----------------------------------------')
+                        console.log(res);
 
-                        new_chessboard.save({
-                            chessboard:chessboard.address, 
-                            player1:await signer.getAddress(),
-                            player2:WRenemy.get('address'),
-                            quote:WRenemy.get('quote'),
-                            turner:await signer.getAddress()
-                        }).then(
-                            (chess)=>{console.log(chess)}, 
-                            (error)=>{console.log(error)}
-                        )
-                        console.log(chessboard)
-                        return { chessboard:chessboard.address, enemy:WRenemy.get('address'), from:data.from, to:data.to, quote:WRenemy.get('quote'), team:true }
-                    } else if(users.length==0) {//CAMBIARE IF
+                        return { chessboard:chessboard.address, enemy:Game.get('player2'), from:data.from, to:data.to, quote:Game.get('quote'), team:true }
+                    } else if(games.length==0) {//CAMBIARE IF
                         //mi metto in coda 
                         console.log('mi metto in fila...')
-                        const User = Moralis.Object.extend("WRoom");
-                        const waiting_user = new User();
+                        const Game = Moralis.Object.extend("Games");
+                        const waiting_game = new Game();
                         const quote = matchPrizes(data.from, data.to)
 
-                        const user = await waiting_user.save({
-                            status:'ok', 
-                            address: await signer.getAddress(),
-                            prizefrom: Number(data.from), 
-                            prizeto: Number(data.to),
+                        const game = await waiting_game.save({
+                            status:'unfounded', 
+                            player2: store.getState().menu.user.ads,
                             quote: quote,
                         });   
 

@@ -8,7 +8,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 
-import App from './App';
+import {App} from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import './tailwind.output.css';

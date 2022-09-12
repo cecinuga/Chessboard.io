@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 
-import React from 'react';
+import React, { useEffect} from 'react';
 import ReactDOM from 'react-dom/client';
 import Moralis from 'moralis';
 import {ethers} from 'ethers'
@@ -15,21 +15,14 @@ export { ethers }
 export const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
 export const signer = provider.getSigner();
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render(){
-    return (
-      <div className="App">     
-        <Menu/>
-        <div className="Body bg-slate-600">
-          <Chessboard />
-        </div>
+export function App(props) {
+  return (
+    <div className="App">     
+      <Menu/>
+      <div className="Body bg-slate-600">
+        <Chessboard />
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-export default App;

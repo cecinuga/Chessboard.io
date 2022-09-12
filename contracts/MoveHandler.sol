@@ -17,8 +17,8 @@ contract MoveHandler {
         uint[8] posy;
     }
 
-    modifier onlyYourChessboard{require(msg.sender==address(Chessboard),'');_;}
-    modifier onlyYourController{require(msg.sender==address(Movecontroller),'');_;}
+    modifier onlyYourChessboard{require(msg.sender==address(Chessboard),'!c');_;}
+    modifier onlyYourController{require(msg.sender==address(Movecontroller),'!m');_;}
     function checkHandler(bool team, bool authres) public view 
     returns(bool){
         bool[8] memory prot;

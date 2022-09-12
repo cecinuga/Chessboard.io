@@ -2,7 +2,7 @@ export const formatAddress = function(address){
     let addr='';
     if(address!=''){
         addr = address.slice(0, 6);
-        addr=addr+'....'+address.slice(address.length-6, address.length);
+        addr=addr+'...'+address.slice(address.length-4, address.length);
     } else {addr='';}
     return addr;
 }

@@ -7,7 +7,7 @@ import PrizeMatchMaking from './Panel/PrizeMatchMaking';
 import InfoGame from './Panel/InfoGame';
 import ChessBoard from '../../artifacts/ChessBoard';
 import { gameFound } from '../Menu/menuSlice';
-import { foundMyEnemy, foundMyGame } from '../../fun/matchmaking';
+import { foundMyEnemy, removeDeadWUser } from '../../fun/matchmaking';
 import { payedGame } from '../Menu/menuSlice'
 import { changeTurnerListener } from '../../fun/chessboard'
 import { formatAddress, formatPrice } from '../../fun/formatter';
@@ -29,7 +29,8 @@ export default function FastMenu() {
       })
     } else { console.log('Puntata troppo bassa.') }
     if(store.getState().menu.matchmaking.message.status=='payed'&&!store.getState().chess.lastMove.status&&!store.getState().menu.matchmaking.team){
-      const turn = changeTurnerListener(!store.getState().menu.matchmaking.team);
+      console.log('okeee son partitoooo')
+      const turn = changeTurnerListener();
     }
   })
 
@@ -45,24 +46,20 @@ export default function FastMenu() {
     }
     else if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
       console.log("ci siamo entrambi");
-      //FAI PAGARE LE PERSONE
       setDisplayPMMPanel('hidden');  
     }
     else if(store.getState().menu.matchmaking.message.status=='foundaplayer'){
       console.log("found a player pls");
       setDisplayPMMPanel('block');  
     }
-    else if(store.getState().menu.matchmaking.message.status=='letsplay'){
-      console.log('matchmaking completato aspetto laltro si connetta...');
+    else if(store.getState().menu.matchmaking.message.status=='waiting'){
+      console.log('matchmaking completato sono in lista...');
+      //window.addEventListener('beforeunload', removeDeadWUser)
       const founded = foundMyEnemy();
       setDisplayMMPanel(' ');  
     }
-    else if(store.getState().menu.matchmaking.message.status=='waiting'){
-      console.log('matchmaking completato sono in lista...');
-      const founded = foundMyGame();
-      setDisplayMMPanel(' ');  
-    }
     else if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'){
+      //window.removeEventListener('beforeunload', removeDeadWUser)
       setDisplayMMPanel('hidden');  
       setDisplayPMMPanel('hidden');
       setDisplayInfoGame('block');
@@ -70,6 +67,9 @@ export default function FastMenu() {
     else if(store.getState().menu.matchmaking.message.status=='rejected'){
       console.log('matchmaking annullato...');    
       setDisplayMMPanel('hidden');  
+    }
+    if(store.getState().menu.matchmaking.message.status=='payed'){
+      const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
     }
   });
 

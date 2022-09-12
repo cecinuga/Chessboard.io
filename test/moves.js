@@ -18,17 +18,12 @@ describe("Various Games.", function() {
     it("Partita 1. Test 1.", async function(){
         const { chessboard, controller,handler, player1, player2 } = await loadFixture(deployContracts)
         expect(await chessboard.connect(player1).Move([2,6],[2,4])).to.be.ok;//pedone bianco mi scopro
-        expect(await chessboard.connect(player2).Move([3,1],[3,3])).to.be.ok;//pedona nero
+        expect(await chessboard.connect(player2).Move([2,1],[2,3])).to.be.ok;//pedona nero
         expect(await chessboard.connect(player1).Move([7,6],[7,4])).to.be.ok;//pedone bianco
         expect(await chessboard.connect(player1).Move([6,6],[6,5])).to.be.ok;//pedone bianco
-        expect(await chessboard.connect(player2).Move([4,0],[0,4])).to.be.ok;//regina nero faccio scacco
-        expect(await chessboard.connect(player1).Move([1,6],[1,5])).to.be.ok;//pedone bianco miproteggo
-
-        expect(await chessboard.connect(player1).Move([4,6],[4,5])).to.be.ok;//pedone bianco mi scopro
-        expect(await chessboard.connect(player1).Move([0,6],[0,5])).to.be.ok;//pedone bianco mi scopro
-        expect(await chessboard.connect(player2).Move([2,0],[6,4])).to.be.ok;//alfiere nero check
-        expect(await chessboard.connect(player2).Move([0,4],[1,5])).to.be.ok;//regina nero mangio pedone che protegge
-        //SCACCO MATTO DEL NERO!!!
+        expect(await chessboard.connect(player2).Move([3,0],[0,3])).to.be.ok;//regina nero faccio scacco
+        
+        //SCACCO MATTO DEL NERO!!!*/
         //ok è cicco corretto dio maiale.
         //expect(await chessboard.connect(player1).Move([3,7],[2,6])).to.be.ok;//re bianco
     });

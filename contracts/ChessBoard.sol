@@ -33,13 +33,13 @@ contract ChessBoard {
     MoveController public Movecontroller;
     MoveHandler public Movehandler;
 
-    modifier onlyYPayYPlay(bool team){ require(prizes[players[team]]>=prizes[players[!team]]-0.002 ether&&prizes[players[team]]<=prizes[players[!team]]+0.002 ether);_; }
-    modifier onlySpot{ require(msg.sender==players[true]||msg.sender==players[false]||msg.sender==address(Movehandler)||msg.sender==address(Movecontroller),'');_;}
-    modifier onlyPlayers{ require(msg.sender==players[true]||msg.sender==players[false],''); _; }
-    modifier onlyMoveHandler{ require(msg.sender==address(Movehandler),'');_; }
-    modifier onlyMoveController{ require(msg.sender==address(Movecontroller),'');_; }
+    modifier onlyYPayYPlay(bool team){ require(prizes[players[team]]>=prizes[players[!team]]-0.002 ether&&prizes[players[team]]<=prizes[players[!team]]+0.002 ether,'!p');_; }
+    modifier onlySpot{ require(msg.sender==players[true]||msg.sender==players[false]||msg.sender==address(Movehandler)||msg.sender==address(Movecontroller),'!s');_;}
+    modifier onlyPlayers{ require(msg.sender==players[true]||msg.sender==players[false],'onpl'); _; }
+    modifier onlyMoveHandler{ require(msg.sender==address(Movehandler),'mv');_; }
+    modifier onlyMoveController{ require(msg.sender==address(Movecontroller),'mc');_; }
     //modifier yourTurn{ require(msg.sender==turner);_; }
-    modifier Movecontrol(uint[2] memory oldpos, uint[2] memory newpos){ require(Movecontroller.MoveControl(oldpos, newpos, teams[msg.sender], Rules[Chessboard[oldpos[0]][oldpos[1]].pedina].maxsteps),''); _; }
+    modifier Movecontrol(uint[2] memory oldpos, uint[2] memory newpos){ require(Movecontroller.MoveControl(oldpos, newpos, teams[msg.sender], Rules[Chessboard[oldpos[0]][oldpos[1]].pedina].maxsteps),'mc'); _; }
     modifier PedestrianToQueen(uint[2] memory oldpos, uint[2] memory newpos){
         if(teams[msg.sender]&&Chessboard[oldpos[0]][oldpos[1]].pedina==1&&newpos[1]==0){ Chessboard[oldpos[0]][oldpos[1]].pedina=6; }
         else if(!teams[msg.sender]&&Chessboard[oldpos[0]][oldpos[1]].pedina==1&&newpos[1]==7){ Chessboard[oldpos[0]][oldpos[1]].pedina=6; }
@@ -149,8 +149,8 @@ contract ChessBoard {
         Chessboard[0][0] = Box(2, false);
         Chessboard[1][0] = Box(3, false);
         Chessboard[2][0] = Box(4, false);
-        Chessboard[4][0] = Box(5, false);
         Chessboard[3][0] = Box(6, false);
+        Chessboard[4][0] = Box(5, false);
         Chessboard[5][0] = Box(4, false);
         Chessboard[6][0] = Box(3, false);
         Chessboard[7][0] = Box(2, false);
@@ -176,8 +176,8 @@ contract ChessBoard {
         Chessboard[0][7] = Box(2, true);
         Chessboard[1][7] = Box(3, true);
         Chessboard[2][7] = Box(4, true);
-        Chessboard[4][7] = Box(5, true);
         Chessboard[3][7] = Box(6, true);
+        Chessboard[4][7] = Box(5, true);
         Chessboard[5][7] = Box(4, true);
         Chessboard[6][7] = Box(3, true);
         Chessboard[7][7] = Box(2, true); 

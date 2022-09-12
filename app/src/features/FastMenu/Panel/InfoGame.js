@@ -4,17 +4,17 @@ import { formatAddress, formatPrice } from '../../../fun/formatter';
 import { store } from '../../../app/store';
 
 export default function InfoGames() {
-  const [ Turner, setTurner ] = useState('');
+  const [ Turner, setTurner ] = useState(formatAddress(''));
   store.subscribe(async()=>{
-    if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'){
-      if(!store.getState().menu.matchmaking.team){ setTurner(formatPrice(store.getState().menu.matchmaking.enemy))}
-      else{ setTurner(formatPrice(store.getState().menu.user.ads)); }
+    if(store.getState().menu.matchmaking.message.status=='payed'&&!store.getState().chess.lastMove.status){
+      if(!store.getState().menu.matchmaking.team){ setTurner(formatAddress(store.getState().menu.matchmaking.enemy))}
+      else{ setTurner(formatAddress(store.getState().menu.user.ads)); }
     }
     if(store.getState().chess.lastMove.status=="nextmove"){ 
-      setTurner(formatPrice(store.getState().chess.turner));
+      setTurner(formatAddress(store.getState().chess.turner));
     }
     if(store.getState().chess.lastMove.status=="enemynextmove"){ 
-      setTurner(formatPrice(store.getState().menu.user.ads));
+      setTurner(formatAddress(store.getState().menu.user.ads));
     }
   });
 

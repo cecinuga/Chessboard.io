@@ -49,10 +49,9 @@ export default function Chessboard() {
                     setWinner(true);
                     setWinningPanel(' block')
                 } else{
-                    const turn = changeTurnerListener(!store.getState().menu.matchmaking.team);
+                    const turn = changeTurnerListener();
                     console.log('turn: '+turn)
                 }  
-               
             }
         });
         let x=-1;
@@ -66,7 +65,7 @@ export default function Chessboard() {
                 <div className="Chessboard_ w-4/6 inline-block text-left">
                     <div className="Chessboard-Prototype">
                         <div className="_Chessboard_ border-8 border-solid border-orange-800 bg-orange-700 px-10 py-2 rounded-md w-fit text-center">
-                            <div className="Enemy rounded-full w-fit relative bg-orange-400 mb-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{formatPrice(store.getState().menu.matchmaking.enemy)}</div>
+                            <div className="Enemy rounded-full w-fit relative bg-orange-400 mb-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{formatAddress(store.getState().menu.matchmaking.enemy)}</div>
                             <div 
                                 className={"Chessboard relative border-8 border-solid border-orange-600 rounded-md "+Rotate}
                                 id="Chessboard"    
@@ -89,9 +88,7 @@ export default function Chessboard() {
                                     );
                                 })}    
                             </div>
-
-                            <div className="Player rounded-full w-fit relative bg-orange-400 mt-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{formatPrice(store.getState().menu.user.ads)}</div>
-            
+                            <div className="Player rounded-full w-fit relative bg-orange-400 mt-2 p-2 border-2 border-solid border-orange-600 text-white font-semibold inline-block">{formatAddress(store.getState().menu.user.ads)}</div>
                         </div>
                     </div>
                     <div className={"Chessboard-EndGame w-screen h-screen absolute left-0 top-0 bg-gray-500-op-20 z-2 "+WinningPanel}>

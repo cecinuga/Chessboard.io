@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Wroom } from './WRoom';
 import {store} from '../../app/store'
 import { logIn, logOut, newGame, payGame } from './menuAPI'
 
@@ -25,11 +24,12 @@ export const menuSlice = createSlice({
     reducers:{
         RestartGame:(state,action)=>{
             state.matchmaking.message.status='letsgo!'
+            state.matchmaking.message.error='';
         },
         gameFound:(state,action)=>{
             console.log('mi hanno dispatchato...')
             state.matchmaking.chessboard=action.payload.chessboard;
-            state.matchmaking.enemy=action.payload.player;
+            state.matchmaking.enemy=action.payload.enemy;
             state.matchmaking.message.status='letsplaytg';
         },
         showMMConfig:(state)=>{
@@ -63,6 +63,7 @@ export const menuSlice = createSlice({
             state.matchmaking.chessboard='';
             state.matchmaking.quote=0;
             state.matchmaking.message.status='letsgo!';
+            state.matchmaking.message.error='';
             state.matchmaking.from=0;
             state.matchmaking.to=0;
             state.status='logout';
@@ -78,7 +79,7 @@ export const menuSlice = createSlice({
         },
         [newGame.fulfilled]:(state,action)=>{ 
             if(action.payload.chessboard!=''&&action.payload.enemy!=''){
-                state.matchmaking.message.status='letsplay'
+                state.matchmaking.message.status='letsplaytg'
             }
             else if(action.payload.chessboard==''&&action.payload.enemy=='') {
                 state.matchmaking.message.status='waiting'

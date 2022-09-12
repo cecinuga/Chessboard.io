@@ -18,12 +18,12 @@ import king_white from "../public/pieces/king-white.png";
 import empty from "../public/pieces/empty.png";
 
 
-export const changeTurnerListener = (team) => {
+export const changeTurnerListener = () => {
     const time = setTimeout(async ()=>{
         console.log('sto aspettando che il mio avversario muova.')
         const fetchGame = new Moralis.Query("Games");
         fetchGame
-            .equalTo('turner', await signer.getAddress())
+            .equalTo('turner', store.getState().menu.user.ads)
             .equalTo('chessboard', store.getState().menu.matchmaking.chessboard)
         const games = await fetchGame.find();
         console.log(games)
@@ -36,9 +36,9 @@ export const changeTurnerListener = (team) => {
             else if(!store.getState().menu.matchmaking.team){ className = 'text-white' }
             
             //INSERIRE IL PEZZO CHE SI SPOSTA ALL'INTERNO DEL DB!!!!!!!!!!!!
-            store.dispatch(EnemyMove({firstStep:games[0].get('lastFirstStep'), secondStep:games[0].get('lastSecondStep'), piece:games[0].get('piece'), piece2:games[0].get('piece2'), team:team}))
+            store.dispatch(EnemyMove({firstStep:games[0].get('lastFirstStep'), secondStep:games[0].get('lastSecondStep'), piece:games[0].get('piece'), piece2:games[0].get('piece2'), team:!store.getState().menu.matchmaking.team}))
             return true;
-        } else { changeTurnerListener(team) }
+        } else { changeTurnerListener() }
     },2000);
     console.log(time)
     return time

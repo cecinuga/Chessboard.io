@@ -35,11 +35,12 @@ export default function Box(props){
         if(Selected) background=' bg-yellow-200';
         else background=' bg-yellow-300'
 
-        if(store.getState().menu.matchmaking.team&&Winner&&Piece=='k'&&!props.team) { background=' bg-red-600' }
-        if(!store.getState().menu.matchmaking.team&&Winner&&Piece=='k'&&props.team) { background=' bg-red-600' }
+        if(store.getState().menu.matchmaking.team&&Winner&&Piece=='k'&&props.team) { background=' bg-red-600' }
+        if(store.getState().menu.matchmaking.team&&Winner&&Piece=='k'&&!props.team&&store.getState().menu.matchmaking.message.status=='payed') { background=' bg-red-600' }
 
-        if(store.getState().menu.matchmaking.team&&!Winner&&Piece=='k'&&props.team&&store.getState().menu.matchmaking.message.status=='payed') { background=' bg-red-600' }
-        if(!store.getState().menu.matchmaking.team&&!Winner&&Piece=='k'&&!props.team&&store.getState().menu.matchmaking.message.status=='payed') { background=' bg-red-600' }
+        if(!store.getState().menu.matchmaking.team&&Winner&&Piece=='k'&&!props.team) { background=' bg-red-600' }
+        if(!store.getState().menu.matchmaking.team&&Winner&&Piece=='k'&&props.team&&store.getState().menu.matchmaking.message.status=='payed') { background=' bg-red-600' }
+
     }
     if((props.coo[0]%2==0&&props.coo[1]%2!=0)||(props.coo[0]%2!=0&&props.coo[1]%2==0)){ 
         if(Selected) background=' bg-amber-700';

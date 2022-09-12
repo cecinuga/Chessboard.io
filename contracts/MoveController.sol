@@ -19,7 +19,7 @@ contract MoveController {
     function arrecc(int x_) public pure returns(int _x){  if(x_<=7)_x=x_;else _x=7; }
     function arrdec(int x_) public pure returns(int _x){  if(x_>=0)_x=x_;else _x=0; }
     
-    modifier yourChessboard{require(msg.sender==address(Chessboard),'');_;}
+    modifier yourChessboard{require(msg.sender==address(Chessboard),'!c');_;}
     function Direction(uint[2] memory oldpos, uint[2] memory newpos)/**OKOKOK*/ 
         public view /*yourChessboard*/ returns(bool res)    
     {   int _x =(int(newpos[0]) - int(oldpos[0]));
@@ -72,14 +72,15 @@ contract MoveController {
         require(Chessboard.getBox(oldpos[0],oldpos[1]).color == team, 'nyp');//Sposta i Tuoi Pezzi.
         require((oldpos[0]!=newpos[0]||oldpos[1]!=newpos[1]),'sp');//Spostati...
         if(Chessboard.getBox(newpos[0],newpos[1]).pedina!=0) {require( Chessboard.getBox(newpos[0],newpos[1]).color!=team, 'ff');}//Fuoco Amico.
-        
+
         x=(int(newpos[0]) - int(oldpos[0]));
         y=(int(newpos[1]) - int(oldpos[1]));
 
         bool dir = Direction(oldpos, newpos);
         require( dir, 'dir' );//
 
-        if(Chessboard.getBox(oldpos[0],oldpos[1]).pedina==5){
+        //ARROCCO RE CHE È SBAGLIATO
+        /*if(Chessboard.getBox(oldpos[0],oldpos[1]).pedina==5){
             if( 
             (oldpos[1]==0&&oldpos[0]==4&&Chessboard.getBox(4,0).pedina==5 &&
                 ((newpos[1]==0&&newpos[0]==6&&Chessboard.getBox(7,0).pedina==2)
@@ -92,21 +93,21 @@ contract MoveController {
             {
                 _maxsteps = 2;
             }
-        }
+        }*/
 
         if(Chessboard.getBox(oldpos[0], oldpos[1]).pedina!=3){
             if(Chessboard.getBox(oldpos[0],oldpos[1]).pedina==1){
                 bool PedfirstMove;//PEDESTRIAN MODDER
-                if(team){ require(oldpos[1]>newpos[1],'');if(oldpos[1]==6)PedfirstMove=true; else PedfirstMove=false; }
-                if(!team){ require(oldpos[1]<newpos[1],'');if(oldpos[1]==1)PedfirstMove=true; else PedfirstMove=false; }   
+                if(team){ require(oldpos[1]>newpos[1],'ped1');if(oldpos[1]==6)PedfirstMove=true; else PedfirstMove=false; }
+                if(!team){ require(oldpos[1]<newpos[1],'ped2');if(oldpos[1]==1)PedfirstMove=true; else PedfirstMove=false; }   
                 if(abs(int(newpos[1])-int(oldpos[1]))==2&&PedfirstMove){ _maxsteps=2; }
             }
-            require( _maxsteps>=uint(abs(x)) && _maxsteps>=uint(abs(y)), '');
+            require( _maxsteps>=uint(abs(x)) && _maxsteps>=uint(abs(y)), 'max');
             bool obs; uint[2] memory pos;
             (obs, pos) = isObstacled(oldpos, newpos);
             require(!obs, 'obs');       
         }
-        _;    
+        _;   
     }
     function MoveControl(uint[2] memory oldpos, uint[2] memory newpos, bool team, uint _maxsteps) 
         public 
