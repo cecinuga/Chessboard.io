@@ -24,6 +24,12 @@ export const logOut = createAsyncThunk(
             .then(()=>{return {id:'', ads:'', message:{status:'logout', error:''}}});
     }
 )
+export const newGameWF = createAsyncThunk(
+    "menu/newGameWF",
+    async(data)=>{
+        
+    }
+)
 
 
 export const newGame = createAsyncThunk(

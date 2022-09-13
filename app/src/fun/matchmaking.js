@@ -3,6 +3,10 @@ import { ethers, provider, signer } from '../App';
 import Moralis from 'moralis';
 import { gameFound } from '../features/Menu/menuSlice'
 
+export function authData(from, to){
+  return true;
+}
+
 export const removeDeadWUser = (event)=>{
   event.preventDefault()
   event.returnValue = 'Are You Sure?';
@@ -12,7 +16,6 @@ export const removeDeadWUser = (event)=>{
   console.log('siiiiiiiiiiiiiiiiiiiii')
   
 } 
-
 export const foundMyEnemy = () => {
     const time = setTimeout(async ()=>{
       console.log('sto aspettando che il mio nemico prenda parte eh...')

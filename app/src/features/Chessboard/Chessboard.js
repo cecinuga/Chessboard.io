@@ -64,7 +64,7 @@ export default function Chessboard() {
         return(
             <div className={"Chess p-5 w-full inline-block rounded"}>
                 <div className="FastMenu-container md:w-full xl:w-2/6 text-center md:block xl:inline-block">
-                    <div className="FastMenu w-4/6 text-center relative xl:left-36 xl:bottom-56">
+                    <div className="FastMenu w-5/6 text-center relative xl:left-16 xl:bottom-16">
                         <FastMenu />
                     </div>
                 </div>

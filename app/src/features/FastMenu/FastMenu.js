@@ -3,7 +3,9 @@ import { store } from '../../app/store';
 import { ethers, provider, signer } from '../../App';
 import Moralis from 'moralis';
 import MatchMaking from './Panel/MatchMaking';
-import PrizeMatchMaking from './Panel/PrizeMatchMaking';
+import GameMatchMaking from './Panel/GameMatchMaking';
+import GameWFriendsMatchMaking from './Panel/GameWFriendsMatchMaking';
+import JoinWFriendsMatchMaking from './Panel/JoinWFriendsMatchMaking';
 import InfoGame from './Panel/InfoGame';
 import ChessBoard from '../../artifacts/ChessBoard';
 import { gameFound } from '../Menu/menuSlice';
@@ -82,8 +84,12 @@ export default function FastMenu() {
       <div className="Status-Row p-1 mb-2 bg-amber-800 rounded-md">
         <span className="Status font-semibold text-white">Status:<div className="Stats inline-block ml-2">{store.getState().menu.matchmaking.message.status}</div></span>
       </div>
-      <div className={"PrizeMatchMaking "+displayPMMPanel}>
-       <PrizeMatchMaking />
+      <div className={"GameMatchMaking "+displayPMMPanel}>    
+        <GameMatchMaking />
+        <div className="GameMatchMaking-Friends rounded border border-solid border-zinc-300 bg-zinc-400 p-2">
+          <GameWFriendsMatchMaking />
+          <JoinWFriendsMatchMaking />
+        </div>
       </div>
       <div
         id="LoadingMatchMaking" 

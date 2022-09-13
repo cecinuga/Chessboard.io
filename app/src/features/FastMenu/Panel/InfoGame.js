@@ -5,10 +5,13 @@ import { store } from '../../../app/store';
 
 export default function InfoGames() {
   const [ Turner, setTurner ] = useState(formatAddress(''));
+  const [ Chessboard, setChessboard ] = useState('');
+
   store.subscribe(async()=>{
     if(store.getState().menu.matchmaking.message.status=='payed'&&!store.getState().chess.lastMove.status){
       if(!store.getState().menu.matchmaking.team){ setTurner(formatAddress(store.getState().menu.matchmaking.enemy))}
       else{ setTurner(formatAddress(store.getState().menu.user.ads)); }
+      if(Chessboard==''){setChessboard(store.getState().menu.matchmaking.chessboard)}
     }
     if(store.getState().chess.lastMove.status=="nextmove"){ 
       setTurner(formatAddress(store.getState().chess.turner));
@@ -27,8 +30,11 @@ export default function InfoGames() {
       <div className="InfoGame-Turner mt-3">
         <div className="InfoGame-Turner-label inline-block font-2xl font-semibold">Turner: </div>
         <div id="InfoGame-Turner-value" className="InfoGame-Turner-value inline-block font-2xl font-semibold ml-4 bg-orange-400 border-solid border-2 border-orange-500 rounded-full px-1 py-1">{Turner}</div>
+        <br/>
+        <div className="InfoGame-Chessboard-label inline-block font-2xl font-semibold">Chessboard: </div>
+        <div id="InfoGame-Chessboard-value" className="InfoGame-Turner-value inline-block font-2xl font-semibold ml-4 bg-orange-400 border-solid border-2 border-orange-500 rounded-full px-1 py-1">{Chessboard}</div>
       </div>
-      <div className="InfoGame-Graveyards font-2xl font-semibold rounded-md bg-amber-600 p-1 mt-2">
+      <div className="InfoGame-Graveyards font-2xl font-semibold rounded-md bg-slate-400 p-1 mt-2">
         <div className="text-center">Graveyards: </div>
         <Graveyard key={0} color={true}/>
         <Graveyard key={1} color={false}/>
