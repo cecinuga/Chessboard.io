@@ -13,7 +13,8 @@ export default function Box(props){
     const [Selected, setSelected] = useState(false);
     const [Piece, setPiece] = useState(props.p);
     const [PieceColor, setPieceColor] = useState(props.color);
-    const [Winner, setWinner] = useState(props.winning);
+    const [Win, setWin] = useState(props.win);
+    const [Check, setCheck] = useState(props.check)
     const [Rotate, setRotate] = useState('');
 
     store.subscribe(async()=>{
@@ -27,25 +28,21 @@ export default function Box(props){
     useEffect(() =>{
         setPiece(props.p)
         setPieceColor(props.color)
-        setWinner(props.winning)
+        setWin(props.winning)
+        setCheck(props.check)
     })
 
     let background;
     if((props.coo[0]%2!=0&&props.coo[1]%2!=0)||props.coo[0]%2==0&&props.coo[1]%2==0){ 
         if(Selected) background=' bg-yellow-200';
         else background=' bg-yellow-300'
-
-        if(store.getState().menu.matchmaking.team&&Winner&&Piece=='k'&&props.team) { background=' bg-red-600' }
-        if(store.getState().menu.matchmaking.team&&Winner&&Piece=='k'&&!props.team&&store.getState().menu.matchmaking.message.status=='payed') { background=' bg-red-600' }
-
-        if(!store.getState().menu.matchmaking.team&&Winner&&Piece=='k'&&!props.team) { background=' bg-red-600' }
-        if(!store.getState().menu.matchmaking.team&&Winner&&Piece=='k'&&props.team&&store.getState().menu.matchmaking.message.status=='payed') { background=' bg-red-600' }
-
     }
     if((props.coo[0]%2==0&&props.coo[1]%2!=0)||(props.coo[0]%2!=0&&props.coo[1]%2==0)){ 
         if(Selected) background=' bg-amber-700';
-        else background=' bg-amber-900'  
+        else background=' bg-amber-900'     
     }
+    if(Win&&Piece=='k'&&!props.team) { background=' bg-red-600' }
+    if(Check&&Piece=='k'&&!props.team) { background=' bg-red-300'}
 
     return(
         <div 

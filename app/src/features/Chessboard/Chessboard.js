@@ -13,7 +13,9 @@ export default function Chessboard() {
         const [ content, setContent ] = useState('hidden');
         const [ State, setState ] = useState('');
         const [ Rotate, setRotate ] = useState('');
-        const [ Winner, setWinner ] = useState(false);
+        const [ Win, setWin ] = useState(false);
+        const [ Loose, setLoose ] = useState(false);
+        const [ Check, setCheck ] = useState(false);
         const [ WinningPanel, setWinningPanel ] = useState(' hidden')
 
         store.subscribe(async ()=>{
@@ -35,8 +37,11 @@ export default function Chessboard() {
                 setState('enemynextmove')
                 const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
                 if(chessboard.winner==store.getState().menu.matchmaking.enemy){
-                    setWinner(false)
+                    setLoose(true)
                 } 
+                if(await chessboard.getCheck(store.getState().menu.matchmaking.team)){
+                    setCheck(true);
+                }
             }
             if(store.getState().menu.status=='logout'){
                 setState('logout')
@@ -46,12 +51,13 @@ export default function Chessboard() {
             if(store.getState().chess.lastMove.status=='nextmove'){
                 const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
                 if(chessboard.winner==store.getState().menu.user.ads){
-                    setWinner(true);
+                    setWin(true);
                     setWinningPanel(' block')
                 } else{
                     const turn = changeTurnerListener();
                     console.log('turn: '+turn)
-                }  
+                }
+                setCheck(false)
             }
         });
         let x=-1;
@@ -81,7 +87,7 @@ export default function Chessboard() {
                                                 if(piece.t) className=' text-white';
                                                 else className=' text-black';
                                                 y++; 
-                                                return(<Box key={String(y)+String(x) } coo={String(y)+String(x) } p={piece.l} team={piece.t} color={className} winning={Winner}/>);
+                                                return(<Box key={String(y)+String(x) } coo={String(y)+String(x) } p={piece.l} team={piece.t} color={className} win={Win} check={Check}/>);
                                             })
                                         }
                                         </div>
@@ -92,7 +98,7 @@ export default function Chessboard() {
                         </div>
                     </div>
                     <div className={"Chessboard-EndGame w-screen h-screen absolute left-0 top-0 bg-gray-500-op-20 z-2 "+WinningPanel}>
-                        <EndGamePanel win={Winner}/>
+                        <EndGamePanel win={Win}/>
                     </div>
                 </div>
             </div>
