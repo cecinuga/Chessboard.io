@@ -3,10 +3,12 @@ import { ethers, provider, signer } from '../App';
 import Moralis from 'moralis';
 import { gameFound } from '../features/Menu/menuSlice'
 
-export function authData(from, to){
-  return true;
+export function authAddress(address){
+  return {address:address, res:true};
 }
-
+export function authPrice(price){
+  return {price:price, res:true};
+}
 export const removeDeadWUser = (event)=>{
   event.preventDefault()
   event.returnValue = 'Are You Sure?';
@@ -16,6 +18,18 @@ export const removeDeadWUser = (event)=>{
   console.log('siiiiiiiiiiiiiiiiiiiii')
   
 } 
+export const foundMyEnemyWF = (data)=>{
+  const time = setTimeout(async ()=>{
+    const fetchGame = new Moralis.Query("Games");
+    fetchGame.equalTo('chessboard', store.getState().menu.matchmaking.chessboard);
+    fetchGame.equalTo('status', 'founded');
+    const games = await fetchGame.find();
+    if(games.length>0){
+      //GIOCO TROVATO QUINDI VAI OLTRE A letsplaytgwf
+      
+    } else { foundMyEnemyWF(); }
+  })
+}
 export const foundMyEnemy = () => {
     const time = setTimeout(async ()=>{
       console.log('sto aspettando che il mio nemico prenda parte eh...')

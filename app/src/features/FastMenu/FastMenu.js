@@ -9,7 +9,7 @@ import JoinWFriendsMatchMaking from './Panel/JoinWFriendsMatchMaking';
 import InfoGame from './Panel/InfoGame';
 import ChessBoard from '../../artifacts/ChessBoard';
 import { gameFound } from '../Menu/menuSlice';
-import { foundMyEnemy, removeDeadWUser } from '../../fun/matchmaking';
+import { foundMyEnemy,foundMyEnemyWF, removeDeadWUser } from '../../fun/matchmaking';
 import { payedGame } from '../Menu/menuSlice'
 import { changeTurnerListener } from '../../fun/chessboard'
 import { formatAddress, formatPrice } from '../../fun/formatter';
@@ -59,6 +59,12 @@ export default function FastMenu() {
       //window.addEventListener('beforeunload', removeDeadWUser)
       const founded = foundMyEnemy();
       setDisplayMMPanel(' ');  
+    }
+    else if(store.getState().menu.matchmaking.message.status=='waitingwf'){
+      console.log('matchmaking completato sono in lista...');
+      //window.addEventListener('beforeunload', removeDeadWUser)
+      setDisplayInfoGame('block');  
+      const founded = foundMyEnemyWF();
     }
     else if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'){
       //window.removeEventListener('beforeunload', removeDeadWUser)

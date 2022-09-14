@@ -24,10 +24,32 @@ export const logOut = createAsyncThunk(
             .then(()=>{return {id:'', ads:'', message:{status:'logout', error:''}}});
     }
 )
+export const joinGameWF = createAsyncThunk(
+    "menu/joinGameWF",
+    async(data) => {
+        console.log(data)
+        
+    }
+)
+
 export const newGameWF = createAsyncThunk(
     "menu/newGameWF",
     async(data)=>{
-        
+        console.log(data)
+        const Chessboard = new ethers.ContractFactory(ChessBoard.abi, ChessBoard.bytecode, signer);
+        const chessboard = await Chessboard.deploy(store.getState().menu.user.ads, data.address);
+
+        const quote = matchPrizes(data.from, data.to)
+        const Game = Moralis.Object.extend("Games");
+        const waiting_game = new Game();
+        const game = waiting_game.save({
+            status:'unfounded',
+            player1: store.getState().menu.user.ads, 
+            player2: data.address,
+            chessboard:chessboard.address,
+            quote:quote
+        })
+        return { enemy:data.address, chessboard:chessboard.address, quote:quote, team:true, from:data.from, to:data.to }
     }
 )
 

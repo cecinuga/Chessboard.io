@@ -19,6 +19,9 @@ export default function InfoGames() {
     if(store.getState().chess.lastMove.status=="enemynextmove"){ 
       setTurner(formatAddress(store.getState().menu.user.ads));
     }
+    if(store.getState().chess.lastMove.status=="waitingwf"){ 
+      setChessboard(store.getState().menu.matchmaking.chessboard);
+    }
   });
 
   return (

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { store } from '../../../app/store';
-import { authData } from '../../../fun/matchmaking'
+import { authPrice, authAddress } from '../../../fun/matchmaking'
 import { newGameWF } from '../../Menu/menuAPI'
 export default function GameWFriendsMatchMaking(){
     
@@ -31,8 +31,8 @@ export default function GameWFriendsMatchMaking(){
                     placeholder="Friend Address"
                 />
                 <button 
-                    onClick={()=>{if(authData(document.getElementById('Prize-from-friends').value, document.getElementById('Prize-to-friends').value, document.getElementById('Address-friends').value)){
-                        store.subscribe(newGameWF(document.getElementById('Prize-from-friends').value, document.getElementById('Prize-to-friends').value, document.getElementById('Address-friends').value))
+                    onClick={()=>{if(authPrice(document.getElementById('Prize-from-friends').value)&&authPrice(document.getElementById('Prize-to-friends').value), authAddress(document.getElementById('Address-friends').value)){
+                        store.dispatch(newGameWF({from:document.getElementById('Prize-from-friends').value, to:document.getElementById('Prize-to-friends').value, address:document.getElementById('Address-friends').value}))
                     }}}
                     className="hover:bg-green-700 bg-green-600 border-2 border-solid hover:border-green-600 border-green-800 p-1 mt-2 text-lg text-white font-bold rounded inline-block"
                     >Start!

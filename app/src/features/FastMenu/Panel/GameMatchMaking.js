@@ -1,7 +1,7 @@
 import React, { useState, useEffect }  from 'react';
 import { store } from '../../../app/store';
 import { newGame } from '../../Menu/menuAPI';
-import { authData } from '../../../fun/matchmaking'
+import { authPrice } from '../../../fun/matchmaking'
 
 export default function GameMatchMaking(from, to){
     return(
@@ -21,7 +21,7 @@ export default function GameMatchMaking(from, to){
                     type="text"/>
                 
                 <button 
-                    onClick={()=>{if(authData(document.getElementById('Prize-from').value, document.getElementById('Prize-to').value)){store.dispatch(newGame({from:from, to:to})).then(()=>{console.log(store.getState())})}}}
+                    onClick={()=>{if(authPrice(document.getElementById('Prize-from').value)&&authPrice(document.getElementById('Prize-to').value)){store.dispatch(newGame({from:from, to:to})).then(()=>{console.log(store.getState())})}}}
                     className="hover:bg-green-700 bg-green-600 border-2 border-solid hover:border-green-600 border-green-800 p-1 mt-2 text-lg text-white rounded inline-block"
                     >Start!
                 </button>
