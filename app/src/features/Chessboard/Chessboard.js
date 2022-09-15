@@ -35,7 +35,8 @@ export default function Chessboard() {
             }
             if(store.getState().chess.lastMove.status=='enemynextmove'){
                 setState('enemynextmove')
-                const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
+                const chessboard = new ethers.Contract(String(store.getState().menu.matchmaking.chessboard), ChessBoard.abi, signer)
+                console.log(chessboard)
                 if(chessboard.winner==store.getState().menu.matchmaking.enemy){
                     setLoose(true)
                 } 

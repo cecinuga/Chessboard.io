@@ -11,7 +11,7 @@ export default function InfoGames() {
     if(store.getState().menu.matchmaking.message.status=='payed'&&!store.getState().chess.lastMove.status){
       if(!store.getState().menu.matchmaking.team){ setTurner(formatAddress(store.getState().menu.matchmaking.enemy))}
       else{ setTurner(formatAddress(store.getState().menu.user.ads)); }
-      if(Chessboard==''){setChessboard(store.getState().menu.matchmaking.chessboard)}
+      if(Chessboard!=''){setChessboard(store.getState().menu.matchmaking.chessboard)}
     }
     if(store.getState().chess.lastMove.status=="nextmove"){ 
       setTurner(formatAddress(store.getState().chess.turner));
@@ -19,7 +19,7 @@ export default function InfoGames() {
     if(store.getState().chess.lastMove.status=="enemynextmove"){ 
       setTurner(formatAddress(store.getState().menu.user.ads));
     }
-    if(store.getState().chess.lastMove.status=="waitingwf"){ 
+    if(store.getState().menu.matchmaking.message.status=="waitingwf"||store.getState().menu.matchmaking.message.status=='letsplaytg'){ 
       setChessboard(store.getState().menu.matchmaking.chessboard);
     }
   });
@@ -34,8 +34,9 @@ export default function InfoGames() {
         <div className="InfoGame-Turner-label inline-block font-2xl font-semibold">Turner: </div>
         <div id="InfoGame-Turner-value" className="InfoGame-Turner-value inline-block font-2xl font-semibold ml-4 bg-orange-400 border-solid border-2 border-orange-500 rounded-full px-1 py-1">{Turner}</div>
         <br/>
-        <div className="InfoGame-Chessboard-label inline-block font-2xl font-semibold">Chessboard: </div>
-        <div id="InfoGame-Chessboard-value" className="InfoGame-Turner-value inline-block font-2xl font-semibold ml-4 bg-orange-400 border-solid border-2 border-orange-500 rounded-full px-1 py-1">{Chessboard}</div>
+        <div className="InfoGame-Chessboard-label inline-block font-2xl font-semibold mt-2">Chessboard: </div>
+        <div id="InfoGame-Chessboard-value" className="InfoGame-Turner-value inline-block font-2xl font-semibold ml-4 bg-orange-400 border-solid border-2 border-orange-500 rounded-full px-1 py-1 mt-2">{Chessboard}</div>
+        <button className="ml-2" onClick={()=>{navigator.clipboard.writeText(store.getState().menu.matchmaking.chessboard)}}>copy</button>
       </div>
       <div className="InfoGame-Graveyards font-2xl font-semibold rounded-md bg-slate-400 p-1 mt-2">
         <div className="text-center">Graveyards: </div>

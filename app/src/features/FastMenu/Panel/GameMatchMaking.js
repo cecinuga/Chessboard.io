@@ -3,7 +3,7 @@ import { store } from '../../../app/store';
 import { newGame } from '../../Menu/menuAPI';
 import { authPrice } from '../../../fun/matchmaking'
 
-export default function GameMatchMaking(from, to){
+export default function GameMatchMaking(){
     return(
         <div className="GameMatchMaking p-1 pb-2 mb-6 text-white font-semibold bg-amber-600 rounded text-center">
             <div className="text-white text-2xl font-bold">New Game</div>
@@ -21,7 +21,7 @@ export default function GameMatchMaking(from, to){
                     type="text"/>
                 
                 <button 
-                    onClick={()=>{if(authPrice(document.getElementById('Prize-from').value)&&authPrice(document.getElementById('Prize-to').value)){store.dispatch(newGame({from:from, to:to})).then(()=>{console.log(store.getState())})}}}
+                    onClick={()=>{if(authPrice(document.getElementById('Prize-from').value)&&authPrice(document.getElementById('Prize-to').value)){store.dispatch(newGame({from:document.getElementById('Prize-from').value.replace(/[^\x00-\x7F]/g, ""), to:document.getElementById('Prize-to').value.replace(/[^\x00-\x7F]/g, "")})).then(()=>{console.log(store.getState())})}}}
                     className="hover:bg-green-700 bg-green-600 border-2 border-solid hover:border-green-600 border-green-800 p-1 mt-2 text-lg text-white rounded inline-block"
                     >Start!
                 </button>

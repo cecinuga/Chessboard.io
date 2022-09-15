@@ -25,10 +25,11 @@ export default function GameWFriendsMatchMaking(){
             </div>
             <div>
                 <input
-                    className='JoinMatchMaking-Input p-2 mr-1 rounded placeholder:text-amber-600 placeholder:font-bold'
+                    className='JoinMatchMaking-Input p-2 mr-1 rounded text-amber-600 font-bold placeholder:text-amber-500 placeholder:font-bold'
                     type="text"
                     id="Address-friends"
                     placeholder="Friend Address"
+                    defaultValue="0xcf70e93b75BC5D94652445282DeC2DdaB223Aac1"
                 />
                 <button 
                     onClick={()=>{if(authPrice(document.getElementById('Prize-from-friends').value)&&authPrice(document.getElementById('Prize-to-friends').value), authAddress(document.getElementById('Address-friends').value)){

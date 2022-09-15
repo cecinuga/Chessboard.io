@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {store} from '../../app/store'
-import { logIn, logOut, newGame, newGameWF, payGame } from './menuAPI'
+import { logIn, logOut, newGame, newGameWF, joinGameWF, payGame } from './menuAPI'
 
 export const useMenu = state=>state.menu;
 const initialState = { 
@@ -69,7 +69,7 @@ export const menuSlice = createSlice({
             state.status='logout';
         },
         [newGameWF.pending]:state=>{
-            state.matchmaking.status='waitingwf'
+            state.matchmaking.message.status='pendingwaitingwf'
         },
         [newGameWF.rejected]:(state,action)=>{
             state.matchmaking.message.status='rejectedwf'
@@ -84,6 +84,23 @@ export const menuSlice = createSlice({
             state.matchmaking.from = action.payload.from;
             state.matchmaking.to = action.payload.to;
         },
+        [joinGameWF.pending]:state=>{
+            state.matchmaking.message.status='pendingletsplaytgg'
+        },
+        [joinGameWF.rejected]:(state,action)=>{
+            state.matchmaking.message.status='rejectedwf'
+            state.matchmaking.message.error=action.error.message
+        },
+        [joinGameWF.fulfilled]:(state,action)=>{
+            state.matchmaking.message.status='letsplaytg'
+            state.matchmaking.enemy = action.payload.enemy;
+            state.matchmaking.chessboard = action.payload.chessboard;
+            state.matchmaking.team = action.payload.team;
+            state.matchmaking.quote = action.payload.quote;
+            state.matchmaking.from = action.payload.from;
+            state.matchmaking.to = action.payload.to;
+        },
+        
         [newGame.pending]:state=>{ 
             state.matchmaking.message.status='pending'
         },

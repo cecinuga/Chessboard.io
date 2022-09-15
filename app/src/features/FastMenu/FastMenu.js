@@ -10,14 +10,14 @@ import InfoGame from './Panel/InfoGame';
 import ChessBoard from '../../artifacts/ChessBoard';
 import { gameFound } from '../Menu/menuSlice';
 import { foundMyEnemy,foundMyEnemyWF, removeDeadWUser } from '../../fun/matchmaking';
-import { payedGame } from '../Menu/menuSlice'
+import { payedGame, payedGameWF } from '../Menu/menuSlice'
 import { changeTurnerListener } from '../../fun/chessboard'
 import { formatAddress, formatPrice } from '../../fun/formatter';
 
 export default function FastMenu() {
   
   useEffect(() =>{
-    if(store.getState().menu.matchmaking.message.status=='letsplaytg'&&store.getState().menu.matchmaking.quote>0.01){
+    if((store.getState().menu.matchmaking.message.status=='letsplaytg')&&store.getState().menu.matchmaking.quote>0.01){
       console.log("giorno di paga");
       
       signer.sendTransaction({
@@ -34,13 +34,18 @@ export default function FastMenu() {
       console.log('okeee son partitoooo')
       const turn = changeTurnerListener();
     }
+    if(store.getState().menu.matchmaking.message.status=='waitingwf'){
+      console.log('dajeeeeeeee');
+      //window.addEventListener('beforeunload', removeDeadWUser)
+      const founded = foundMyEnemyWF();
+    }
   })
 
   store.subscribe( async ()=>{
     if(store.getState().menu.matchmaking.message.status=='letsgo!'){
-      setDisplayPMMPanel('block')
       setDisplayMMPanel('hidden')
-      setDisplayInfoGame('block')
+      setDisplayPMMPanel('block')
+      setDisplayInfoGame('hidden')
     }
     if(store.getState().menu.matchmaking.message.status=='pending'){
       console.log('matchmaking avviato...');
@@ -55,16 +60,10 @@ export default function FastMenu() {
       setDisplayPMMPanel('block');  
     }
     else if(store.getState().menu.matchmaking.message.status=='waiting'){
-      console.log('matchmaking completato sono in lista...');
+      console.log('matchmaking completato sono in lista....');
       //window.addEventListener('beforeunload', removeDeadWUser)
       const founded = foundMyEnemy();
-      setDisplayMMPanel(' ');  
-    }
-    else if(store.getState().menu.matchmaking.message.status=='waitingwf'){
-      console.log('matchmaking completato sono in lista...');
-      //window.addEventListener('beforeunload', removeDeadWUser)
-      setDisplayInfoGame('block');  
-      const founded = foundMyEnemyWF();
+      setDisplayMMPanel('block');  
     }
     else if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'){
       //window.removeEventListener('beforeunload', removeDeadWUser)
@@ -76,8 +75,10 @@ export default function FastMenu() {
       console.log('matchmaking annullato...');    
       setDisplayMMPanel('hidden');  
     }
-    if(store.getState().menu.matchmaking.message.status=='payed'){
-      const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
+    if(store.getState().menu.matchmaking.message.status=='waitingwf'){
+      console.log('matchmaking completato sono in lista...');
+      //window.addEventListener('beforeunload', removeDeadWUser)
+      setDisplayInfoGame('block');  
     }
   });
 

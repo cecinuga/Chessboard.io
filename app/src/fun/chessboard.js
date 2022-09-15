@@ -23,19 +23,17 @@ export const changeTurnerListener = () => {
         console.log('sto aspettando che il mio avversario muova.')
         const fetchGame = new Moralis.Query("Games");
         fetchGame
-            .equalTo('turner', store.getState().menu.user.ads)
             .equalTo('chessboard', store.getState().menu.matchmaking.chessboard)
+            .equalTo('turner', String(store.getState().menu.user.ads))
         const games = await fetchGame.find();
+        
         console.log(games)
+        console.log(store.getState().menu.user.ads)
+        console.log(store.getState().menu.matchmaking.chessboard)
         if(games.length>0){
             console.log('lastFirstStep: '+games[0].get('lastFirstStep'))
             console.log('lastSecondStep: '+games[0].get('lastSecondStep'))
-
-            let className;
-            if(store.getState().menu.matchmaking.team){ className = 'text-black' }
-            else if(!store.getState().menu.matchmaking.team){ className = 'text-white' }
             
-            //INSERIRE IL PEZZO CHE SI SPOSTA ALL'INTERNO DEL DB!!!!!!!!!!!!
             store.dispatch(EnemyMove({firstStep:games[0].get('lastFirstStep'), secondStep:games[0].get('lastSecondStep'), piece:games[0].get('piece'), piece2:games[0].get('piece2'), team:!store.getState().menu.matchmaking.team}))
             return true;
         } else { changeTurnerListener() }

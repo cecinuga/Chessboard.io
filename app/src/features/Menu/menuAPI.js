@@ -28,7 +28,18 @@ export const joinGameWF = createAsyncThunk(
     "menu/joinGameWF",
     async(data) => {
         console.log(data)
-        
+        const unfdGames = new Moralis.Query("Games");
+        const unfdGamesQuery = await unfdGames
+                                .equalTo('status','unfounded')
+                                .equalTo('chessboard', data.chessboard)
+        return await unfdGamesQuery.find()
+            .then(async (games)=>{
+                console.log(games)
+                if(games.length>0){
+                    await Moralis.Cloud.run('updateFoundedGamesWF',{chessboard:data.chessboard})
+                }
+                return { enemy:games[0].get('player1'), chessboard:data.chessboard,quote:games[0].get('quote'), from:games[0].get('from'), to:games[0].get('to'), team:false  }
+            })
     }
 )
 
@@ -38,14 +49,15 @@ export const newGameWF = createAsyncThunk(
         console.log(data)
         const Chessboard = new ethers.ContractFactory(ChessBoard.abi, ChessBoard.bytecode, signer);
         const chessboard = await Chessboard.deploy(store.getState().menu.user.ads, data.address);
-
         const quote = matchPrizes(data.from, data.to)
+
         const Game = Moralis.Object.extend("Games");
         const waiting_game = new Game();
         const game = waiting_game.save({
             status:'unfounded',
-            player1: store.getState().menu.user.ads, 
-            player2: data.address,
+            player1: store.getState().menu.user.ads,
+            turner: store.getState().menu.user.ads, 
+            player2: String(data.address).toLowerCase(),
             chessboard:chessboard.address,
             quote:quote
         })
@@ -82,7 +94,7 @@ export const newGame = createAsyncThunk(
                         const chessboard = await Chessboard.deploy(store.getState().menu.user.ads, Game.get('player2'))
                         
                         //AGGIORNA GAMES A FOUNDED
-                        const res = await Moralis.Cloud.run('updateStatusGames', { player2:Game.get('player2'), quote:Game.get('quote'), player1:store.getState().menu.user.ads, chessboard:chessboard.address })
+                        const res = await Moralis.Cloud.run('updateFoundedGames', { player2:Game.get('player2'), quote:Game.get('quote'), player1:store.getState().menu.user.ads, chessboard:chessboard.address })
                         console.log('----------------------------------------')
                         console.log(res);
 
