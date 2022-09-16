@@ -1,4 +1,5 @@
 import React, { useState, useEffect }  from 'react';
+import { useBeforeunload } from 'react-beforeunload';
 import { store } from '../../app/store';
 import { ethers, provider, signer } from '../../App';
 import Moralis from 'moralis';
@@ -9,7 +10,7 @@ import JoinWFriendsMatchMaking from './Panel/JoinWFriendsMatchMaking';
 import InfoGame from './Panel/InfoGame';
 import ChessBoard from '../../artifacts/ChessBoard';
 import { gameFound } from '../Menu/menuSlice';
-import { foundMyEnemy,foundMyEnemyWF, removeDeadWUser } from '../../fun/matchmaking';
+import { foundMyEnemy,foundMyEnemyWF, removeDeadWGame } from '../../fun/matchmaking';
 import { payedGame, payedGameWF } from '../Menu/menuSlice'
 import { changeTurnerListener } from '../../fun/chessboard'
 import { formatAddress, formatPrice } from '../../fun/formatter';
@@ -36,11 +37,9 @@ export default function FastMenu() {
     }
     if(store.getState().menu.matchmaking.message.status=='waitingwf'){
       console.log('dajeeeeeeee');
-      //window.addEventListener('beforeunload', removeDeadWUser)
       const founded = foundMyEnemyWF();
     }
   })
-
   store.subscribe( async ()=>{
     if(store.getState().menu.matchmaking.message.status=='letsgo!'){
       setDisplayMMPanel('hidden')
@@ -61,12 +60,11 @@ export default function FastMenu() {
     }
     else if(store.getState().menu.matchmaking.message.status=='waiting'){
       console.log('matchmaking completato sono in lista....');
-      //window.addEventListener('beforeunload', removeDeadWUser)
+      console.log('unload inserito')
       const founded = foundMyEnemy();
       setDisplayMMPanel('block');  
     }
     else if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'){
-      //window.removeEventListener('beforeunload', removeDeadWUser)
       setDisplayMMPanel('hidden');  
       setDisplayPMMPanel('hidden');
       setDisplayInfoGame('block');
@@ -77,14 +75,21 @@ export default function FastMenu() {
     }
     if(store.getState().menu.matchmaking.message.status=='waitingwf'){
       console.log('matchmaking completato sono in lista...');
-      //window.addEventListener('beforeunload', removeDeadWUser)
       setDisplayInfoGame('block');  
     }
   });
+  useBeforeunload(async (event)=>{
+    if(store.getState().menu.matchmaking.message.status=='waiting'||store.getState().menu.matchmaking.message.status=='waitingwf'||store.getState().menu.matchmaking.message.status=='letsplaytgwf'||store.getState().menu.matchmaking.message.status=='letsplaytg'){
+      event.preventDefault();
+      fetch('https://0z076nfdvktd.usemoralis.com:2053/server/functions/removeDeadGame?_ApplicationId=DCChTAiOFY3h9djTsMKGLppRjDoqsPYbAjJQQtfb&quote='+store.getState().menu.matchmaking.quote)
+        .then((res)=> res.json())
+        .then((data)=>console.log(data))
+    }
+  })
 
   const [displayMMPanel, setDisplayMMPanel] = useState('hidden');
   const [displayPMMPanel, setDisplayPMMPanel] = useState('block');
-  const [displayInfoGame, setDisplayInfoGame] = useState('block');
+  const [displayInfoGame, setDisplayInfoGame] = useState('hidden');
 
   return (
     <div className="FastMenu p-2 w-full bg-amber-700 inline-block rounded-md border-8 border-solid border-orange-800">

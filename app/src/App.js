@@ -16,12 +16,11 @@ export const provider = new ethers.providers.Web3Provider(window.ethereum, "any"
 export const signer = provider.getSigner();
 
 export function App(props) {
+
   return (
     <div className="App">     
-      <Menu/>
-      <div className="Body bg-slate-600">
-        <Chessboard />
-      </div>
+      <Menu />
+      <Chessboard />
     </div>
   );
 }

@@ -10,7 +10,6 @@ import { changeTurnerListener } from '../../fun/chessboard'
 import { formatAddress, formatPrice } from '../../fun/formatter';
 
 export default function Chessboard() {   
-        const [ content, setContent ] = useState('hidden');
         const [ State, setState ] = useState('');
         const [ Rotate, setRotate ] = useState('');
         const [ Win, setWin ] = useState(false);
@@ -26,16 +25,12 @@ export default function Chessboard() {
             if(store.getState().menu.matchmaking.message.status=='payed'&&store.getState().chess.lastMove.status!='nextmove'&&!store.getState().menu.matchmaking.team){
                 setRotate('rotate-180');
             }
-            if(store.getState().menu.matchmaking.message.status=='letsplaytg'){
-                console.log("bene, ora c'è da giocare.")
-                setContent('block')
-            }
             if(store.getState().chess.lastMove.status=='nextmove'){
                 setState('nextmove')
             }
             if(store.getState().chess.lastMove.status=='enemynextmove'){
                 setState('enemynextmove')
-                const chessboard = new ethers.Contract(String(store.getState().menu.matchmaking.chessboard), ChessBoard.abi, signer)
+                const chessboard = new ethers.Contract(store.getState().menu.matchmaking.chessboard, ChessBoard.abi, signer)
                 console.log(chessboard)
                 if(chessboard.winner==store.getState().menu.matchmaking.enemy){
                     setLoose(true)
@@ -63,7 +58,7 @@ export default function Chessboard() {
         });
         let x=-1;
         return(
-            <div className={"Chess p-5 w-full inline-block rounded"}>
+            <div className={"Chess bg-slate-600 p-5 w-full inline-block rounded"}>
                 <div className="FastMenu-container md:w-full xl:w-2/6 text-center md:block xl:inline-block">
                     <div className="FastMenu w-5/6 text-center relative xl:left-16 xl:bottom-16">
                         <FastMenu />

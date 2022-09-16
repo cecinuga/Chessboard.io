@@ -38,7 +38,7 @@ export const joinGameWF = createAsyncThunk(
                 if(games.length>0){
                     await Moralis.Cloud.run('updateFoundedGamesWF',{chessboard:data.chessboard})
                 }
-                return { enemy:games[0].get('player1'), chessboard:data.chessboard,quote:games[0].get('quote'), from:games[0].get('from'), to:games[0].get('to'), team:false  }
+                return { enemy:games[0].get('player1'), chessboard:games[0].get('chessboard'),quote:games[0].get('quote'), from:games[0].get('from'), to:games[0].get('to'), team:false  }
             })
     }
 )
@@ -54,10 +54,10 @@ export const newGameWF = createAsyncThunk(
         const Game = Moralis.Object.extend("Games");
         const waiting_game = new Game();
         const game = waiting_game.save({
-            status:'unfounded',
+            status:'unfoundedwf',
             player1: store.getState().menu.user.ads,
             turner: store.getState().menu.user.ads, 
-            player2: String(data.address).toLowerCase(),
+            player2: data.address,
             chessboard:chessboard.address,
             quote:quote
         })

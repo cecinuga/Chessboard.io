@@ -13,12 +13,13 @@ export default function JoinWFriendsMatchMaking(){
                 type="text"
                 placeholder="Chessboard Address"
                 id="chessboard-address"
+                defaultValue=""
             />
             <button
                 className={"JoinMatchMaking-Btn ml-1 p-2 font-bold text-white border-2 border-solid bg-green-600 border-green-800 hover:bg-green-800 hover:border-green-600 rounded-md"}
                 onClick={()=>{
                     if(authAddress(document.getElementById('chessboard-address').value).res){
-                        store.dispatch(joinGameWF({chessboard:document.getElementById('chessboard-address').value.replace(/[^\x00-\x7F]/g, "")}))
+                        store.dispatch(joinGameWF({chessboard:document.getElementById('chessboard-address').value}))
                     } else { //setError 
                     }
                 }}

@@ -1,8 +1,17 @@
 Moralis.Cloud.define(
+    "removeDeadGame",
+    async(req)=>{
+        const filter = [
+            {filter:{quote:Number(req.params.quote)}, update:{ status: 'dead'}}
+        ]
+        const mod = Moralis.bulkUpdate("Games", filter)
+        return mod;
+    })
+Moralis.Cloud.define(
     "updateFoundedGamesWF",
     async(req)=>{
         const filter = [
-            {filter: {chessboard:req.params.chessboard, status:'unfounded'}, update:{status:'founded'}}
+            {filter: {chessboard:req.params.chessboard, status:'unfoundedwf'}, update:{status:'founded'}}
         ]
         const mod = Moralis.bulkUpdate("Games", filter)
         return mod

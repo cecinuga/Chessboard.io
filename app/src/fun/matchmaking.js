@@ -9,14 +9,10 @@ export function authAddress(address){
 export function authPrice(price){
   return {price:price, res:true};
 }
-export const removeDeadWUser = (event)=>{
+export const removeDeadWGame = (event)=>{
   event.preventDefault()
-  event.returnValue = 'Are You Sure?';
-  Moralis.bulkUpdate("WRoom",[
-    {filter:{address:store.getState().menu.user.ads}, update:{ status: 'dead'}}
-  ])
-  console.log('siiiiiiiiiiiiiiiiiiiii')
-  
+  return event.returnValue = 'Are You Sure?'; 
+  alert('ciaoooooooo')
 } 
 export const foundMyEnemyWF = (data)=>{
   const time = setTimeout(async ()=>{
@@ -44,7 +40,7 @@ export const foundMyEnemy = () => {
       console.log('sto aspettando che il mio nemico prenda parte eh...')
 
       const fetchGame = new Moralis.Query("Games");
-      fetchGame.equalTo('player2', store.getState().menu.user.ads);
+      fetchGame.equalTo('chessboard', store.getState().menu.matchmaking.chessboard);
       fetchGame.equalTo('status', 'founded')
       const games = await fetchGame.find();
   

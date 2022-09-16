@@ -29,7 +29,7 @@ export default function GameWFriendsMatchMaking(){
                     type="text"
                     id="Address-friends"
                     placeholder="Friend Address"
-                    defaultValue="0xcf70e93b75BC5D94652445282DeC2DdaB223Aac1"
+                    defaultValue=""
                 />
                 <button 
                     onClick={()=>{if(authPrice(document.getElementById('Prize-from-friends').value)&&authPrice(document.getElementById('Prize-to-friends').value), authAddress(document.getElementById('Address-friends').value)){
