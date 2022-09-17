@@ -5,10 +5,9 @@ import { authPrice } from '../../../fun/matchmaking'
 
 export default function GameMatchMaking(){
     return(
-        <div className="GameMatchMaking p-1 pb-2 mb-6 text-white font-semibold bg-amber-600 rounded text-center">
-            <div className="text-white text-2xl font-bold">New Game</div>
+        <div className="GameMatchMaking p-8 mb-6 text-black font-semibold bg-cover bg-center bg-[url('./public/versus_wallpaper.jpg')] rounded text-center">
+            <div className="text-2xl font-bold"><span className="text-white">Set</span> Quote Range</div>
             <div>
-                <div className="mt-2 text-xl">Set Quote Range</div>
                 <input 
                     id="Prize-from"
                     className="placeholder:font-bold inline-block w-14 rounded text-black p-1 mr-2"

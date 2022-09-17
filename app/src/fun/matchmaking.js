@@ -40,7 +40,7 @@ export const foundMyEnemy = () => {
       console.log('sto aspettando che il mio nemico prenda parte eh...')
 
       const fetchGame = new Moralis.Query("Games");
-      fetchGame.equalTo('chessboard', store.getState().menu.matchmaking.chessboard);
+      fetchGame.equalTo('quote', store.getState().menu.matchmaking.quote);
       fetchGame.equalTo('status', 'founded')
       const games = await fetchGame.find();
   

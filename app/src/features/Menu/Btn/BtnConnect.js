@@ -20,7 +20,7 @@ export default function BtnConnect() {
 })
 
   return (
-      <div className={"Btn-Connect inline-block mr-2 mt-3 bg-orange-600 hover:bg-orange-500 p-1 px-2 rounded-full border-2 border-solid text-white border-orange-800 mb-2 font-semibold absolute right-2"}>
+      <div className={"Btn-Connect inline-block mr-2 bg-slate-600 hover:bg-slate-500 p-2 rounded-xl border-2 border-solid text-white border-slate-800 mb-2 font-semibold"}>
           {(Auth=='login')?<BtnLogMenu name='Logout'/>:<BtnLogin name='Connect Wallet'/>}
       </div>
   );

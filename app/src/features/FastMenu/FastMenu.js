@@ -60,7 +60,6 @@ export default function FastMenu() {
     }
     else if(store.getState().menu.matchmaking.message.status=='waiting'){
       console.log('matchmaking completato sono in lista....');
-      console.log('unload inserito')
       const founded = foundMyEnemy();
       setDisplayMMPanel('block');  
     }
@@ -93,7 +92,7 @@ export default function FastMenu() {
 
   return (
     <div className="FastMenu p-2 w-full bg-amber-700 inline-block rounded-md border-8 border-solid border-orange-800">
-      <div className="Status-Row p-1 mb-2 bg-amber-800 rounded-md">
+      <div className="Status-Row p-1 mb-2 bg-amber-800 rounded-md bg-[url('./public/wallpaper5.avif')] bg-cover bg-center">
         <span className="Status font-semibold text-white">Status:<div className="Stats inline-block ml-2">{store.getState().menu.matchmaking.message.status}</div></span>
       </div>
       <div className={"GameMatchMaking "+displayPMMPanel}>    
