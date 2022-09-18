@@ -39,7 +39,7 @@
     "start": "npm run watch:css && react-scripts start",
     "moralis-cli": "npx moralis-admin-cli watch-cloud-folder --moralisApiKey 6sCM6Ebdav6YXjl --moralisApiSecret DWRqa9CHur9oT7r --moralisSubdomain 0z076nfdvktd.usemoralis.com --autoSave 1 --moralisCloudfolder ./src/cloud",
     "moralis-log": "npx moralis-admin-cli get-logs --moralisApiKey 6sCM6Ebdav6YXjl --moralisApiSecret DWRqa9CHur9oT7r --moralisSubdomain 0z076nfdvktd.usemoralis.com",
-    "build": "npm run watch:css && react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "watch:css": "postcss src/tailwind.css -o src/tailwind.output.css"
